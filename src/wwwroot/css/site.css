@@ -79,9 +79,8 @@ footer {
 }
 
 .store-icon {
-  margin-left: 10px;
   width: 135px;
-  height: 65px;
+  height: 40px;
 }
 
 #location-dropdown-btn{
@@ -97,6 +96,10 @@ footer {
 
 #about-section ul li {
   color: #1a8bbd
+}
+
+footer {
+  margin: auto;
 }
 
 .footer-logo {
