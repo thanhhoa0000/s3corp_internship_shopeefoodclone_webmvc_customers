@@ -1,0 +1,9 @@
+services:
+  client.customers:
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "https://+:7001;http://+:7000"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${HTTPS_DEV_CERTS_PASSWORD}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/home/app/.aspnet/https/Client.Customers.pfx"
+    volumes:
+      - ./certs/.aspnet/https/Client.Customers.pfx:/home/app/.aspnet/https/Client.Customers.pfx:ro

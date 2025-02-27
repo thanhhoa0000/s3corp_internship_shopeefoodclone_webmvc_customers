@@ -1,0 +1,44 @@
+﻿@model LoginViewModel
+@{
+    ViewData["title"] = "Order Đồ ăn in TP. HCM & Delivery Service | Food Delivery & Shipping Service | ShopeeFood.vn";
+}
+<div class="container mt-5">
+    <div class="card p-4 shadow-sm mx-auto" style="max-width: 400px;">
+        <h4 class="text-center">Đăng nhập</h4>
+        <div class="my-3">
+            <div class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center">
+                <i class="fas fa-mobile-alt me-2"></i> Số điện thoại
+            </div>
+        </div>
+        <form id="google-login-form" action="https://accounts.google.com/o/oauth2/v2/auth" method="GET">
+            <button type="submit" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center">
+                <i class="fab fa-google-plus-g me-2"></i> Google
+            </button>
+        </form>
+        <p class="text-center my-3">Hoặc đăng nhập bằng tài khoản của bạn</p>
+        <form method="post" asp-controller="Account" asp-action="Login">
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label class="form-label"><i class="far fa-envelope me-2"></i>Tên đăng nhập</label>
+                <input asp-for="UserName" type="text" class="form-control" placeholder="Tên đăng nhập">
+                <span asp-validation-for="UserName" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-lock me-2"></i>Mật khẩu</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Mật khẩu" />
+                <span asp-validation-for="Password" class="text-danger" />
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="RememberMe" checked>
+                    <label class="form-check-label" for="RememberMe">Lưu thông tin đăng nhập</label>
+                </div>
+                <a href="/forgotPassword" class="text-decoration-none">Quên mật khẩu?</a>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+        </form>
+        <div class="text-center mt-3">
+            <small>Bằng cách đăng nhập hoặc đăng ký, bạn đồng ý với <a href="https://shopeefood.vn/gioi-thieu#footer-bottom" class="text-decoration-none" target="_blank" style="color: #0495ba; border-bottom: 2px solid;">Chính sách quy định của Foody</a></small>
+        </div>
+    </div>
+</div>

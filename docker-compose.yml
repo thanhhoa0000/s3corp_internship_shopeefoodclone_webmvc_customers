@@ -1,0 +1,15 @@
+services:
+  client.customers:
+    image: ${DOCKER_REGISTRY-}client.customers
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+    networks:
+      shopeefood-clone-net:
+      
+networks:
+  shopeefood-clone-net:
+    external: true
