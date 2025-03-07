@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>ShopeeFoodClone.WebMvc.Customers.Application</RootNamespace>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="NLog.Web.AspNetCore" />
+        <PackageReference Include="NLog" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" />        
+    </ItemGroup>
+
+</Project>

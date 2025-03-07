@@ -3,7 +3,7 @@ services:
     image: ${DOCKER_REGISTRY-}client.customers
     build:
       context: .
-      dockerfile: src/Dockerfile
+      dockerfile: src/Client.Customers.Presentation/Dockerfile
     ports:
       - "7000:7000"
       - "7001:7001"
