@@ -34,11 +34,20 @@ html, body, .home-footer, .home-footer div, footer, footer div {
 }
 
 body {
+  margin-top: 70px;
   margin-bottom: 60px;
 }
 
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
 footer {
-  width: 80%;
+  width: 1296px;
 }
 
 .btn-outline-orange {
@@ -66,6 +75,22 @@ footer {
   height: 70px;
 }
 
+#navbarNav {
+  padding-right: 200px;
+}
+
+.main-location-dropdown {
+  margin-left: 150px;
+}
+
+.location-item:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+}
+
+.location-item {
+  width: 215px;
+}
+
 .nav-link {
   height: 100%;
   font-size: 14px;
@@ -85,13 +110,18 @@ footer {
   height: auto;
 }
 
+.ministry-of-industry-and-trade-badge {
+  width: 50%;
+  height: auto;
+}
+
 .store-icon {
   width: 135px;
   height: 40px;
 }
 
 #location-dropdown-btn {
-  width: 100px;
+  width: 130px;
   height: 41px;
 }
 
@@ -135,6 +165,16 @@ footer {
   font-size: 24px;
   font-family: Calibri, sans-serif;
   color: #000000;
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+.user-menu-item:not(:last-child) {
+  border-bottom: 1px solid #ddd;
 }
 
 .home-footer div p {
@@ -274,8 +314,8 @@ footer {
   width: 470px;
   z-index: 2;
   position: relative;
-  top: 220px;
-  left: 10px;
+  top: 180px;
+  left: 9px;
 }
 
 .home-search-section a {
@@ -335,7 +375,7 @@ footer {
   display: inline-block;
   min-width: auto !important;
   width: auto !important;
-  margin-right: 15px;
+  margin-right: 10px;
   margin-bottom: 15px;
   text-decoration: none;
   background-color: transparent;
@@ -350,6 +390,14 @@ footer {
   font-family: "Noto Sans", Arial, sans-serif;
   min-height: 500px;
   overflow-y: auto;
+}
+
+.home-precise-address {
+  color: #464646; 
+  font-size: 14px; 
+  font-weight: 400;
+  padding-top: 2px;
+  margin-left: -16px;
 }
 
 .home-address-section {

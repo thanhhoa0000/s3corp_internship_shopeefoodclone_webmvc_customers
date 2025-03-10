@@ -25,13 +25,12 @@ try
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
-    
-    builder.Services.AddHttpClient<ITokenProcessor, TokenProcessor>();
-    builder.Services.AddHttpClient<IAccountService, AccountService>();
+
+    builder.Services.AddHttpClientServices();
     
     ApiUrlProperties.ApiGatewayUrl = builder.Configuration["GatewayUrl"];
 
-    builder.Services.AddApplication();
+    builder.Services.AddScopedServices();
     
     builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
@@ -40,6 +39,8 @@ try
             options.LoginPath = "/Account/Login";
             options.AccessDeniedPath = "/Account/AccessDenied";
         });
+
+    builder.Services.AddSession();
 
     var app = builder.Build();
 
@@ -65,6 +66,8 @@ try
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
+    
+    app.UseSession();
 
     app.Run();
 }

@@ -2,16 +2,27 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly ICategoryService _categoryService;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ICategoryService categoryService, ILogger<HomeController> logger)
     {
+        _categoryService = categoryService;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var categories = new List<CategoryDto>();
+        
+        Response? response = await _categoryService.GetAllAsync();
+        
+        if (response!.IsSuccessful)
+            categories = JsonSerializer.Deserialize<List<CategoryDto>>(
+                Convert.ToString(response.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        
+        return View(categories);
     }
 
     public IActionResult Privacy()

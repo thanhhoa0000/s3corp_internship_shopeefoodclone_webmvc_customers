@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<CategoryDto>
+@{
     ViewData["Title"] = "ShopeeFood | Nền tảng giao đồ ăn trực tuyến hàng đầu Việt Nam | shopeefood.vn";
 }
 
@@ -16,14 +17,11 @@
                 </div>
             </div>
             <div class="home-search-tags-section">
-                <a href="#" class="btn btn-outline-light">Lorem</a>
-                <a href="#" class="btn btn-outline-light">Lorem</a>
-                <a href="#" class="btn btn-outline-light">Lorem</a>
-                <a href="#" class="btn btn-outline-light">Lorem</a>
-                <a href="#" class="btn btn-outline-light">Lorem</a>
-                <a href="#" class="btn btn-outline-light">Lorem</a>
-                <a href="#" class="btn btn-outline-light">Lorem</a>
-                <a href="#" class="btn btn-outline-light">Lorem</a>
+                <a href="#" class="btn btn-outline-light">All</a>
+                @foreach (var category in Model)
+                {
+                    <a href="#" class="btn btn-outline-light">@category.Name</a>
+                }
             </div>
             <div class="mb-2 mt-3" style="font-size: 18px">
                 Sử dụng App <span style="color: var(--primary-color)"><b>ShopeeFood</b></span> để có nhiều giảm giá <br/>và trải nghiệm tốt hơn
@@ -40,7 +38,7 @@
                         <span style="color: #0288d1; font-size: 14px; font-weight: 700">Đồ ăn  </span>
                         <i class="bi bi-arrow-right"></i>
                     </div>
-                    <div class="col pl-2 pr-2" style="color: #464646; font-size: 14px; font-weight: 400">Chọn địa chỉ giao hàng</div>
+                    <div class="col pl-2 pr-2 home-precise-address" >Chọn địa chỉ giao hàng</div>
                     <div class="col-auto">
                         <span class="pl-2 pr-2"><i class="bi bi-chevron-right"></i></span>
                     </div>

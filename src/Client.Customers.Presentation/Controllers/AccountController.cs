@@ -39,7 +39,7 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers
 
                 if (roleClaim.IsNullOrEmpty())
                 {
-                    TempData["error"] = "Error(s) occurred!";
+                    TempData["error"] = "Đã xảy ra lỗi!";
 
                     return View(model);
                 }
@@ -50,22 +50,22 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers
 
                 if (roleClaim == "Customer")
                 {
-                    TempData["success"] = $"Hello {nameClaim}";
+                    TempData["success"] = $"Xin chào {nameClaim}";
 
                     return RedirectToAction("Index", "Home");
                 }
 
-                TempData["error"] = $"Invalid login response from server: {response.Message}";
+                TempData["error"] = $"Đã xảy ra lỗi: {response.Message}";
 
                 return View(model);
             }
-            if (response.Message.Contains("Username or password is incorrect!"))
+            if (response.Message.Contains("Tên đăng nhập hoặc mật khẩu không chính xác!"))
             {
                 TempData["error"] = response.Message;
             }
             else
             {
-                TempData["error"] = $"Invalid login response from server: {response.Message}";
+                TempData["error"] = $"Đã xảy ra lỗi: {response.Message}";
             }
 
             return View(model);
@@ -87,7 +87,7 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers
                 if (model.Role.ToString().IsNullOrEmpty())
                     model.Role = Role.Customer;
 
-                TempData["success"] = "Registering successfully!";
+                TempData["success"] = "Đăng ký tài khoản thành công!";
 
                 return RedirectToAction("Login", "Account");
             }
@@ -97,7 +97,7 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers
             return View(model);
         }
         
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

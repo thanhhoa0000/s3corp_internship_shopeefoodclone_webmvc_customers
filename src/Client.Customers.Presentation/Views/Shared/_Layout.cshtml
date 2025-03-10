@@ -22,12 +22,10 @@
                     <!-- Location Dropdown -->
                     <div class="dropdown">
                         <button id="location-dropdown-btn" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            TP. HCM
+                            Đang tải...
                         </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Hà Nội</a></li>
-                            <li><a class="dropdown-item" href="#">Đà Nẵng</a></li>
-                            <li><a class="dropdown-item" href="#">Cần Thơ</a></li>
+                        <ul class="dropdown-menu" id="location-dropdown">
+                            
                         </ul>
                     </div>
 
@@ -37,15 +35,15 @@
                     </button>
 
                     <!-- Navbar Content -->
-                    <div class="navbar-nav" id="navbarNav" style="padding-right: 200px;">
+                    <div class="navbar-nav" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item p-1"><a class="nav-link active" href="/">Đồ ăn</a></li>
-                            <li class="nav-item p-1"><a class="nav-link" href="/fresh">Thực phẩm</a></li>
-                            <li class="nav-item p-1"><a class="nav-link" href="/liquor">Rượu bia</a></li>
-                            <li class="nav-item p-1"><a class="nav-link" href="/flowers">Hoa</a></li>
-                            <li class="nav-item p-1"><a class="nav-link" href="/fmcg">Siêu thị</a></li>
-                            <li class="nav-item p-1"><a class="nav-link" href="/medicine">Thuốc</a></li>
-                            <li class="nav-item p-1"><a class="nav-link" href="/pets">Thú cưng</a></li>
+                            <li class="nav-item p-1"><a class="nav-link" href="/#">Thực phẩm</a></li>
+                            <li class="nav-item p-1"><a class="nav-link" href="/#">Rượu bia</a></li>
+                            <li class="nav-item p-1"><a class="nav-link" href="/#">Hoa</a></li>
+                            <li class="nav-item p-1"><a class="nav-link" href="/#">Siêu thị</a></li>
+                            <li class="nav-item p-1"><a class="nav-link" href="/#">Thuốc</a></li>
+                            <li class="nav-item p-1"><a class="nav-link" href="/#">Thú cưng</a></li>
                         </ul>
                     </div>
 
@@ -57,10 +55,24 @@
                         </button>
 
                         <!-- Login Button -->
-                        <a id="login-button" asp-controller="Account" asp-action="Login" class="btn btn-outline-orange" >Đăng nhập</a>
-
+                        @if (User.Identity is null || !User.Identity.IsAuthenticated)
+                        {
+                            <a id="login-button" asp-controller="Account" asp-action="Login" class="btn btn-outline-orange">Đăng nhập</a>
+                        }
+                        else
+                        {
+                            <div class="dropdown user-menu-dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" style="text-overflow: ellipsis;"><b>@User.Identity!.Name</b></button>
+                                <ul class="dropdown-menu">
+                                    <li class="user-menu-item"><a class="dropdown-item" href="#"><i class="bi bi-cart-fill"></i>  Giỏ hàng</a></li>
+                                    <li class="user-menu-item"><a class="dropdown-item" href="#"><i class="bi bi-clipboard-fill"></i>  Lịch sử đơn hàng</a></li>
+                                    <li class="user-menu-item"><a class="dropdown-item" href="#"><i class="bi bi-person-fill-gear"></i>  Cập nhật tài khoản</a></li>
+                                    <li class="user-menu-item"><a class="dropdown-item text-danger" asp-area="" asp-controller="Account" asp-action="Logout"><i class="bi bi-box-arrow-right"></i>  Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        }
                         <!-- Language Dropdown -->
-                        <div class="dropdown" style="margin-left: 150px">
+                        <div class="dropdown main-location-dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-translate"></i>
                             </button>
@@ -81,23 +93,23 @@
             </main>
         </div>
 
-    <footer class="main-footer py-4 border-top" style="width: 1296px">
+    <footer class="main-footer py-4 border-top">
         <div class="container mx-auto d-flex flex-column justify-content-center">
             <div class="row justify-content-center">
                 <div class="col-md-3">
                     <p class="title-block fw-bold">Công ty</p>
                     <ul class="list-unstyled">
-                        <li><a href="/gioi-thieu">Giới thiệu</a></li>
-                        <li><a href="https://help.shopeefood.vn/" target="_blank" rel="noopener noreferrer">Trung tâm Trợ giúp</a></li>
-                        <li><a href="/regulation-web">Quy chế</a></li>
-                        <li><a href="/terms-of-service">Điều khoản sử dụng</a></li>
-                        <li><a href="/security-policy">Bảo mật thông tin</a></li>
-                        <li><a href="/adjustment-of-claims">Giải quyết khiếu nại</a></li>
-                        <li><a href="/lien-he">Liên hệ</a></li>
-                        <li><a href="/tuyen-dung">Hợp tác nhân viên giao nhận</a></li>
-                        <li><a href="/merchant-register">Đăng ký quán</a></li>
-                        <li><a href="https://merchant.shopeefood.vn/edu/">ShopeeFood Uni</a></li>
-                        <li><a href="https://shopee.vn/blog/" target="_blank" rel="noopener noreferrer">Shopee Blog</a></li>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Trung tâm Trợ giúp</a></li>
+                        <li><a href="/#">Quy chế</a></li>
+                        <li><a href="/#">Điều khoản sử dụng</a></li>
+                        <li><a href="/#">Bảo mật thông tin</a></li>
+                        <li><a href="/#">Giải quyết khiếu nại</a></li>
+                        <li><a href="/#">Liên hệ</a></li>
+                        <li><a href="/#">Hợp tác nhân viên giao nhận</a></li>
+                        <li><a href="/#">Đăng ký quán</a></li>
+                        <li><a href="#">ShopeeFood Uni</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer">Shopee Blog</a></li>
                     </ul>
                 </div>
 
@@ -128,7 +140,7 @@
                     <p>Điện thoại: 028 7109 6879</p>
                     <p>Email: <a href="mailto:cskh@support.shopeefood.vn">cskh@support.shopeefood.vn</a></p>
                     <a href="http://online.gov.vn/HomePage/WebsiteDisplay.aspx?DocId=22747" target="_blank">
-                        <img src="~/images/license.jpg" alt="ĐÃ ĐĂNG KÝ BỘ CÔNG THƯƠNG" class="img-fluid mt-2" style="width: 50%; height: auto;">
+                        <img src="~/images/license.jpg" alt="ĐÃ ĐĂNG KÝ BỘ CÔNG THƯƠNG" class="ministry-of-industry-and-trade-badge img-fluid mt-2" >
                     </a>
                 </div>
             </div>
