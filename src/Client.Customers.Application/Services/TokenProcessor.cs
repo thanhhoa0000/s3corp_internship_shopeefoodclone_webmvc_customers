@@ -72,6 +72,8 @@ public class TokenProcessor : ITokenProcessor
         
         var response = await _client.SendAsync(request);
         
+        _logger.Debug(response.Content.ToString());
+        
         if (!response.IsSuccessStatusCode)
         {
             _logger.Error("Failed to refresh token. Status Code: {StatusCode}", response.StatusCode);
@@ -79,8 +81,19 @@ public class TokenProcessor : ITokenProcessor
         }
         
         var content = await response.Content.ReadAsStringAsync();
+        
+        _logger.Debug(content);
+        
+        var tokenResponse = new Response();
 
-        var loginResponse = JsonSerializer.Deserialize<LoginResponse>(content);
+        tokenResponse = JsonSerializer.Deserialize<Response>(
+            content,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        
+        LoginResponse loginResponse
+            = JsonSerializer.Deserialize<LoginResponse>(
+                Convert.ToString(tokenResponse.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         
         if (loginResponse == null || string.IsNullOrEmpty(loginResponse.AccessToken))
         {

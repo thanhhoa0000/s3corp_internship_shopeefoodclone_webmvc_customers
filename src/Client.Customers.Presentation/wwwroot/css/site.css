@@ -77,6 +77,7 @@ footer {
 
 #navbarNav {
   padding-right: 200px;
+  margin-left: -150px;
 }
 
 .main-location-dropdown {
@@ -92,20 +93,20 @@ footer {
 }
 
 .nav-link {
-  height: 100%;
   font-size: 14px;
   font-family: "Noto Sans", Arial, sans-serif;
-  font-weight: 400;
+  height: 50px;
+  margin-top: 20px;
 }
 
-.nav-link.active {
+.main-nav-item.active {
   border-bottom: 4px solid var(--primary-color);
   color: var(--primary-color) !important;
   font-weight: 700;
 }
 
 #logo-img {
-  margin-left: 120px;
+  margin-left: 110px;
   width: 153px;
   height: auto;
 }
@@ -120,9 +121,18 @@ footer {
   height: 40px;
 }
 
+.language-dropdown {
+  margin-left: -100px;
+}
+
+#location-dropdown {
+  margin-left: -160px;
+}
+
 #location-dropdown-btn {
   width: 130px;
   height: 41px;
+  margin-left: -160px;
 }
 
 .footer-title {
@@ -137,6 +147,11 @@ footer {
 
 footer {
   margin: auto;
+}
+
+footer div div div ul li a {
+  text-decoration: none;
+  color: #08f;
 }
 
 .footer-logo {
@@ -175,6 +190,10 @@ footer {
 
 .user-menu-item:not(:last-child) {
   border-bottom: 1px solid #ddd;
+}
+
+.home-footer-item {
+  padding-bottom: 10px;
 }
 
 .home-footer div p {
@@ -491,4 +510,15 @@ footer {
 
 .login-form-container {
   width: 600px;
+}
+
+.rotate {
+  transition: transform 0.5s ease-in-out;
+}
+.rotated {
+  transform: rotate(360deg);
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }

@@ -1,4 +1,4 @@
-﻿@model List<CategoryDto>
+﻿@model HomeViewModel
 @{
     ViewData["Title"] = "ShopeeFood | Nền tảng giao đồ ăn trực tuyến hàng đầu Việt Nam | shopeefood.vn";
 }
@@ -18,7 +18,7 @@
             </div>
             <div class="home-search-tags-section">
                 <a href="#" class="btn btn-outline-light">All</a>
-                @foreach (var category in Model)
+                @foreach (var category in Model.Categories!)
                 {
                     <a href="#" class="btn btn-outline-light">@category.Name</a>
                 }
@@ -51,61 +51,25 @@
                     <a class="col-auto" href="#">Xem tất cả</a>
                 </div>
                 <div class="home-promotion-lists row">
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
-                            </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
+                    @foreach (var store in Model.Stores)
+                    {
+                        <div class="store-item col-4">
+                            <a class="store-content" href="#">
+                                <div class="store-img">
+                                    <img alt="" src="~/images/store.jpg"/>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
-                            </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
+                                <div class="store-info">
+                                    <div class="store-basic-info">
+                                        <h4>@store.Name</h4>
+                                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
-                            </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
-                            </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    }
                 </div>
                 <div class="home-promotion-see-more">
-                    <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
+                    <a class="rotate-icon" href="javascript:void(0);">Xem thêm <i class="bi bi-arrow-clockwise rotate"></i></a>
                 </div>
             </div>
             <div class="home-promotion-section">

@@ -8,6 +8,7 @@ public static partial class ServicesConfiguration
         services.AddScoped<ITokenProcessor, TokenProcessor>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IStoreService, StoreService>();
         
         return services;
     }
@@ -17,6 +18,7 @@ public static partial class ServicesConfiguration
         services.AddHttpClient<ITokenProcessor, TokenProcessor>();
         services.AddHttpClient<IAccountService, AccountService>();
         services.AddHttpClient<ICategoryService, CategoryService>();
+        services.AddHttpClient<IStoreService, StoreService>();
         
         return services;
     }
