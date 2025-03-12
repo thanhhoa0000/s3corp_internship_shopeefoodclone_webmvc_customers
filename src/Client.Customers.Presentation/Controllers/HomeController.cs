@@ -3,26 +3,51 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers;
 public class HomeController : Controller
 {
     private readonly ICategoryService _categoryService;
+    private readonly IStoreService _storeService;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ICategoryService categoryService, ILogger<HomeController> logger)
+    public HomeController(ICategoryService categoryService, IStoreService storeService, ILogger<HomeController> logger)
     {
         _categoryService = categoryService;
+        _storeService = storeService;
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public IActionResult Index() => View(new HomeViewModel());
+    
+    [HttpPost]
+    public async Task<IActionResult> Index(string province, int pageSize = 9, int pageNumber = 1)
     {
         var categories = new List<CategoryDto>();
+        var stores = new List<StoreDto>();
         
-        Response? response = await _categoryService.GetAllAsync();
+        Response? categoriesResponse = await _categoryService.GetAllAsync();
         
-        if (response!.IsSuccessful)
+        if (categoriesResponse!.IsSuccessful)
             categories = JsonSerializer.Deserialize<List<CategoryDto>>(
-                Convert.ToString(response.Body)!,
+                JsonSerializer.Serialize(categoriesResponse.Body),
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         
-        return View(categories);
+        Response? storesResponse = await _storeService.GetStoresByLocationAsync(
+            request: new GetStoreByLocationRequest(Province: province, null, null),
+            pageSize: pageSize,
+            pageNumber: pageNumber);
+        
+        if (storesResponse!.IsSuccessful)
+            stores = JsonSerializer.Deserialize<List<StoreDto>>(
+                Convert.ToString(storesResponse.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+        var viewModel = new HomeViewModel()
+        {
+            Categories = categories,
+            Stores = stores,
+        };
+        
+        _logger.LogDebug(viewModel.Stores.Count().ToString());
+        
+        return View(viewModel);
     }
 
     public IActionResult Privacy()
