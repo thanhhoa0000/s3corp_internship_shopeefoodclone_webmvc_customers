@@ -10,8 +10,9 @@ function updateSearchSection() {
     if (hasEnoughSpacing()) {
         if (mainSection.getBoundingClientRect().bottom <= window.innerHeight) {
             console.log("Scrolled to bottom!");
+            const newSearchDistance = mainSection.getBoundingClientRect().bottom - 375 + "px";
             searchSection.style.setProperty("position", "relative", "important");
-            searchSection.style.setProperty("top", "830px", "important");
+            searchSection.style.setProperty("top", newSearchDistance, "important");
             searchSection.style.setProperty("left", "10px", "important");
         } else {
             console.log("Scrolling...");

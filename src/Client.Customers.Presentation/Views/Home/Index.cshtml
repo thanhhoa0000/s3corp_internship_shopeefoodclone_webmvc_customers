@@ -7,8 +7,8 @@
     <div class="container search-container col">
         <div class="home-search-section col-4">
             <div>
-                <h1 class="home-search-title">Đặt Đồ ăn, giao hàng từ 20'...</h1>
-                <div class="home-search-local">có 88573 địa điểm ở TP. HCM từ 00:00 - 23:59</div>
+                <h1 class="home-search-title">Đặt @Model.CategoryName, giao hàng từ 20'...</h1>
+                <div class="home-search-local">có @Model.StoresCount địa điểm ở TP. HCM từ 00:00 - 23:59</div>
             </div>
             <div class="home-search-form">
                 <div class="home-search-input d-flex row">
@@ -18,7 +18,7 @@
             </div>
             <div class="home-search-tags-section">
                 <a href="#" class="btn btn-outline-light">All</a>
-                @foreach (var category in Model.Categories!)
+                @foreach (var category in Model.SubCategories!)
                 {
                     <a href="#" class="btn btn-outline-light">@category.Name</a>
                 }
@@ -275,78 +275,15 @@
 <div class="home-footer py-4 border-top">
     <div class="container mx-auto d-flex flex-column justify-content-center">
         <p>DANH MỤC</p>
-        <div class="row justify-content-center">
-            <div class="col-md-3">
+        <div class="row justify-content-center footer-main-content">
+            @foreach (var category in @Model.Categories){
                 <div class="home-footer-item">
-                    <a href="#">THUỐC</a>
+                    <a class="home-footer-item-title" code-name="@category.CodeName" href="#">@category.Name</a>
                     <ul class="home-footer-item-list">
-                        <a href="#">Hoá mỹ phẩm</a>
-                        <a href="#">BCS</a>
-                        <a href="#">Thiết bị</a>
-                        <a href="#">Vitamins</a>
-                        <a href="#">Thuốc tây</a>
-                        <a href="#">Khẩu trang</a>
-                        <a href="#">Khẩn cấp</a>
+                        
                     </ul>
                 </div>
-                <div class="home-footer-item">
-                    <a href="#">THUỐC</a>
-                    <ul class="home-footer-item-list">
-                        <a href="#">Hoá mỹ phẩm</a>
-                        <a href="#">BCS</a>
-                        <a href="#">Thiết bị</a>
-                        <a href="#">Vitamins</a>
-                        <a href="#">Thuốc tây</a>
-                        <a href="#">Khẩu trang</a>
-                        <a href="#">Khẩn cấp</a>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="home-footer-item">
-                    <a href="#">THUỐC</a>
-                    <ul class="home-footer-item-list">
-                        <a href="#">Hoá mỹ phẩm</a>
-                        <a href="#">BCS</a>
-                        <a href="#">Thiết bị</a>
-                        <a href="#">Vitamins</a>
-                        <a href="#">Thuốc tây</a>
-                        <a href="#">Khẩu trang</a>
-                        <a href="#">Khẩn cấp</a>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="home-footer-item">
-                    <a href="#">THUỐC</a>
-                </div>
-                <div class="home-footer-item">
-                    <a href="#">THUỐC</a>
-                    <ul class="home-footer-item-list">
-                        <a href="#">Hoá mỹ phẩm</a>
-                        <a href="#">BCS</a>
-                        <a href="#">Thiết bị</a>
-                        <a href="#">Vitamins</a>
-                        <a href="#">Thuốc tây</a>
-                        <a href="#">Khẩu trang</a>
-                        <a href="#">Khẩn cấp</a>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="home-footer-item">
-                    <a href="#">THUỐC</a>
-                    <ul class="home-footer-item-list">
-                        <a href="#">Hoá mỹ phẩm</a>
-                        <a href="#">BCS</a>
-                        <a href="#">Thiết bị</a>
-                        <a href="#">Vitamins</a>
-                        <a href="#">Thuốc tây</a>
-                        <a href="#">Khẩu trang</a>
-                        <a href="#">Khẩn cấp</a>
-                    </ul>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </div>

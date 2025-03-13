@@ -18,4 +18,3 @@ global using ShopeeFoodClone.WebMvc.Customers.Application.Configurations;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Dtos;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Dtos.Enums;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Interfaces;
-global using ShopeeFoodClone.WebMvc.Customers.Application.Services;

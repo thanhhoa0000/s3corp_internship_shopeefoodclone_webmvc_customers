@@ -89,7 +89,13 @@ footer {
 }
 
 .location-item {
-  width: 215px;
+  width: 230px;
+}
+
+.location-item a {
+  font-size: 14px;
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: rgb(24, 24, 24);
 }
 
 .nav-link {
@@ -123,6 +129,12 @@ footer {
 
 .language-dropdown {
   margin-left: -100px;
+}
+
+.language-dropdown li a {
+  font-size: 14px;
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: rgb(24, 24, 24);
 }
 
 #location-dropdown {

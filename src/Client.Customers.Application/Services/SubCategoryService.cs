@@ -1,29 +1,29 @@
 ﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Services;
 
-public class CategoryService : ICategoryService
+public class SubCategoryService : ISubCategoryService
 {
     private readonly IBaseService _service;
 
-    public CategoryService(IBaseService service)
+    public SubCategoryService(IBaseService service)
     {
         _service = service;
     }
 
-    public async Task<Response?> GetAllAsync()
+    public async Task<Response?> GetAllByCategoryIdAsync(Guid cateId)
     {
         return await _service.SendAsync(new Request()
         {
             ApiMethod = ApiMethod.Get,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories"
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories/{cateId}/sub-categories",
         }, bearer: false);
     }
-
-    public async Task<Response?> GetByCodeNameAsync(string name)
+    
+    public async Task<Response?> GetAllByCategoryNameAsync(string cateName)
     {
         return await _service.SendAsync(new Request()
         {
             ApiMethod = ApiMethod.Get,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories/{name}"
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories/{cateName}/sub-categories",
         }, bearer: false);
     }
 }

@@ -43,9 +43,12 @@
 });
 
 function getStores(province) {
+    const activeLink = document.querySelector(".main-nav-item.active");
+    var cateName = activeLink.getAttribute("code-name");
+    
     $.ajax({
         type: 'POST',
-        url: `/Home/Index?province=${encodeURIComponent(province)}`,
+        url: `/Home/Index?province=${encodeURIComponent(province)}&categoryName=${encodeURIComponent(cateName)}`,
         success: function (response) {
             var tempDom = $('<div></div>').html(response);
             var newContent = tempDom.find('.home-main-section').html();
@@ -70,6 +73,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const cateSections = document.querySelectorAll(".home-footer-item");
+    
+    cateSections.forEach(section => {
+        const title = section.querySelector(".home-footer-item-title");
+        const codeName = title.getAttribute("code-name");
+        
+        $.ajax({
+            type: 'GET',
+            url: `https://localhost:5001/categories/${codeName}/sub-categories`,
+            success: function (response) {
+                const itemList = $(section).find(".home-footer-item-list");
+                itemList.empty();
+                
+                var subCategories = response.body;
+
+                subCategories.forEach(function (subCategory) {
+                    itemList.append(`<a href="#">${subCategory.name}</a>`)
+                })
+            },
+            error: function () {
+                console.error("Failed to fetch sub-categories.");
+            }
+        })
+    })
+})
+
 function toSnakeCase(str) {
     return str
         .normalize("NFD")
@@ -77,6 +107,33 @@ function toSnakeCase(str) {
         .toLowerCase()
         .replace(/\s+/g, '_');
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const homeFooterItems = Array.from(document.querySelectorAll(".home-footer-item"));
+    const totalItems = homeFooterItems.length;
+    const columns = 4;
+    const perColumn = Math.floor(totalItems / columns);
+    const remainder = totalItems % columns;
+
+    // Create new column containers
+    const footerContainer = document.querySelector(".footer-main-content");
+    footerContainer.innerHTML = "";
+
+    let startIndex = 0;
+    for (let i = 0; i < columns; i++) {
+        let itemCount = perColumn + (i < remainder ? 1 : 0);
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-3");
+
+        for (let j = 0; j < itemCount; j++) {
+            colDiv.appendChild(homeFooterItems[startIndex]);
+            startIndex++;
+        }
+
+        footerContainer.appendChild(colDiv);
+    }
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
     let angle = 0;
