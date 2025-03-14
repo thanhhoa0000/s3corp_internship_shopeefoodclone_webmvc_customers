@@ -17,7 +17,9 @@ public class StoreDto
     public TimeOnly ClosingHour { get; set; }
     public string? CoverImagePath { get; set; }
     public double Rating { get; set; } = 0.0;
+    public int Sold { get; set; } = 0;
+    public bool IsPromoted { get; set; } = false;
     
     public WardDto? Ward { get; set; }
-    public ICollection<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
+    public ICollection<SubCategoryDto> SubCategories { get; set; } = new List<SubCategoryDto>();
 }

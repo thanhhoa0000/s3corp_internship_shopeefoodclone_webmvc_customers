@@ -12,4 +12,5 @@ public class SubCategoryDto
     public Guid ConcurrencyStamp { get; set; }
     
     public CategoryDto? Category { get; set; }
+    public ICollection<StoreDto> Stores { get; set; } = new List<StoreDto>();
 }

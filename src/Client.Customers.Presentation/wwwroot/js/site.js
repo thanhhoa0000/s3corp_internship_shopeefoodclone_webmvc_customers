@@ -42,22 +42,82 @@
     });
 });
 
+$(document).ready(function () {
+    $.ajax({
+        url: 'https://localhost:5001/districts',
+        type: 'GET',
+        success: function (response) {
+            if (!response.isSuccessful || !response.body) {
+                console.error("Invalid API response");
+                return;
+            }
+
+            var dropdown = $('#district-dropdown');
+            dropdown.empty();
+
+            var locations = response.body;
+
+            var selectedLocation = localStorage.getItem("selectedLocation");
+            $('#district-dropdown-btn').text(selectedLocation);
+
+            locations.forEach(function (location) {
+                dropdown.append(`<li class="district-item"><a class="dropdown-item" onclick="" data-location="${location.name}">${location.name}</a></li>`);
+            });
+
+            $('.dropdown-item').click(function () {
+                var selectedLocation = $(this).data('location');
+                $('#location-dropdown-btn').text(selectedLocation);
+
+                localStorage.setItem("selectedLocation", selectedLocation);
+            });
+
+            setTimeout(function () {
+                $('.dropdown-item').each(function () {
+                    if ($(this).data('location') === selectedLocation) {
+                        $(this).trigger('click');
+                        console.log("clicked!");
+                    }
+                });
+            }, 100);
+        },
+        error: function () {
+            console.error("Failed to fetch locations.");
+        }
+    });
+});
+
 function getStores(province) {
-    const activeLink = document.querySelector(".main-nav-item.active");
-    var cateName = activeLink.getAttribute("code-name");
+    const activeCate = document.querySelector('.main-nav-item.active').getAttribute('code-name');
     
     $.ajax({
         type: 'POST',
-        url: `/Home/Index?province=${encodeURIComponent(province)}&categoryName=${encodeURIComponent(cateName)}`,
+        url: `/Home/Index?province=${encodeURIComponent(province)}&categoryName=${activeCate}`,
         success: function (response) {
             var tempDom = $('<div></div>').html(response);
             var newContent = tempDom.find('.home-main-section').html();
             $('.home-main-section').html(newContent);
-            console.log(province);
-            console.log(newContent);
+            console.log(response);
         },
         error: function () {
             console.error("Failed to fetch stores.");
+        }
+    });
+}
+
+function getSubCategories(cateName) {
+    const currentLocation = toSnakeCase(document.getElementById("location-dropdown-btn").textContent);
+    $.ajax({
+        type: 'POST',
+        url: `/Home/Index?province=${currentLocation}&categoryName=${encodeURIComponent(cateName)}`,
+        success: function (response) {
+            var tempDom = $('<div></div>').html(response);
+            var newSearchSection = tempDom.find('.search-container').html();
+            var newAddressSection = tempDom.find('.home-vertical-list-section').html();
+            $('.search-container').html(newSearchSection);
+            $('.home-vertical-list-section').html(newAddressSection);
+        },
+        error: function () {
+            console.error("Failed to fetch sub-categories.");
         }
     });
 }
@@ -114,8 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const columns = 4;
     const perColumn = Math.floor(totalItems / columns);
     const remainder = totalItems % columns;
-
-    // Create new column containers
+    
     const footerContainer = document.querySelector(".footer-main-content");
     footerContainer.innerHTML = "";
 
@@ -134,11 +193,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
     let angle = 0;
     document.querySelector(".rotate-icon").addEventListener("click", function () {
-        angle += 360;  // Increase angle on every click
+        angle += 360;
         this.querySelector("i").style.transform = `rotate(${angle}deg)`;
     });
 });
+
+window.onload = function () {
+    if (!sessionStorage.getItem("foodClicked")) {
+        document.querySelector('.nav-link[code-name="food"]').click();
+        sessionStorage.setItem("foodClicked", "true");
+    }
+};

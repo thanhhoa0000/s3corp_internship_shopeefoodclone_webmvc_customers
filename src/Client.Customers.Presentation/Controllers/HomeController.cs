@@ -42,16 +42,12 @@ public class HomeController : Controller
         var subCategories = new List<SubCategoryDto>();
         var stores = new List<StoreDto>();
         
-        _logger.LogDebug(categoryName);
-        
         Response? subCategoriesResponse = await _subCategoryService.GetAllByCategoryNameAsync(categoryName);
         
         if (subCategoriesResponse!.IsSuccessful)
             subCategories = JsonSerializer.Deserialize<List<SubCategoryDto>>(
                 JsonSerializer.Serialize(subCategoriesResponse.Body),
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-        
-        _logger.LogDebug(subCategoriesResponse.Body!.ToString());
         
         Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
             request: new GetStoreRequest(
