@@ -93,14 +93,45 @@ footer {
   width: 230px;
 }
 
-.district-item {
-  width: 110px;
+.district-item, .district-item a {
+  width: 150px;
 }
 
 .location-item a, .district-item a {
   font-size: 14px;
   font-family: "Noto Sans", Arial, sans-serif;
-  color: rgb(24, 24, 24);
+  color: #181818 !important;
+  
+}
+
+.shipper-sorry-section {
+  margin-top: 10px;
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+
+.shipper-sorry-section img {
+  width: 200px;
+  height: 190px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.shipper-sorry-section h3 {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.shipper-sorry-section p {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(109, 111, 113);
+  text-align: center;
 }
 
 .nav-link {
@@ -144,6 +175,8 @@ footer {
 
 #location-dropdown {
   margin-left: -160px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 #location-dropdown-btn {
@@ -153,6 +186,12 @@ footer {
   align-items: center;
   justify-content: center;
   margin-left: -160px;
+}
+
+#district-dropdown {
+  height: 300px;
+  overflow-y: auto;
+  position: absolute;
 }
 
 #district-dropdown-btn {

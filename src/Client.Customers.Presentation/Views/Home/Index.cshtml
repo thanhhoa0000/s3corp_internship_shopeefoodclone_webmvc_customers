@@ -45,34 +45,39 @@
                 </div>
             </div>
             
-            <div class="home-promotion-section">
-                <div class="home-promotion-title row">
-                    <h2 class="col-auto">Ưu đãi</h2>
-                    <a class="col-auto" href="#">Xem tất cả</a>
-                </div>
-                <div class="home-promotion-lists row">
-                    @foreach (var store in Model.Stores)
-                    {
-                        <div class="store-item col-4">
-                            <a class="store-content" href="#">
-                                <div class="store-img">
-                                    <img class="img-fluid" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
-                                </div>
-                                <div class="store-info">
-                                    <div class="store-basic-info">
-                                        <h4>@store.Name</h4>
-                                        <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.FullName</div>
+            @if (Model.Stores.Any())
+            {
+                <div class="home-promotion-section">
+                    <div class="home-promotion-title row">
+                        <h2 class="col-auto">Ưu đãi</h2>
+                        <a class="col-auto" href="#">Xem tất cả</a>
+                    </div>
+                    <div class="home-promotion-lists row">
+
+                        @foreach (var store in Model.Stores)
+                        {
+                            <div class="store-item col-4">
+                                <a class="store-content" href="#">
+                                    <div class="store-img">
+                                        <img class="img-fluid" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                    }
+                                    <div class="store-info">
+                                        <div class="store-basic-info">
+                                            <h4>@store.Name</h4>
+                                            <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.FullName</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="home-promotion-see-more">
+                        <a class="rotate-icon" href="javascript:void(0);">Xem thêm <i class="bi bi-arrow-clockwise rotate"></i></a>
+                    </div>
                 </div>
-                <div class="home-promotion-see-more">
-                    <a class="rotate-icon" href="javascript:void(0);">Xem thêm <i class="bi bi-arrow-clockwise rotate"></i></a>
-                </div>
-            </div>
-            
+            }
+
             <div class="home-collection-section">
                 <div class="home-collection-title row">
                     <h2 class="col-auto">Ưu đãi</h2>
@@ -145,31 +150,44 @@
                             Chọn quận/huyện
                         </button>
                         <ul class="dropdown-menu" id="district-dropdown">
-
+                            
                         </ul>
                     </div>
                 </div>
-                <div class="home-stores-list">
-                    @foreach (var store in Model.Stores)
+               
+                    @if (Model.Stores.Any())
                     {
-                        <div class="home-store-item row">
-                            <div class="home-store-content">
-                                <div class="home-store-img">
-                                    <img class="img-fluid" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
-                                </div>
-                                <div class="home-store-info">
-                                    <div class="home-store-basic-info">
-                                        <h4>@store.Name</h4>
-                                        <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
+                        <div class="home-stores-list">
+                            @foreach (var store in Model.Stores)
+                            {
+                                <div class="home-store-item row">
+                                    <div class="home-store-content">
+                                        <div class="home-store-img">
+                                            <img class="img-fluid" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
+                                        </div>
+                                        <div class="home-store-info">
+                                            <div class="home-store-basic-info">
+                                                <h4>@store.Name</h4>
+                                                <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                        </div>
+                        <div class="home-stores-see-more">
+                            <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
                         </div>
                     }
-                </div>
-                <div class="home-stores-see-more">
-                    <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
-                </div>
+                    else
+                    {
+                        <div class="shipper-sorry-section justify-content-center align-items-center">
+                            <img alt="" src="~/images/shippersorry.png"/>
+
+                            <h3>Không có dữ liệu</h3>
+                            <p>Tìm thực đơn và địa điểm cho đơn hàng. Chúng tôi sẵn sàng phục vụ bạn</p>
+                        </div>
+                    }
             </div>
         </div>
     </div>
