@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Covert string to snake cake (E.g. Hồ Chí Minh -> ho_chi_minh)
+// Convert string to snake cake (E.g. Hồ Chí Minh -> ho_chi_minh)
 function toSnakeCase(str) {
     return str
         .normalize("NFD")

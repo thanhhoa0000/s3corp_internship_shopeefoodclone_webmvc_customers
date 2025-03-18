@@ -45,7 +45,7 @@
                 </div>
             </div>
             
-            @if (Model.Stores.Any())
+            @if (Model.Stores.Any(store => store.IsPromoted))
             {
                 <div class="home-promotion-section">
                     <div class="home-promotion-title row">
@@ -54,7 +54,7 @@
                     </div>
                     <div class="home-promotion-lists row">
 
-                        @foreach (var store in Model.Stores)
+                        @foreach (var store in Model.Stores.Where(store => store.IsPromoted))
                         {
                             <div class="store-item col-4">
                                 <a class="store-content" href="#">
@@ -78,70 +78,37 @@
                 </div>
             }
 
-            <div class="home-collection-section">
-                <div class="home-collection-title row">
-                    <h2 class="col-auto">Ưu đãi</h2>
-                    <a class="col-auto" href="#">Xem tất cả</a>
-                </div>
-                <div class="home-collection-lists row">
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
-                            </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
-                                </div>
-                            </div>
-                        </a>
+            @if (Model.Collections.Any())
+            {
+                <div class="home-collection-section">
+                    <div class="home-collection-title row">
+                        <h2 class="col-auto">Ưu đãi</h2>
+                        <a class="col-auto" href="#">Xem tất cả</a>
                     </div>
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
+                    <div class="home-collection-lists row">
+                        @foreach (var collection in Model.Collections)
+                        {
+                            <div class="collection-item col-4">
+                                <a class="collection-content" href="#">
+                                    <div class="collection-img">
+                                        <img class="img-fluid" alt="" src="@Url.Content($"~/images{collection.CoverImagePath}")"/>
+                                    </div>
+                                    <div class="collection-info">
+                                        <div class="collection-basic-info">
+                                            <h4>@collection.Name</h4>
+                                            <div>@collection.Stores.Count địa điểm</div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
-                                </div>
-                            </div>
-                        </a>
+                        }
                     </div>
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
-                            </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="store-item col-4">
-                        <a class="store-content" href="#">
-                            <div class="store-img">
-                                <img alt="" src="~/images/store.jpg" />
-                            </div>
-                            <div class="store-info">
-                                <div class="store-basic-info">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</h4>
-                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac pellentesque turpis. Aliquam lobortis quis eros non congue.</div>
-                                </div>
-                            </div>
-                        </a>
+                    <div class="home-collection-see-more">
+                        <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
                     </div>
                 </div>
-                <div class="home-collection-see-more">
-                    <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
-                </div>
-            </div>
-            
+            }
+
             <div class="home-stores-section">
                 <div class="home-stores-title row">
                     <h2 class="col-auto">Danh sách cửa hàng</h2>

@@ -17,7 +17,22 @@ $(document).ready(function () {
             $('#location-dropdown-btn').text(selectedLocation);
 
             locations.forEach(function (location) {
-                dropdown.append(`<li class="location-item"><a class="dropdown-item" onclick="getStores('${toSnakeCase(location.name)}')" data-location="${location.name}">${location.name}</a></li>`);
+                var province = toSnakeCase(location.name);
+
+                var listItem = $(`
+                    <li class="location-item row">
+                        <a class="dropdown-item col" onclick="getStores('${province}')" data-location="${location.name}">${location.name}</a>
+                        <span class="col">Loading...</span> 
+                    </li>
+                `);
+
+                dropdown.append(listItem);
+                
+                getStoresCountByProvince(province).done(function (count) {
+                    listItem.find('span').text(`${count} địa điểm`);
+                }).fail(function () {
+                    listItem.find('span').text(`0 địa điểm`);
+                });
             });
 
             $('.dropdown-item').click(function () {
@@ -41,3 +56,24 @@ $(document).ready(function () {
         }
     });
 });
+
+function getStoresCountByProvince(province) {
+    return $.ajax({
+        url: `https://localhost:5001/stores/${province}`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            locationRequest: { province: province }
+        }),
+        dataType: 'json'
+    }).then(function (response) {
+        if (!response.isSuccessful || !response.body) {
+            console.error("Invalid API response");
+            return 0;
+        }
+        return response.body.length;
+    }).catch(function (error) {
+        console.error("Request failed:", error);
+        return 0;
+    });
+}
