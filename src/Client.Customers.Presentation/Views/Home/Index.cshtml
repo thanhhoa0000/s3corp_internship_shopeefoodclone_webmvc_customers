@@ -8,7 +8,7 @@
         <div class="home-search-section col-4">
             <div>
                 <h1 class="home-search-title">Đặt @Model.CategoryName, giao hàng từ 20'...</h1>
-                <div class="home-search-local">có @Model.StoresCount địa điểm ở TP. HCM từ 00:00 - 23:59</div>
+                <div class="home-search-local">có @Model.StoresCount địa điểm ở <span id="home-search-location-placeholder"></span> từ 00:00 - 23:59</div>
             </div>
             <div class="home-search-form">
                 <div class="home-search-input d-flex row">
@@ -50,7 +50,7 @@
                 <div class="home-promotion-section">
                     <div class="home-promotion-title row">
                         <h2 class="col-auto">Ưu đãi</h2>
-                        <a class="col-auto" href="#">Xem tất cả</a>
+                        <a class="col-auto" asp-controller="Store" asp-action="Index">Xem tất cả</a>
                     </div>
                     <div class="home-promotion-lists row">
 
@@ -121,7 +121,7 @@
                         </ul>
                     </div>
                 </div>
-               
+                <div class="home-stores-main">
                     @if (Model.Stores.Any())
                     {
                         <div class="home-stores-list">
@@ -155,6 +155,7 @@
                             <p>Tìm thực đơn và địa điểm cho đơn hàng. Chúng tôi sẵn sàng phục vụ bạn</p>
                         </div>
                     }
+                </div>
             </div>
         </div>
     </div>
@@ -245,3 +246,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script src="~/js/home-section-scroll.js" asp-append-version="true"></script>
+    <script src="~/js/show-home-footer.js" asp-append-version="true"></script>
+}

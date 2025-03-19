@@ -12,7 +12,7 @@ function getDistricts(province) {
             dropdown.empty();
 
             response.body.forEach(function (district) {
-                var districtItem = `<li class="district-item"><a class="dropdown-item" onclick="getStoresByDistrict('${province}', toSnakeCase('${district.name}'))" data-district="${district.name}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</a></li>`;
+                var districtItem = `<li class="district-item"><a class="dropdown-item" onclick="getStoresByDistrict('${province}', '${district.code}');" data-district="${district.name}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</a></li>`;
                 dropdown.append(districtItem);
             });
 

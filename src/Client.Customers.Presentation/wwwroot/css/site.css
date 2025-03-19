@@ -101,24 +101,18 @@ footer {
   width: 167px;
 }
 
-.location-item span {
+.location-item a span {
   text-align: right;
   font-family: 'Noto Sans', Arial, sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  color: #9fa9aa;
-  padding-top: 6px;
-}
-
-.location-item a {
-  margin-left: 10px;
+  font-size: 12px !important;
+  color: #9fa9aa !important;
 }
 
 .location-item a, .district-item a {
   font-size: 14px;
   font-family: "Noto Sans", Arial, sans-serif;
   color: #181818 !important;
-  margin-right: 5px;
   padding-top: 6px;
 }
 
@@ -736,4 +730,26 @@ footer div div div ul li a {
   height: 40px;
   font-size: 20px;
   transition: opacity 0.3s ease;
+}
+
+.store-section-title {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 25px;  
+  color: rgb(37, 37, 37);
+  padding-top: 45px;
+  padding-bottom: 60px;
+}
+
+#store-district-dropdown-btn {
+  margin-left: 10px;
+}
+
+.store-section-options span {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  text-align: right;
+  padding-top: 20px;
+  margin-right: 10px;
 }

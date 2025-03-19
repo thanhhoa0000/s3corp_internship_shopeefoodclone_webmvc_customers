@@ -17,27 +17,28 @@ $(document).ready(function () {
             $('#location-dropdown-btn').text(selectedLocation);
 
             locations.forEach(function (location) {
-                var province = toSnakeCase(location.name);
-
                 var listItem = $(`
-                    <li class="location-item row">
-                        <a class="dropdown-item col" onclick="getStores('${province}')" data-location="${location.name}">${location.name}</a>
-                        <span class="col">Loading...</span> 
+                    <li class="location-item">
+                        <a class="dropdown-item d-flex justify-content-between" onclick="getStores('${location.code}', '${location.name}')" data-location="${location.name}" province-code="${location.code}">${location.name} <span class="col">Loading...</span></a>
                     </li>
                 `);
 
                 dropdown.append(listItem);
                 
-                getStoresCountByProvince(province).done(function (count) {
-                    listItem.find('span').text(`${count} địa điểm`);
+                getStoresCountByProvince(location.code).done(function (count) {
+                    listItem.find('a span').text(`${count} địa điểm`);
                 }).fail(function () {
-                    listItem.find('span').text(`0 địa điểm`);
+                    listItem.find('a span').text(`0 địa điểm`);
                 });
             });
 
             $('.dropdown-item').click(function () {
                 var selectedLocation = $(this).data('location');
-                $('#location-dropdown-btn').text(selectedLocation);
+                var provinceCode = $(this).attr('province-code');
+                var dropdownBtn = $('#location-dropdown-btn');
+
+                dropdownBtn.text(selectedLocation);
+                dropdownBtn.attr('province-code', provinceCode);
 
                 localStorage.setItem("selectedLocation", selectedLocation);
             });
@@ -46,7 +47,6 @@ $(document).ready(function () {
                 $('.dropdown-item').each(function () {
                     if ($(this).data('location') === selectedLocation) {
                         $(this).trigger('click');
-                        getDistricts(toSnakeCase($(this).data('location')));
                     }
                 });
             }, 100);
@@ -59,7 +59,7 @@ $(document).ready(function () {
 
 function getStoresCountByProvince(province) {
     return $.ajax({
-        url: `https://localhost:5001/stores/${province}`,
+        url: `https://localhost:5001/stores/location/${province}`,
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({

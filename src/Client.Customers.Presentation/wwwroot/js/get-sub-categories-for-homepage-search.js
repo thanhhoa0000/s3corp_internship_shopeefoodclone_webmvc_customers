@@ -1,5 +1,5 @@
 function getSubCategories(cateName) {
-    const currentLocation = toSnakeCase(document.getElementById("location-dropdown-btn").textContent);
+    const currentLocation = document.getElementById("location-dropdown-btn").getAttribute("province-code");
     $.ajax({
         type: 'POST',
         url: `/Home/Index?province=${currentLocation}&categoryName=${encodeURIComponent(cateName)}`,

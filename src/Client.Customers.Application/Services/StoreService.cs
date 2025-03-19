@@ -15,7 +15,7 @@ public class StoreService : IStoreService
         {
             ApiMethod = ApiMethod.Post,
             Body = request,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/{request.Province}?pageSize={pageSize}&pageNumber={pageNumber}"
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/location/{request.Province}?pageSize={pageSize}&pageNumber={pageNumber}"
         });
     }
     
@@ -25,7 +25,7 @@ public class StoreService : IStoreService
         {
             ApiMethod = ApiMethod.Post,
             Body = request,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/{request.LocationRequest.Province}/{request.CategoryName}?pageSize={pageSize}&pageNumber={pageNumber}"
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/location/{request.LocationRequest.Province}/category/{request.CategoryName}?pageSize={pageSize}&pageNumber={pageNumber}"
         });
     }
 }

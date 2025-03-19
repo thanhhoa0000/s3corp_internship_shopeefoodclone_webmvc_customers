@@ -1,14 +1,16 @@
-function getStores(province) {
+function getStores(province, provinceName) {
     const activeCate = document.querySelector('.main-nav-item.active')?.getAttribute('code-name');
 
     $.ajax({
         type: 'POST',
-        url: `/Home/Index?province=${encodeURIComponent(province)}&categoryName=${activeCate}`,
+        url: `/Home/Index?province=${province}&categoryName=${activeCate}`,
         success: function (response) {
-            getDistricts(province)
+            getDistricts(province);
             var tempDom = $('<div></div>').html(response);
             var newMainSection = tempDom.find('.home-main-section').html();
-            $('.home-main-section').html(newMainSection);
+            var homeMainSection = $('.home-main-section')
+            homeMainSection.html(newMainSection);
+            homeMainSection.find('#home-search-location-placeholder').text(provinceName)
         },
         error: function () {
             console.error("Failed to fetch stores.");
