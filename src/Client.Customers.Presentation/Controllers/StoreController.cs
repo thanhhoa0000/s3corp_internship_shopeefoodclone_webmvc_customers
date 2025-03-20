@@ -14,8 +14,29 @@ public class StoreController : Controller
     }
     
     [HttpGet]
-    public ActionResult Index()
+    public async Task<ActionResult> Index(string province, string categoryName, int pageSize = 30, int pageNumber = 1)
     {
-        return View();
+        var stores = new List<StoreDto>();
+        
+        Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
+            request: new GetStoresRequest
+            {
+                LocationRequest = new LocationRequest { Province = province },
+                CategoryName = categoryName,
+                PageSize = pageSize,
+                PageNumber = pageNumber
+            });
+        
+        if (storesResponse!.IsSuccessful)
+            stores = JsonSerializer.Deserialize<List<StoreDto>>(
+                Convert.ToString(storesResponse.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+        var viewModel = new StorePromotionsViewModel
+        {
+            Stores = stores,
+        };
+        
+        return View(viewModel);
     }
 }

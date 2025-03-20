@@ -67,6 +67,23 @@ footer {
   border-color: var(--primary-color);
 }
 
+.btn-orange {
+  color: white;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  transition: 0.3s;
+  font-size: 14px;
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-weight: 400;
+}
+
+.btn-orange:hover {
+  background-color: #d66a00;
+  border-color: #d66a00;
+  color: white;
+}
+
+
 #login-button {
   width: 99px;
   height: 37px;
@@ -554,7 +571,7 @@ footer div div div ul li a {
   text-decoration: none;
 }
 
-.store-item, .collection-item {
+.store-item, .collection-item, .store-section-store-item {
   padding: 8px;
 }
 
@@ -571,16 +588,22 @@ footer div div div ul li a {
   overflow: hidden;
 }
 
+.store-section-store-content-img {
+  height: 137px;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #d7d7d7;
+  overflow: hidden;
+}
+
 .collection-img img {
   height: 100%;
   width: 100%;
   border-radius: 6px;
 }
 
-.store-img img {
+.store-img img, .store-section-store-content-img img {
   height: 100%;
   width: 100%;
-  position: absolute;
 }
 
 .home-store-img {
@@ -599,7 +622,7 @@ footer div div div ul li a {
   display: block;
 }
 
-.store-content {
+.store-content, .store-section-store-content {
   border-radius: 6px;
   text-decoration: none;
 }
@@ -651,7 +674,7 @@ footer div div div ul li a {
   padding-bottom: 12px;
 }
 
-.store-basic-info {
+.store-basic-info, .store-section-store-content-basic-info {
   padding-left: 10px;
   padding-right: 10px;
   border: 1px solid #d7d7d7;
@@ -666,7 +689,7 @@ footer div div div ul li a {
   transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
-.store-item:hover .store-basic-info {
+.store-item:hover .store-basic-info, .store-section-store-item:hover .store-section-store-content-basic-info {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-color: #b5b5b5;
 }
@@ -682,7 +705,7 @@ footer div div div ul li a {
 }
 
 
-.store-basic-info h4, .collection-basic-info h4 {
+.store-basic-info h4, .collection-basic-info h4, .store-section-store-content-basic-info h4 {
   font-size: 14px;
   font-weight: 700;
   color: #252525;
@@ -693,7 +716,7 @@ footer div div div ul li a {
   padding-top: 8px;
 }
 
-.store-basic-info div {
+.store-basic-info div, .store-section-store-content-basic-info div {
   font-size: 12px;
   font-weight: 400;
   color: #959595;
@@ -745,6 +768,15 @@ footer div div div ul li a {
   margin-left: 10px;
 }
 
+#store-district-dropdown .row {
+  width: 840px;
+  height: 180px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .store-section-options span {
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 13px;
@@ -752,4 +784,9 @@ footer div div div ul li a {
   text-align: right;
   padding-top: 20px;
   margin-right: 10px;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }

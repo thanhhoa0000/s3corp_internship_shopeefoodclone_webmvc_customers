@@ -54,11 +54,13 @@ public class HomeController : Controller
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         
         Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
-            request: new GetStoreRequest(
-                LocationRequest: new GetStoreByLocationRequest(Province: province, district, null),
-                CategoryName: categoryName),
-            pageSize: pageSize,
-            pageNumber: pageNumber);
+            request: new GetStoresRequest
+            {
+                LocationRequest = new LocationRequest { Province = province },
+                CategoryName = categoryName,
+                PageSize = pageSize,
+                PageNumber = pageNumber
+            });
         
         if (storesResponse!.IsSuccessful)
             stores = JsonSerializer.Deserialize<List<StoreDto>>(
@@ -66,11 +68,13 @@ public class HomeController : Controller
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         
         Response? collectionsResponse = await _collectionService.GetCollectionsByLocationAndCategoryAsync(
-            request: new GetCollectionsRequest(
-                LocationRequest: new GetCollectionsByLocationRequest(Province: province, null, null),
-                CategoryName: categoryName),
-            pageSize: pageSize,
-            pageNumber: pageNumber);
+            request: new GetCollectionsRequest
+            {
+                LocationRequest = new LocationRequest { Province = province },
+                CategoryName = categoryName,
+                PageSize = pageSize,
+                PageNumber = pageNumber
+            });
         
         if (collectionsResponse!.IsSuccessful)
             collections = JsonSerializer.Deserialize<List<CollectionDto>>(
@@ -85,6 +89,8 @@ public class HomeController : Controller
             Collections = collections,
             StoresCount = stores?.Count ?? 0
         };
+        
+        _logger.LogDebug(collections.Count.ToString());
         
         return View(viewModel);
     }

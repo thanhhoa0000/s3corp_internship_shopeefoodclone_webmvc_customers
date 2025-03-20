@@ -1,0 +1,28 @@
+﻿@model CollectionsViewModel
+@{
+    
+}
+<div class="collection-main-section">
+    <h1 class="text-center collection-section-title">DANH SÁCH BỘ SƯU TẬP</h1>
+    
+    @if (Model.Collections.Any())
+    {
+        <div class="collection-section-collection-list row row-cols-4">
+            @foreach (var collection in Model.Collections)
+            {
+                <div class="collection-section-collection-item col">
+                    <a class="collection-section-collection-content">
+                        <div class="collection-section-collection-content-img">
+                            <img class="" alt="" src="@Url.Content($"~/images{collection.CoverImagePath}")"/>
+                        </div>
+                        <div class="collection-section-collection-content-info">
+                            <div class="store-section-store-content-basic-info">
+                                <h4>@collection.Name</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>

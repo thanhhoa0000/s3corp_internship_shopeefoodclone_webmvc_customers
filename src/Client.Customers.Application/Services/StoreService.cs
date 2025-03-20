@@ -8,24 +8,27 @@ public class StoreService : IStoreService
     {
         _service = service;
     }
-
-    public async Task<Response?> GetStoresByLocationAsync(GetStoreByLocationRequest request, int pageSize, int pageNumber)
-    {
-        return await _service.SendAsync(new Request()
-        {
-            ApiMethod = ApiMethod.Post,
-            Body = request,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/location/{request.Province}?pageSize={pageSize}&pageNumber={pageNumber}"
-        });
-    }
     
-    public async Task<Response?> GetStoresByLocationAndCategoryAsync(GetStoreRequest request, int pageSize, int pageNumber)
+    public async Task<Response?> GetStoresByLocationAndCategoryAsync(GetStoresRequest request)
     {
+        var province = request.LocationRequest!.Province;
+        var district = request.LocationRequest!.District;
+        var ward = request.LocationRequest!.Ward;
+        var category = request.CategoryName;
+        var pageSize = request.PageSize;
+        var pageNumber = request.PageNumber;
+        
         return await _service.SendAsync(new Request()
         {
-            ApiMethod = ApiMethod.Post,
+            ApiMethod = ApiMethod.Get,
             Body = request,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/location/{request.LocationRequest.Province}/category/{request.CategoryName}?pageSize={pageSize}&pageNumber={pageNumber}"
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores?" +
+                  $"province={province}" +
+                  $"&district={district}" +
+                  $"&ward={ward}" +
+                  $"&category={category}" +
+                  $"&pageSize={pageSize}" +
+                  $"&pageNumber={pageNumber}"
         });
     }
 }

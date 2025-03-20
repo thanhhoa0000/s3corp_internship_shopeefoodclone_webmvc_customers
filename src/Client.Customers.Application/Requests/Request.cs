@@ -1,6 +1,6 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Dtos;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Requests;
 
-public class Request
+public sealed class Request
 {
     public required ApiMethod ApiMethod { get; set; } = ApiMethod.Get;
     public required string Url { get; set; }

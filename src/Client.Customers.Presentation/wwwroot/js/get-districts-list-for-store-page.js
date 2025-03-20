@@ -1,12 +1,27 @@
 $(document).ready(function () {
-    console.log("🚀 Script loaded");
-    getDistrictListForStorePage();
+    let targetNode = document.getElementById("location-dropdown-btn");
+    let clickCount = 0;
+
+    let observer = new MutationObserver(() => {
+        let province = $("#location-dropdown-btn").attr("province-code");
+
+        if (province) {
+            getDistrictListForStorePage(province);
+            observer.disconnect();
+        }
+    });
+
+    observer.observe(targetNode, { attributes: true });
+    
+    $(document).on('click', '.location-item', function () {
+        clickCount++;
+        if (clickCount > 1) {
+            window.location.href = "/Home/Index";
+        }
+    });
 });
 
-function getDistrictListForStorePage() {
-    console.log("🚀 Script loaded");
-    var province = document.querySelector('#location-dropdown-btn').getAttribute('province-code');
-    
+function getDistrictListForStorePage(province) {    
     $.ajax({
         url: `https://localhost:5001/districts?province=${province}`,
         type: 'GET',
@@ -22,13 +37,12 @@ function getDistrictListForStorePage() {
             response.body.forEach(function (district) {
                 var districtItem = 
                     `<div class="col-4">
-                        <div class="form-check store-district-item">
+                        <div class="form-check store-district-item ps-5">
                             <input class="form-check-input" type="checkbox" id="${district.code}" value="${district.name}" />
                             <label class="form-check-label" for="${district.code}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</label>
                         </div>
                     </div>`
                 dropdown.append(districtItem);
-                console.log(districtItem)
             });
         },
         error: function () {

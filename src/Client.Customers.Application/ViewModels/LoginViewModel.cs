@@ -1,6 +1,6 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Dtos;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.ViewModels;
 
-public class LoginViewModel
+public sealed class LoginViewModel
 {
     [Required(ErrorMessage = "Enter your username")]
     public string? UserName { get; set; }

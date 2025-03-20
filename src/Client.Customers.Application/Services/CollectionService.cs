@@ -9,23 +9,26 @@ public class CollectionService : ICollectionService
         _service = service; 
     }
     
-    public async Task<Response?> GetCollectionsByLocationAsync(GetCollectionsByLocationRequest request, int pageSize, int pageNumber)
+    public async Task<Response?> GetCollectionsByLocationAndCategoryAsync(GetCollectionsRequest request)
     {
+        var province = request.LocationRequest!.Province;
+        var district = request.LocationRequest!.District;
+        var ward = request.LocationRequest!.Ward;
+        var category = request.CategoryName;
+        var pageSize = request.PageSize;
+        var pageNumber = request.PageNumber;
+        
         return await _service.SendAsync(new Request()
         {
-            ApiMethod = ApiMethod.Post,
+            ApiMethod = ApiMethod.Get,
             Body = request,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/collections/{request.Province}?pageSize={pageSize}&pageNumber={pageNumber}"
-        });
-    }
-    
-    public async Task<Response?> GetCollectionsByLocationAndCategoryAsync(GetCollectionsRequest request, int pageSize, int pageNumber)
-    {
-        return await _service.SendAsync(new Request()
-        {
-            ApiMethod = ApiMethod.Post,
-            Body = request,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/collections/{request.LocationRequest.Province}/{request.CategoryName}?pageSize={pageSize}&pageNumber={pageNumber}"
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/collections?" +
+                  $"province={province}" +
+                  $"&district={district}" +
+                  $"&ward={ward}" +
+                  $"&category={category}" +
+                  $"&pageSize={pageSize}" +
+                  $"&pageNumber={pageNumber}"
         });
     }
 }

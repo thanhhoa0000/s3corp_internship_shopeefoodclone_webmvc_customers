@@ -16,6 +16,14 @@ $(document).ready(function () {
             var selectedLocation = localStorage.getItem("selectedLocation") || "Hồ Chí Minh";
             $('#location-dropdown-btn').text(selectedLocation);
 
+            locations.sort((a, b) => {
+                if (a.codeName === "ho_chi_minh") return -1;
+                if (b.codeName === "ho_chi_minh") return 1;
+                if (a.codeName === "ha_noi") return -1;
+                if (b.codeName === "ha_noi") return 1;
+                return 0;
+            });
+
             locations.forEach(function (location) {
                 var listItem = $(`
                     <li class="location-item">
@@ -59,12 +67,9 @@ $(document).ready(function () {
 
 function getStoresCountByProvince(province) {
     return $.ajax({
-        url: `https://localhost:5001/stores/location/${province}`,
-        type: 'POST',
+        url: `https://localhost:5001/stores?province=${province}`,
+        type: 'GET',
         contentType: 'application/json',
-        data: JSON.stringify({
-            locationRequest: { province: province }
-        }),
         dataType: 'json'
     }).then(function (response) {
         if (!response.isSuccessful || !response.body) {
