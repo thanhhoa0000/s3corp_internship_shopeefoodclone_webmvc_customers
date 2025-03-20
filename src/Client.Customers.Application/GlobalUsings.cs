@@ -15,4 +15,7 @@ global using ShopeeFoodClone.WebMvc.Customers.Application.Interfaces;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Services;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Configurations;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Dtos;
-global using ShopeeFoodClone.WebMvc.Customers.Application.Dtos.Enums;
+global using ShopeeFoodClone.WebMvc.Customers.Application.Requests;
+global using ShopeeFoodClone.WebMvc.Customers.Application.Responses;
+global using ShopeeFoodClone.WebMvc.Customers.Application.ViewModels;
+global using ShopeeFoodClone.WebMvc.Customers.Application.Enums;

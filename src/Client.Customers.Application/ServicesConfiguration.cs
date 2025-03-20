@@ -10,6 +10,7 @@ public static partial class ServicesConfiguration
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ISubCategoryService, SubCategoryService>();
         services.AddScoped<IStoreService, StoreService>();
+        services.AddScoped<ICollectionService, CollectionService>();
         
         return services;
     }
@@ -21,6 +22,7 @@ public static partial class ServicesConfiguration
         services.AddHttpClient<ICategoryService, CategoryService>();
         services.AddHttpClient<ISubCategoryService, SubCategoryService>();
         services.AddHttpClient<IStoreService, StoreService>();
+        services.AddHttpClient<ICollectionService, CollectionService>();
         
         return services;
     }

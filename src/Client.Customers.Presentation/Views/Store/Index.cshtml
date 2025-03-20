@@ -1,0 +1,48 @@
+﻿@model StorePromotionsViewModel
+@{
+    ViewData["Title"] = "Order Đồ ăn in TP. HCM & Delivery Service | Food Delivery & Shipping Service | ShopeeFood.vn";
+}
+<div class="store-main-section">
+    <h1 class="text-center store-section-title">Danh sách ưu đãi</h1>
+    
+    <div class="store-section-options d-flex justify-content-between">
+        <div class="dropdown">
+            <button id="store-district-dropdown-btn" class="btn btn-orange dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Khu vực
+            </button>
+            <div class="dropdown-menu" id="store-district-dropdown">
+                <div class="row">
+                    
+                </div>
+            </div>
+        </div>
+        <span>X kết quả</span>
+    </div>
+    
+    @if (Model.Stores.Any())
+    {
+        <div class="store-section-store-list row row-cols-5 border-top">
+            @foreach (var store in Model.Stores.Where(store => store.IsPromoted))
+            {
+                <div class="store-section-store-item col">
+                    <a class="store-section-store-content">
+                        <div class="store-section-store-content-img">
+                            <img class="" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
+                        </div>
+                        <div class="store-section-store-content-info">
+                            <div class="store-section-store-content-basic-info">
+                                <h4>@store.Name</h4>
+                                <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.FullName</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script src="~/js/get-districts-list-for-store-page.js" asp-append-version="true"></script>
+}

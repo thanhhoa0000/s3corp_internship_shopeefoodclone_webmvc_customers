@@ -1,6 +1,6 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Dtos;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.ViewModels;
 
-public class RegisterViewModel
+public sealed class RegisterViewModel
 {
     [Required(ErrorMessage = "Enter your username")]
     [MinLength(6, ErrorMessage = "Username must be at least 6 characters")]

@@ -1,15 +1,15 @@
 ﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Services;
 
-public class StoreService : IStoreService
+public class CollectionService : ICollectionService
 {
     private readonly IBaseService _service;
 
-    public StoreService(IBaseService service)
-    {
-        _service = service;
+    public CollectionService(IBaseService service)
+    { 
+        _service = service; 
     }
     
-    public async Task<Response?> GetStoresByLocationAndCategoryAsync(GetStoresRequest request)
+    public async Task<Response?> GetCollectionsByLocationAndCategoryAsync(GetCollectionsRequest request)
     {
         var province = request.LocationRequest!.Province;
         var district = request.LocationRequest!.District;
@@ -22,7 +22,7 @@ public class StoreService : IStoreService
         {
             ApiMethod = ApiMethod.Get,
             Body = request,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores?" +
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/collections?" +
                   $"province={province}" +
                   $"&district={district}" +
                   $"&ward={ward}" +
