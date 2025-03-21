@@ -1,4 +1,4 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Responses;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Models.Responses;
 
 public sealed class Response
 {

@@ -59,7 +59,13 @@
                             <div class="store-item col-4">
                                 <a class="store-content" href="#">
                                     <div class="store-img">
-                                        <img class="img-fluid" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
+                                        <img 
+                                            class="img-fluid" 
+                                            alt="" 
+                                            src="@Url.Content($"~/images{store.CoverImagePath}")"
+                                            onerror="
+                                                this.onerror = null; 
+                                                this.src = '/images/stores/default-store-cover-img.jpg'"/>
                                     </div>
                                     <div class="store-info">
                                         <div class="store-basic-info">
@@ -83,7 +89,7 @@
                 <div class="home-collection-section">
                     <div class="home-collection-title row">
                         <h2 class="col-auto">Ưu đãi</h2>
-                        <a class="col-auto" href="#">Xem tất cả</a>
+                        <a class="col-auto" asp-controller="Collection" asp-action="Index">Xem tất cả</a>
                     </div>
                     <div class="home-collection-lists row">
                         @foreach (var collection in Model.Collections)
@@ -130,7 +136,13 @@
                                 <div class="home-store-item row">
                                     <div class="home-store-content">
                                         <div class="home-store-img">
-                                            <img class="img-fluid" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
+                                            <img
+                                                class="img-fluid"
+                                                alt=""
+                                                src="@Url.Content($"~/images{store.CoverImagePath}")"
+                                                onerror="
+                                                this.onerror = null; 
+                                                this.src = '/images/stores/default-store-cover-img.jpg'"/>
                                         </div>
                                         <div class="home-store-info">
                                             <div class="home-store-basic-info">

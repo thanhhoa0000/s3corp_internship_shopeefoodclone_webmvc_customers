@@ -8,11 +8,11 @@ function getStores(province, provinceName) {
             getDistricts(province);
             var tempDom = $('<div></div>').html(response);
             var newMainSection = tempDom.find('.home-main-section').html();
-            var homeMainSection = $('.home-main-section')
+            var homeMainSection = $('.home-main-section');
             homeMainSection.html(newMainSection);
-            homeMainSection.find('#home-search-location-placeholder').text(provinceName)
-            homeMainSection.find('.home-promotion-title a').attr('asp-for-province', province)
-            homeMainSection.find('.home-promotion-title a').attr('asp-for-categoryName', activeCate)
+            homeMainSection.find('#home-search-location-placeholder').text(provinceName);
+            homeMainSection.find('.home-promotion-title a').attr('asp-for-province', province);
+            homeMainSection.find('.home-promotion-title a').attr('asp-for-categoryName', activeCate);
         },
         error: function () {
             console.error("Failed to fetch stores.");

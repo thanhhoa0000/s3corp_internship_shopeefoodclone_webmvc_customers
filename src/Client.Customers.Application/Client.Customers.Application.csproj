@@ -10,5 +10,9 @@
         <PackageReference Include="NLog" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" />        
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.ViewModels;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Models.ViewModels;
 
 public class HomeViewModel
 {

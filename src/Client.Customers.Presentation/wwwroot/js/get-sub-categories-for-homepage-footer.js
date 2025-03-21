@@ -6,8 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const codeName = title.getAttribute("code-name");
 
         $.ajax({
-            url: `https://localhost:5001/categories/${codeName}/sub-categories`,
+            url: `https://localhost:5001/categories/sub-categories/get-by-cateName`,
             type: 'GET',
+            data: JSON.stringify({
+                categoryName: codeName
+            }),
             success: function (response) {
                 const itemList = $(section).find(".home-footer-item-list");
                 itemList.empty();

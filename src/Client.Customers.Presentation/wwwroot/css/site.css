@@ -51,6 +51,19 @@ footer {
   width: 1296px;
 }
 
+.company-address {
+  margin-top: 200px;
+  overflow: visible;
+}
+
+.company-address p:not(:first-child) {
+  white-space: nowrap;
+  margin-bottom: 3px;
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .btn-outline-orange {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
@@ -581,6 +594,12 @@ footer div div div ul li a {
   overflow: hidden;
 }
 
+.collection-section-collection-content-img {
+  height: 285px;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+
 .store-img {
   height: 116px;
   border-radius: 6px 6px 0 0;
@@ -595,7 +614,7 @@ footer div div div ul li a {
   overflow: hidden;
 }
 
-.collection-img img {
+.collection-img img, .collection-section-collection-content-img img {
   height: 100%;
   width: 100%;
   border-radius: 6px;
@@ -627,11 +646,15 @@ footer div div div ul li a {
   text-decoration: none;
 }
 
-.collection-content {
+.collection-content, .collection-section-collection-content {
   display: block;
   border-radius: 6px;
   text-decoration: none;
   transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.collection-section-collection-content {
+  background-color: #FFFFFF;
 }
 
 .home-store-item {
@@ -682,7 +705,7 @@ footer div div div ul li a {
   transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
-.collection-basic-info {
+.collection-basic-info, .store-section-store-content-basic-info, .collection-section-collection-content-basic-info  {
   padding-left: 10px;
   padding-right: 10px;
   border-radius:  0 0 6px 6px;
@@ -694,18 +717,14 @@ footer div div div ul li a {
   border-color: #b5b5b5;
 }
 
-.collection-content {
-  border-radius: 6px;
-}
-
-.collection-item:hover .collection-content {
+.collection-item:hover .collection-content, .collection-section-collection-item:hover .collection-section-collection-content {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-color: #b5b5b5;
   border-radius: 6px;
 }
 
 
-.store-basic-info h4, .collection-basic-info h4, .store-section-store-content-basic-info h4 {
+.store-basic-info h4, .collection-basic-info h4, .store-section-store-content-basic-info h4, .collection-section-collection-content-basic-info h4 {
   font-size: 14px;
   font-weight: 700;
   color: #252525;
@@ -714,6 +733,10 @@ footer div div div ul li a {
   overflow: hidden;
   margin-bottom: 1px;
   padding-top: 8px;
+}
+
+.collection-section-collection-content-basic-info h4 {
+  padding: 6px 0;
 }
 
 .store-basic-info div, .store-section-store-content-basic-info div {
@@ -741,6 +764,17 @@ footer div div div ul li a {
   width: 600px;
 }
 
+.collection-section-collection-content-basic-info div {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #0288d1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-bottom: 8px;
+}
+
 #back-to-top-btn {
   display: none;
   position: fixed;
@@ -755,7 +789,7 @@ footer div div div ul li a {
   transition: opacity 0.3s ease;
 }
 
-.store-section-title {
+.store-section-title, .collection-section-title {
   font-family: "Noto Sans", Arial, sans-serif;
   font-weight: 700;
   font-size: 25px;  

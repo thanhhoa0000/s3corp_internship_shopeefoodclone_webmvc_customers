@@ -27,7 +27,13 @@
                 <div class="store-section-store-item col">
                     <a class="store-section-store-content">
                         <div class="store-section-store-content-img">
-                            <img class="" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
+                            <img
+                                class=""
+                                alt=""
+                                src="@Url.Content($"~/images{store.CoverImagePath}")"
+                                onerror="
+                                                this.onerror = null; 
+                                                this.src = '/images/stores/default-store-cover-img.jpg'"/>
                         </div>
                         <div class="store-section-store-content-info">
                             <div class="store-section-store-content-basic-info">

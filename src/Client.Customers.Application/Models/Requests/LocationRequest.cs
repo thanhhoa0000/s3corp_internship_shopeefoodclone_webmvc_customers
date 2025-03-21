@@ -1,4 +1,4 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Requests;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Models.Requests;
 
 public sealed class LocationRequest
 {

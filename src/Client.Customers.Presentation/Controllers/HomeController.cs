@@ -40,13 +40,17 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult> Index(string province, string district, string categoryName, int pageSize = 9, int pageNumber = 1)
+    public async Task<IActionResult> Index(string province, string categoryName, int pageSize = 9, int pageNumber = 1)
     {
         var subCategories = new List<SubCategoryDto>();
         var stores = new List<StoreDto>();
         var collections = new List<CollectionDto>();
         
-        Response? subCategoriesResponse = await _subCategoryService.GetAllByCategoryNameAsync(categoryName);
+        Response? subCategoriesResponse = await _subCategoryService.GetAllByCategoryNameAsync(
+            request: new GetSubCategoriesRequest
+            {
+                CategoryName = categoryName
+            });
         
         if (subCategoriesResponse!.IsSuccessful)
             subCategories = JsonSerializer.Deserialize<List<SubCategoryDto>>(
@@ -89,8 +93,6 @@ public class HomeController : Controller
             Collections = collections,
             StoresCount = stores?.Count ?? 0
         };
-        
-        _logger.LogDebug(collections.Count.ToString());
         
         return View(viewModel);
     }

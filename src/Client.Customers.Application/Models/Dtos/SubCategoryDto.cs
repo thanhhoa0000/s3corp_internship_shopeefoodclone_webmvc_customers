@@ -1,4 +1,4 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Dtos;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Models.Dtos;
 
 public class SubCategoryDto
 {

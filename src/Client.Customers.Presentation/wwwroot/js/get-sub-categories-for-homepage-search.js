@@ -9,6 +9,9 @@ function getSubCategories(cateName) {
             var newAddressSection = tempDom.find('.home-vertical-list-section').html();
             $('.search-container').html(newSearchSection);
             $('.home-vertical-list-section').html(newAddressSection);
+            $('.home-search-local').find('#home-search-location-placeholder').text(
+                $('#location-dropdown-btn').text()
+            )
         },
         error: function () {
             console.error("Failed to fetch sub-categories.");

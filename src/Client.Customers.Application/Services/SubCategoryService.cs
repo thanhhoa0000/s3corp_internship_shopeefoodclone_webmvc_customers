@@ -9,21 +9,23 @@ public class SubCategoryService : ISubCategoryService
         _service = service;
     }
 
-    public async Task<Response?> GetAllByCategoryIdAsync(Guid cateId)
+    public async Task<Response?> GetAllByCategoryIdAsync(GetSubCategoriesRequest request)
     {
         return await _service.SendAsync(new Request()
         {
-            ApiMethod = ApiMethod.Get,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories/{cateId}/sub-categories",
+            ApiMethod = ApiMethod.Post,
+            Body = request,
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories/sub-categories/get-by-cateId",
         }, bearer: false);
     }
     
-    public async Task<Response?> GetAllByCategoryNameAsync(string cateName)
+    public async Task<Response?> GetAllByCategoryNameAsync(GetSubCategoriesRequest request)
     {
         return await _service.SendAsync(new Request()
         {
-            ApiMethod = ApiMethod.Get,
-            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories/{cateName}/sub-categories",
+            ApiMethod = ApiMethod.Post,
+            Body = request,
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/categories/sub-categories/get-by-cateName",
         }, bearer: false);
     }
 }

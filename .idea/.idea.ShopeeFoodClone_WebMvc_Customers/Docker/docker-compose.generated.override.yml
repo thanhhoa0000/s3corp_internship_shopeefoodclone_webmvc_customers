@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  client.customers:
+    build:
+      context: "D:\\Internship\\Code\\Demo\\ShopeeFood_Clone\\WebMvc_Customers"
+      dockerfile: "src/Client.Customers.Presentation/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Client.Customers.Presentation.dll"
+    environment:
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/Client.Customers.Presentation.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "client.customers:dev"
+    ports: []
+    volumes:
+    - "D:\\Internship\\Code\\Demo\\ShopeeFood_Clone\\WebMvc_Customers\\src\\Client.Customers.Presentation:/app:rw"
+    - "D:\\Internship\\Code\\Demo\\ShopeeFood_Clone\\WebMvc_Customers:/src:rw"
+    - "C:\\Users\\hoa.nguyen\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"

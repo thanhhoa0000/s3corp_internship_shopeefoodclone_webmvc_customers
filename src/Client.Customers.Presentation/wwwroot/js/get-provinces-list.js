@@ -67,10 +67,13 @@ $(document).ready(function () {
 
 function getStoresCountByProvince(province) {
     return $.ajax({
-        url: `https://localhost:5001/stores?province=${province}`,
-        type: 'GET',
+        url: `https://localhost:5001/stores/get`,
+        type: 'POST',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
+        data: JSON.stringify({
+            locationRequest: { province: province }
+        })
     }).then(function (response) {
         if (!response.isSuccessful || !response.body) {
             console.error("Invalid API response");
