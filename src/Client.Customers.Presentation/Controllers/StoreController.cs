@@ -12,8 +12,10 @@ public class StoreController : Controller
         _storeService = storeService;
         _logger = logger;
     }
-    
     [HttpGet]
+    public IActionResult Index() => View(new StorePromotionsViewModel());
+    
+    [HttpPost]
     public async Task<ActionResult> Index(string province, string categoryName, int pageSize = 30, int pageNumber = 1)
     {
         var stores = new List<StoreDto>();

@@ -2,6 +2,6 @@
 
 public interface ISubCategoryService
 {
-    Task<Response?> GetAllByCategoryIdAsync(Guid cateId);
-    Task<Response?> GetAllByCategoryNameAsync(string cateName);
+    Task<Response?> GetAllByCategoryIdAsync(GetSubCategoriesRequest request);
+    Task<Response?> GetAllByCategoryNameAsync(GetSubCategoriesRequest request);
 }

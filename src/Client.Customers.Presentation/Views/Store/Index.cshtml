@@ -4,45 +4,79 @@
 }
 <div class="store-main-section">
     <h1 class="text-center store-section-title">Danh sách ưu đãi</h1>
-    
+
     <div class="store-section-options d-flex justify-content-between">
-        <div class="dropdown">
-            <button id="store-district-dropdown-btn" class="btn btn-orange dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                Khu vực
-            </button>
-            <div class="dropdown-menu" id="store-district-dropdown">
-                <div class="row">
-                    
+        <div class="row">
+            <div class="dropdown col">
+                <button id="store-district-dropdown-btn" class="btn btn-orange dropdown-toggle shadow" type="button"
+                        data-bs-toggle="dropdown">
+                    Khu vực
+                </button>
+                <div class="dropdown-menu" id="store-district-dropdown">
+                    <div class="row">
+
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown col">
+                <button id="store-category-dropdown-btn" class="btn btn-outline-orange dropdown-toggle shadow" type="button"
+                        data-bs-toggle="dropdown">
+                    Phân loại
+                </button>
+                <div class="dropdown-menu" id="store-category-dropdown">
+                    <div class="row">
+
+                    </div>
                 </div>
             </div>
         </div>
         <span>X kết quả</span>
     </div>
-    
-    @if (Model.Stores.Any())
-    {
-        <div class="store-section-store-list row row-cols-5 border-top">
-            @foreach (var store in Model.Stores.Where(store => store.IsPromoted))
-            {
-                <div class="store-section-store-item col">
-                    <a class="store-section-store-content">
-                        <div class="store-section-store-content-img">
-                            <img class="" alt="" src="@Url.Content($"~/images{store.CoverImagePath}")"/>
-                        </div>
-                        <div class="store-section-store-content-info">
-                            <div class="store-section-store-content-basic-info">
-                                <h4>@store.Name</h4>
-                                <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.FullName</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            }
+
+
+    <div class="border-top filter-tags-section">
+        <div class="row">
+            <div class="store-section-location-filter-tag shadow col-auto">
+                <p>Khu vực: <b>(1)</b></p>
+                <button class="btn btn-outline-danger">x</button>
+            </div>
+            <div class="store-section-category-filter-tag shadow col-auto">
+                <p>Phân loại: <b>(1)</b></p>
+                <button class="btn btn-outline-danger">x</button>
+            </div>
         </div>
-    }
+        @if (Model.Stores.Any())
+        {
+            <div class="store-section-store-list row row-cols-5">
+                @foreach (var store in Model.Stores.Where(store => store.IsPromoted))
+                {
+                    <div class="store-section-store-item col">
+                        <a class="store-section-store-content">
+                            <div class="store-section-store-content-img">
+                                <img
+                                    class=""
+                                    alt=""
+                                    src="@Url.Content($"~/images{store.CoverImagePath}")"
+                                    onerror="
+                                                this.onerror = null; 
+                                                this.src = '/images/stores/default-store-cover-img.jpg'"/>
+                            </div>
+                            <div class="store-section-store-content-info">
+                                <div class="store-section-store-content-basic-info">
+                                    <h4>@store.Name</h4>
+                                    <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.FullName</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    </div>
 </div>
 
 @section Scripts
 {
-    <script src="~/js/get-districts-list-for-store-page.js" asp-append-version="true"></script>
+    <script src="~/js/get-items-list-for-store-page.js" asp-append-version="true"></script>
+    <script src="~/js/get-sub-categories-for-store-page.js" asp-append-version="true"></script>
 }

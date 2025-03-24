@@ -8,7 +8,6 @@ function getStoresByDistrict(province, district) {
         success: function (response) {
             var tempDom = $('<div></div>').html(response);
             var newStoreSection = tempDom.find('.home-stores-main').html();
-            console.log(newStoreSection);
             $('.home-stores-main').html(newStoreSection);
         },
         error: function () {
