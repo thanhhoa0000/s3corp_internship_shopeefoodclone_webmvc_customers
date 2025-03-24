@@ -10,10 +10,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// "Đồ ăn" category on nav-bar will be clicked on first load by default
-window.onload = function () {
-    if (!sessionStorage.getItem("foodClicked")) {
-        document.querySelector('.nav-link[code-name="food"]').click();
-        sessionStorage.setItem("foodClicked", "true");
-    }
-};
+function getItemsForStorePage(province, category) {
+    $.ajax({
+        url: `/Store/Index?province=${province}&categoryName=${category}`,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            var tempDom = $('<div></div>').html(response);
+            var newStoresSection = tempDom.find('.store-main-section').html();
+            $('.store-main-section').html(newStoresSection);
+        }
+    });
+}

@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         $.ajax({
             url: `https://localhost:5001/categories/sub-categories/get-by-cateName`,
-            type: 'GET',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
             data: JSON.stringify({
                 categoryName: codeName
             }),
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var subCategories = response.body;
 
                 subCategories.forEach(function (subCategory) {
-                    itemList.append(`<a href="#">${subCategory.name}</a>`)
+                    itemList.append(`<a href="/Store" onclick="localStorage.setItem('cate', JSON.stringify('${subCategory.category.codeName}'));">${subCategory.name}</a>`)
                 })
             },
             error: function () {

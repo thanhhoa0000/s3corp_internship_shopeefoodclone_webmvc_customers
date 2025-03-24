@@ -798,11 +798,11 @@ footer div div div ul li a {
   padding-bottom: 60px;
 }
 
-#store-district-dropdown-btn {
+#store-district-dropdown-btn, #store-category-dropdown-btn {
   margin-left: 10px;
 }
 
-#store-district-dropdown .row {
+#store-district-dropdown .row, #store-category-dropdown .row {
   width: 840px;
   height: 180px;
   overflow-y: auto;
@@ -811,13 +811,41 @@ footer div div div ul li a {
   flex-wrap: wrap;
 }
 
+.store-section-options .row > *, .filter-tags-section .row > *  {
+  padding-right: 0;
+}
+
 .store-section-options span {
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 13px;
   font-weight: 400;
   text-align: right;
   padding-top: 20px;
-  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.store-section-location-filter-tag, .store-section-category-filter-tag {
+  background-color: white;
+  width: 130px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  margin: 10px;
+  display: table;
+}
+
+.store-section-location-filter-tag p, .store-section-category-filter-tag p {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.store-section-location-filter-tag button, .store-section-category-filter-tag button {
+  float: right;
 }
 
 .form-check-input:checked {

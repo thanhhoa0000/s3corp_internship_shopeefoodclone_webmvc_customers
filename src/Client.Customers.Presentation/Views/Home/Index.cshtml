@@ -17,10 +17,10 @@
                 </div>
             </div>
             <div class="home-search-tags-section">
-                <a href="#" class="btn btn-outline-light">All</a>
+                <a asp-controller="Store" asp-action="Index" class="btn btn-outline-light">All</a>
                 @foreach (var category in Model.SubCategories!)
                 {
-                    <a href="#" class="btn btn-outline-light">@category.Name</a>
+                    <a asp-controller="Store" asp-action="Index" class="btn btn-outline-light">@category.Name</a>
                 }
             </div>
             <div class="mb-2 mt-3" style="font-size: 18px">
@@ -88,7 +88,7 @@
             {
                 <div class="home-collection-section">
                     <div class="home-collection-title row">
-                        <h2 class="col-auto">Ưu đãi</h2>
+                        <h2 class="col-auto">Bộ sưu tập</h2>
                         <a class="col-auto" asp-controller="Collection" asp-action="Index">Xem tất cả</a>
                     </div>
                     <div class="home-collection-lists row">
@@ -262,5 +262,6 @@
 @section Scripts
 {
     <script src="~/js/home-section-scroll.js" asp-append-version="true"></script>
+    <script src="~/js/homepage-auto-click-default-category.js" asp-append-version="true"></script>
     <script src="~/js/show-home-footer.js" asp-append-version="true"></script>
 }

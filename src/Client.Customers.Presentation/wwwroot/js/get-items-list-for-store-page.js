@@ -1,12 +1,14 @@
 $(document).ready(function () {
     let targetNode = document.getElementById("location-dropdown-btn");
     let clickCount = 0;
+    
+    let category = JSON.parse(localStorage.getItem('cate'));
 
     let observer = new MutationObserver(() => {
         let province = $("#location-dropdown-btn").attr("province-code");
-
         if (province) {
             getDistrictListForStorePage(province);
+            getItemsForStorePage(province, category);
             observer.disconnect();
         }
     });
@@ -16,6 +18,7 @@ $(document).ready(function () {
     $(document).on('click', '.location-item', function () {
         clickCount++;
         if (clickCount > 1) {
+            console.log(clickCount);
             window.location.href = "/Home/Index";
         }
     });

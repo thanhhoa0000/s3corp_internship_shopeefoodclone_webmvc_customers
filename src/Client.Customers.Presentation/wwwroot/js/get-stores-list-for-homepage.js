@@ -11,8 +11,8 @@ function getStores(province, provinceName) {
             var homeMainSection = $('.home-main-section');
             homeMainSection.html(newMainSection);
             homeMainSection.find('#home-search-location-placeholder').text(provinceName);
-            homeMainSection.find('.home-promotion-title a').attr('asp-for-province', province);
-            homeMainSection.find('.home-promotion-title a').attr('asp-for-categoryName', activeCate);
+            homeMainSection.find('.home-search-tags-section a').attr('cate-name', activeCate);
+            homeMainSection.find('.home-search-tags-section a').attr('province', province);
         },
         error: function () {
             console.error("Failed to fetch stores.");
