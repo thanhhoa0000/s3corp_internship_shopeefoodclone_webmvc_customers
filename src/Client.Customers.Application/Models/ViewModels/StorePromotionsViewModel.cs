@@ -3,4 +3,6 @@
 public class StorePromotionsViewModel
 {
     public List<StoreDto> Stores { get; set; } = new List<StoreDto>();
+    public int PagesCount { get; set; } = 1;
+    public int CurrentPage { get; set; } = 1;
 }

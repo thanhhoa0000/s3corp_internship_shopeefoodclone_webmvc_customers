@@ -10,15 +10,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function getItemsForStorePage(province, category) {
+function getItemsForStorePage(province, districts, category, subcategories) {
     $.ajax({
-        url: `/Store/Index?province=${province}&categoryName=${category}`,
+        url: `/Store/Index?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}`,
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
             var tempDom = $('<div></div>').html(response);
-            var newStoresSection = tempDom.find('.store-main-section').html();
-            $('.store-main-section').html(newStoresSection);
+            var newStoresSection = tempDom.find('.store-main-content').html();            
+            $('.store-main-content').html(newStoresSection);
+            $('.store-section-options p').html(tempDom.find('.store-section-options p').html());
         }
     });
 }

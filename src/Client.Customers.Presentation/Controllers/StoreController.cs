@@ -16,15 +16,28 @@ public class StoreController : Controller
     public IActionResult Index() => View(new StorePromotionsViewModel());
     
     [HttpPost]
-    public async Task<ActionResult> Index(string province, string categoryName, int pageSize = 30, int pageNumber = 1)
+    public async Task<ActionResult> Index(
+        string province, 
+        string districtsString, 
+        string categoryName, 
+        string subcategoriesString, 
+        int pageSize = 30, 
+        int pageNumber = 1)
     {
         var stores = new List<StoreDto>();
+        var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+        var subcategories = subcategoriesString?.Split(",").ToList() ?? new List<string>();
         
         Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
             request: new GetStoresRequest
             {
-                LocationRequest = new LocationRequest { Province = province },
+                LocationRequest = new LocationRequest
+                {
+                    Province = province,
+                    Districts = districts
+                },
                 CategoryName = categoryName,
+                SubCategoryNames = subcategories,
                 PageSize = pageSize,
                 PageNumber = pageNumber
             });
@@ -36,7 +49,9 @@ public class StoreController : Controller
 
         var viewModel = new StorePromotionsViewModel
         {
-            Stores = stores,
+            Stores = stores.Where(store => store.IsPromoted).ToList(),
+            PagesCount = (int)Math.Ceiling((double)(stores.Where(store => store.IsPromoted).ToList().Count) / pageSize),
+            CurrentPage = pageNumber
         };
         
         return View(viewModel);

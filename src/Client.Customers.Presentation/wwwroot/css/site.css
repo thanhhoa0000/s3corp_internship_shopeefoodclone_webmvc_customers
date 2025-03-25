@@ -51,9 +51,11 @@ footer {
   width: 1296px;
 }
 
+
 .company-address {
-  margin-top: 200px;
+  margin-top: -150px;
   overflow: visible;
+  width: 500px;
 }
 
 .company-address p:not(:first-child) {
@@ -176,6 +178,11 @@ footer {
   text-align: center;
 }
 
+.store-main-content .shipper-sorry-section {
+  background-color: white;
+  border-radius: 6px;
+}
+
 .nav-link {
   font-size: 14px;
   font-family: "Noto Sans", Arial, sans-serif;
@@ -196,7 +203,7 @@ footer {
 }
 
 .ministry-of-industry-and-trade-badge {
-  width: 50%;
+  width: 30%;
   height: auto;
 }
 
@@ -261,6 +268,12 @@ footer {
 footer div div div ul li a {
   text-decoration: none;
   color: #08f;
+}
+footer div div div p {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #959595;
 }
 
 .footer-logo {
@@ -811,11 +824,15 @@ footer div div div ul li a {
   flex-wrap: wrap;
 }
 
-.store-section-options .row > *, .filter-tags-section .row > *  {
+.store-section-options .row > *, .filter-tags-section > *  {
   padding-right: 0;
 }
 
-.store-section-options span {
+.filter-tags-section div {
+  display: none;
+}
+
+.store-section-options p {
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 13px;
   font-weight: 400;
@@ -827,8 +844,8 @@ footer div div div ul li a {
 .store-section-location-filter-tag, .store-section-category-filter-tag {
   background-color: white;
   width: 130px;
-  height: 30px;
-  justify-content: center;
+  height: 35px;
+  justify-content: space-between;
   align-items: center;
   border-radius: 6px;
   margin: 10px;
@@ -842,13 +859,56 @@ footer div div div ul li a {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
+  margin: 0;
+  padding-left: 5px;
 }
 
 .store-section-location-filter-tag button, .store-section-category-filter-tag button {
-  float: right;
+  margin-left: auto;
+  height: inherit;
 }
 
 .form-check-input:checked {
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 30px;
+  max-height: 30px;
+  overflow: hidden;
+  list-style: none;
+}
+
+.pagination li.active a{
+  background-color: #CF2127;
+  color: #FFFFFF;
+}
+
+.pagination li:hover:not(.active):not(:first-child):not(:last-child) a{
+  background-color: #CF2127;
+  color: #FFFFFF;
+}
+
+.pagination li {
+  display: inline-block;
+}
+
+.pagination li a {
+  text-decoration: none;
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #252525;
+  text-align: center;
+  line-height: 30px;
+  width: 40px;
+  height: 30px;
+  border-radius: 2px;
+  display: inline-block;
+  margin: 0 5px;
+  position: relative;
+  cursor: pointer;
+  transition: .2s ease-in-out;
 }
