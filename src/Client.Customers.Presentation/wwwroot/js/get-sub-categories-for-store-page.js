@@ -1,10 +1,3 @@
-$(document).ready(function () {
-    let categoryName = JSON.parse(localStorage.getItem('cate'));
-    document.querySelector('.main-nav-item.active')?.classList.remove('active');
-    document.querySelector(`.main-nav-item[code-name='${categoryName}']`).classList.add('active');
-    getSubCategoriesListForStorePage(categoryName);
-})
-
 function getSubCategoriesListForStorePage(categoryName) {
     $.ajax({
         url: `https://localhost:5001/categories/sub-categories/get-by-cateName`,

@@ -30,25 +30,26 @@
                 </div>
             </div>
         </div>
-        <span>X kết quả</span>
+        <p>@(Model.Stores.Any() ? Model.Stores.Count.ToString() : "0") kết quả</p>
     </div>
 
 
-    <div class="border-top filter-tags-section">
-        <div class="row">
+    <div class="border-top">
+        <div class="filter-tags-section row">
             <div class="store-section-location-filter-tag shadow col-auto">
-                <p>Khu vực: <b>(1)</b></p>
-                <button class="btn btn-outline-danger">x</button>
+                <p>Khu vực: <b><span></span></b></p>
+                <button class="btn btn-outline-danger d-flex align-items-center justify-content-center">x</button>
             </div>
             <div class="store-section-category-filter-tag shadow col-auto">
-                <p>Phân loại: <b>(1)</b></p>
-                <button class="btn btn-outline-danger">x</button>
+                <p>Phân loại: <b><span></span></b></p>
+                <button class="btn btn-outline-danger d-flex align-items-center justify-content-center">x</button>
             </div>
         </div>
+        <div class="store-main-content">
         @if (Model.Stores.Any())
         {
             <div class="store-section-store-list row row-cols-5">
-                @foreach (var store in Model.Stores.Where(store => store.IsPromoted))
+                @foreach (var store in Model.Stores)
                 {
                     <div class="store-section-store-item col">
                         <a class="store-section-store-content">
@@ -71,7 +72,32 @@
                     </div>
                 }
             </div>
+            
+            <ul class="pagination justify-content-center align-items-center">
+                <li class="@(Model.CurrentPage == 1 ? "disabled" : "")">
+                    <a href="?page=@(Model.CurrentPage - 1)">&laquo;</a>
+                </li>
+                @for (int i = 1; i <= Model.PagesCount; i++)
+                    {
+                    <li class="@(i == Model.CurrentPage ? "active" : "")">
+                        <a href="?page=@i">@i</a>
+                    </li>
+                }
+                <li class="@(Model.CurrentPage == Model.PagesCount ? "disabled" : "")">
+                    <a href="?page=@(Model.CurrentPage + 1)">&raquo;</a>
+                </li>
+            </ul>
         }
+        else
+        {
+            <div class="shipper-sorry-section justify-content-center align-items-center shadow">
+                <img alt="" src="~/images/shippersorry.png"/>
+
+                <h3>Không có dữ liệu</h3>
+                <p>Tìm thực đơn và địa điểm cho đơn hàng. Chúng tôi sẵn sàng phục vụ bạn</p>
+            </div>
+        }
+        </div>
     </div>
 </div>
 
@@ -79,4 +105,5 @@
 {
     <script src="~/js/get-items-list-for-store-page.js" asp-append-version="true"></script>
     <script src="~/js/get-sub-categories-for-store-page.js" asp-append-version="true"></script>
+    <script src="~/js/manage-filter-for-store-page.js" asp-append-version="true"></script>
 }
