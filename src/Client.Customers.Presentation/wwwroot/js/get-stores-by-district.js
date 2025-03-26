@@ -3,12 +3,12 @@ function getStoresByDistrict(province, district) {
     console.log(activeCate)
     
     $.ajax({
-        url: `/Home/Index?province=${province}&district=${district}&categoryName=${activeCate}`,
+        url: `/Home/Index?province=${province}&districtsString=${district}&categoryName=${activeCate}`,
         method: 'POST',
         success: function (response) {
-            var tempDom = $('<div></div>').html(response);
-            var newStoreSection = tempDom.find('.home-stores-main').html();
-            $('.home-stores-main').html(newStoreSection);
+            let tempDom = $('<div></div>').html(response);
+            
+            $('.home-stores-main').html(tempDom.find('.home-stores-main').html());
         },
         error: function () {
             console.error("Failed to fetch stores.");

@@ -1,6 +1,8 @@
 ﻿@model HomeViewModel
 @{
     ViewData["Title"] = "ShopeeFood | Nền tảng giao đồ ăn trực tuyến hàng đầu Việt Nam | shopeefood.vn";
+
+    var currentTime = TimeOnly.FromDateTime(DateTime.Now);
 }
 
 <div class="home-main-section row">
@@ -45,7 +47,7 @@
                 </div>
             </div>
             
-            @if (Model.Stores.Any(store => store.IsPromoted))
+            @if (Model.PromotionStores.Any())
             {
                 <div class="home-promotion-section">
                     <div class="home-promotion-title row">
@@ -54,14 +56,17 @@
                     </div>
                     <div class="home-promotion-lists row">
 
-                        @foreach (var store in Model.Stores.Where(store => store.IsPromoted))
+                        @foreach (var store in Model.PromotionStores)
                         {
                             <div class="store-item col-4">
-                                <a class="store-content" href="#">
+                                <a class="store-content" asp-controller="Store" asp-action="Details" asp-route-storeId="@store.Id">
+                                    <div class="opentime-status">
+                                        <span class="status @(currentTime >= store.OpeningHour && currentTime <= store.ClosingHour ? "online" : "offline")"></span>
+                                    </div>
                                     <div class="store-img">
-                                        <img 
-                                            class="img-fluid" 
-                                            alt="" 
+                                        <img
+                                            class="img-fluid"
+                                            alt=""
                                             src="@Url.Content($"~/images{store.CoverImagePath}")"
                                             onerror="
                                                 this.onerror = null; 
@@ -134,7 +139,10 @@
                             @foreach (var store in Model.Stores)
                             {
                                 <div class="home-store-item row">
-                                    <div class="home-store-content">
+                                    <a class="home-store-content" asp-controller="Store" asp-action="Details" asp-route-storeId="@store.Id">
+                                        <div class="opentime-status">
+                                            <span class="status @(currentTime >= store.OpeningHour && currentTime <= store.ClosingHour ? "online" : "offline")"></span>
+                                        </div>
                                         <div class="home-store-img">
                                             <img
                                                 class="img-fluid"
@@ -150,7 +158,7 @@
                                                 <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             }
                         </div>

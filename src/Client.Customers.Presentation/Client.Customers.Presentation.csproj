@@ -32,4 +32,8 @@
       <ProjectReference Include="..\Client.Customers.Application\Client.Customers.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Store\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

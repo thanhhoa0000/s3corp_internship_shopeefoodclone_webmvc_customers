@@ -1,0 +1,43 @@
+@model StoreDetailsViewModel
+@{
+    ViewData["Title"] = $"{Model.Store!.Name} | Đặt Món & Giao ship tận nơi | ShopeeFood.vn";
+    var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+    var isStoreOpened = currentTime >= Model.Store.OpeningHour && currentTime <= Model.Store.ClosingHour;
+}
+<div class="store-details-main-section">
+    <div class="store-details-info-section container-fluid row">
+        <div class="store-details-cover-img d-flex col">
+            <img
+                class="ms-auto"
+                alt=""
+                src="@Url.Content($"~/images{Model.Store.CoverImagePath}")"
+                onerror="
+                    this.onerror = null; 
+                    this.src = '/images/stores/default-store-cover-img.jpg'"/>
+        </div>
+        <div class="store-details-info col-7">
+            <h1>@Model.Store.Name</h1>
+            <div class="store-details-address">@Model.Store!.StreetName, @Model.Store.Ward!.FullName, @Model.Store.Ward.District!.FullName, @Model.Store.Ward.District.Province!.Name</div>
+            <div class="store-details-rating">
+                <div class="stars">
+            
+                </div>
+                <span class="number-rating"></span>
+                đánh giá trên <span style="color: var(--primary-color)">ShopeeFood</span>
+            </div>
+            <div class="store-details-status">
+                <div class="opentime-status">
+                    <span class="status @(isStoreOpened ? "online" : "offline")">@(isStoreOpened ? "Mở cửa" : "Đóng cửa")</span>
+                </div>
+                <div class="time">
+                    <i class="bi bi-clock"></i>
+                    @Model.Store.OpeningHour - @Model.Store.ClosingHour
+                </div>
+            </div>
+            <div class="store-details-cost">
+                <i class="bi bi-currency-dollar"></i>
+                xx.000đ - xx.000đ
+            </div>
+        </div>
+    </div>
+</div>

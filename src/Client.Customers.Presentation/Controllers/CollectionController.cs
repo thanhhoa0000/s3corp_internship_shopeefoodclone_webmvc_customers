@@ -35,6 +35,8 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers
             var viewModel = new CollectionsViewModel()
             {
                 Collections = collections,
+                PagesCount = (int)Math.Ceiling((double)(collections.Count) / pageSize),
+                CurrentPage = pageNumber
             };
         
             return View(viewModel);
