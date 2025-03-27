@@ -19,10 +19,10 @@
                 </div>
             </div>
             <div class="home-search-tags-section">
-                <a asp-controller="Store" asp-action="Index" class="btn btn-outline-light">All</a>
+                <a asp-controller="Store" asp-action="Promotions" class="btn btn-outline-light">All</a>
                 @foreach (var category in Model.SubCategories!)
                 {
-                    <a asp-controller="Store" asp-action="Index" class="btn btn-outline-light">@category.Name</a>
+                    <a asp-controller="Store" asp-action="Promotions" class="btn btn-outline-light">@category.Name</a>
                 }
             </div>
             <div class="mb-2 mt-3" style="font-size: 18px">
@@ -52,7 +52,7 @@
                 <div class="home-promotion-section">
                     <div class="home-promotion-title row">
                         <h2 class="col-auto">Ưu đãi</h2>
-                        <a class="col-auto" asp-controller="Store" asp-action="Index">Xem tất cả</a>
+                        <a class="col-auto" asp-controller="Store" asp-action="Promotions">Xem tất cả</a>
                     </div>
                     <div class="home-promotion-lists row">
 
@@ -154,7 +154,7 @@
                                         </div>
                                         <div class="home-store-info">
                                             <div class="home-store-basic-info">
-                                                <h4>@store.Name</h4>
+                                                <h4><img class="" alt="" src="~/images/partner2x.png" title="Đây là 1 trong những Merchants được đánh giá cao trong ShopeeFood"/> @store.Name</h4>
                                                 <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
                                             </div>
                                         </div>
@@ -272,4 +272,5 @@
     <script src="~/js/home-section-scroll.js" asp-append-version="true"></script>
     <script src="~/js/homepage-auto-click-default-category.js" asp-append-version="true"></script>
     <script src="~/js/show-home-footer.js" asp-append-version="true"></script>
+    <script src="~/js/get-stores-list-for-homepage.js" asp-append-version="true"></script>
 }

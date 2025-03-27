@@ -18,4 +18,4 @@ global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Dtos;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Requests;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Responses;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Models.ViewModels;
-global using ShopeeFoodClone.WebMvc.Customers.Application.Enums;
+global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Enums;

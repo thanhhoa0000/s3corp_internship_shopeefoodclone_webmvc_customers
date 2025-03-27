@@ -36,4 +36,8 @@
       <_ContentIncludedByDefault Remove="Views\Store\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\images\stores\906bf960-417d-4697-9bbb-5d351e455bfe\products\2f5dbe05-3b35-4b1f-9e37-9c46f2cb473c\" />
+    </ItemGroup>
+
 </Project>

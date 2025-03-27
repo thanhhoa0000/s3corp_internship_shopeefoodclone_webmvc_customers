@@ -5,6 +5,7 @@
   --primary-background-color: #F2F2F2;
   --title-text-color: #252525;
   --main-banner: url("/images/main-banner.jpg");
+  --merchant-badge: url("/images/partner2x.png");
 }
 
 html {
@@ -703,6 +704,12 @@ footer div div div p {
   padding-top: 12px;
 }
 
+.home-store-basic-info h4 img {
+  height: 17px;
+  width: 17px;
+  margin-top: -3px;
+}
+
 .home-store-basic-info div {
   font-size: 14px;
   font-weight: 400;
@@ -941,8 +948,16 @@ footer div div div p {
   color: #329900; 
 }
 
+.opentime-status .online-title {
+  color: #329900;
+}
+
 .opentime-status .offline {
-  background-color: #d0dacb;
+  background-color: #82857e;
+  color: #727571;
+}
+
+.opentime-status .offline-title {
   color: #8e938c;
 }
 
@@ -960,22 +975,190 @@ footer div div div p {
 
 .store-details-cover-img img {
   height: 100%;
+  margin-right: 50px;
 }
 
 .store-details-info > * {
-  margin-left: 50px;
+  font-family: "Noto Sans", Arial, sans-serif;
 }
 
 .store-details-info h1 {
-  font-family: "Noto Sans", Arial, sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: #464646
 }
 
-.store-details-info .opentime-status {
+.store-details-status .opentime-status {
   top: 0;
   left: 0;
   position: relative;
   display: inline-block;
+}
+
+.store-details-status .time {
+  font-size: 15px;
+  font-weight: 400;
+  color: #252525;
+}
+
+.store-details-status .time i {
+  color:#959595;
+}
+
+.store-details-cost {
+  font-size: 15px;
+  font-weight: 400;
+  color: #959595;
+}
+
+.store-details-info {
+  width: 645px;
+  padding-bottom: 35px
+}
+
+.store-details-info .opentime-status span {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.store-details-info .store-details-address {
+  font-size: 13px;
+  font-weight: 400;
+  color: #252525;
+}
+
+.store-details-info .store-details-rating {
+  font-size: 14px;
+  font-weight: 400;
+  color: #252525;
+}
+
+.store-details-rating .number-rating {
+  background-color: #ffc107;
+  padding: 0 5px;
+  border-radius: 4px;
+  color: #fff;
+  margin: 0 5px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.shopeefood-signature {
+  margin-top: 15px;
+}
+
+.shopeefood-signature div {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #959595;
+}
+
+.shopeefood-signature div img {
+  position: absolute;
+  cursor: pointer;
+  width: 116px;
+  height: 44px;
+  margin: -32px 0 0 14px;
+}
+
+.shopeefood-signature div div span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.store-details-products-section {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  margin-top: 50px;
+}
+
+.products-list {
+  background-color: white;
+  padding: 20px;
+}
+
+.product-item {
+  height: 109px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease-in-out;
+  margin-bottom: 15px;
+}
+
+.product-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.product-item a {
+  text-decoration: none;
+}
+
+.product-item a .product-img {
+  height: 100px;
+  width: 100px;
+  border-radius: 6px;
+}
+
+.product-item a .product-img img {
+  height: 100%;
+  width: auto;
+  border-radius: 6px;
+}
+
+.product-item a .product-info {
+  margin: 0 15px;
+  padding-top: 20px;
+  padding-left: 30px;
+}
+
+.product-item a .product-info h2 {
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: #464646;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.product-item a .product-info div {
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: #464646;
+  font-size: 13px;
+  font-weight: 400;
+  padding-top: 5px;
+  line-height: 1.6rem;
+}
+
+.product-item a .product-more {
+  padding-top: 20px;
+}
+
+.product-item a .product-more div .price .actual-price {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0288d1
+}
+
+.product-item a .product-more div .price .old-price {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #6d6f71;
+  text-decoration: line-through;
+}
+
+.product-item a .product-more div .price .actual-price span, .product-item a .product-more div .price .old-price span {
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.product-item a .product-more div button {
+  width: 22px;
+  height: 22px;
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 5px;
 }

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function getItemsForStorePage(province, districts, category, subcategories) {
     $.ajax({
-        url: `/Store/Index?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}`,
+        url: `/Store/Promotions?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}`,
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
