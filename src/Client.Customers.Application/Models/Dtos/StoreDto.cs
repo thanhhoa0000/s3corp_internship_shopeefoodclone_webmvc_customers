@@ -10,7 +10,7 @@ public class StoreDto
     [MaxLength(100)]
     public string? StreetName { get; set; }
     [Required, MinLength(10), MaxLength(50)]
-    public required string Name { get; set; }
+    public string? Name { get; set; }
     [Required]
     public TimeOnly OpeningHour { get; set; }
     [Required]

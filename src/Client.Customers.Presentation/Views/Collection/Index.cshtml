@@ -1,29 +1,55 @@
 ﻿@model CollectionsViewModel
 @{
-    
+    ViewData["Title"] = "Order Đồ ăn in TP. HCM & Delivery Service | Food Delivery & Shipping Service | ShopeeFood.vn";
 }
 <div class="collection-main-section">
     <h1 class="text-center collection-section-title">DANH SÁCH BỘ SƯU TẬP</h1>
     
-    @if (Model.Collections.Any())
-    {
-        <div class="collection-section-collection-list row row-cols-4">
-            @foreach (var collection in Model.Collections)
-            {
-                <div class="collection-section-collection-item col">
-                    <a class="collection-section-collection-content">
-                        <div class="collection-section-collection-content-img">
-                            <img class="" alt="" src="@Url.Content($"~/images{collection.CoverImagePath}")"/>
-                        </div>
-                        <div class="collection-section-collection-content-info">
-                            <div class="collection-section-collection-content-basic-info">
-                                <h4>@collection.Name</h4>
-                                <div>@collection.Stores.Count địa điểm</div>
+    <div class="collection-main-content">
+        @if (Model.Collections.Any())
+        {
+            <div class="collection-section-collection-list row row-cols-4">
+                @foreach (var collection in Model.Collections)
+                {
+                    <div class="collection-section-collection-item col">
+                        <a class="collection-section-collection-content">
+                            <div class="collection-section-collection-content-img">
+                                <img class="" alt="" src="@Url.Content($"~/images{collection.CoverImagePath}")"/>
                             </div>
-                        </div>
-                    </a>
-                </div>
-            }
-        </div>
-    }
+                            <div class="collection-section-collection-content-info">
+                                <div class="collection-section-collection-content-basic-info">
+                                    <h4>@collection.Name</h4>
+                                    <div>@collection.Stores.Count địa điểm</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            
+            <ul class="pagination justify-content-center align-items-center">
+                <li class="@(Model.CurrentPage == 1 ? "disabled" : "")">
+                    <a href="?page=@(Model.CurrentPage - 1)"><i class="bi bi-arrow-left-circle"></i></a>
+                </li>
+                @for (int i = 1; i <= Model.PagesCount; i++)
+                {
+                    <li class="@(i == Model.CurrentPage ? "active" : "")">
+                        <a href="?page=@i">@i</a>
+                    </li>
+                }
+                <li class="@(Model.CurrentPage == Model.PagesCount ? "disabled" : "")">
+                    <a href="?page=@(Model.CurrentPage + 1)"><i class="bi bi-arrow-right-circle"></i></a>
+                </li>
+            </ul>
+        }
+        else
+        {
+            <div class="shipper-sorry-section justify-content-center align-items-center shadow">
+                <img alt="" src="~/images/shippersorry.png"/>
+
+                <h3>Không có dữ liệu</h3>
+                <p>Tìm thực đơn và địa điểm cho đơn hàng. Chúng tôi sẵn sàng phục vụ bạn</p>
+            </div>
+        }
+    </div>
 </div>

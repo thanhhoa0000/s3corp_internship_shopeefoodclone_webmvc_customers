@@ -18,4 +18,13 @@ public class StoreService : IStoreService
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/get"
         });
     }
+
+    public async Task<Response?> GetStoreDetails(Guid storeId)
+    {
+        return await _service.SendAsync(new Request()
+        {
+            ApiMethod = ApiMethod.Get,
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/{storeId}"
+        });
+    }
 }

@@ -6,10 +6,11 @@ function getStores(province, provinceName) {
         type: 'POST',
         success: function (response) {
             getDistricts(province);
-            var tempDom = $('<div></div>').html(response);
-            var newMainSection = tempDom.find('.home-main-section').html();
-            var homeMainSection = $('.home-main-section');
-            homeMainSection.html(newMainSection);
+            
+            let tempDom = $('<div></div>').html(response);
+            let homeMainSection = $('.home-main-section');
+            
+            homeMainSection.html(tempDom.find('.home-main-section').html());
             homeMainSection.find('#home-search-location-placeholder').text(provinceName);
             homeMainSection.find('.home-search-tags-section a').attr('cate-name', activeCate);
             homeMainSection.find('.home-search-tags-section a').attr('province', province);

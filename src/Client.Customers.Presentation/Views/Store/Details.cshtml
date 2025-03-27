@@ -1,0 +1,117 @@
+@model StoreDetailsViewModel
+@{
+    ViewData["Title"] = $"{Model.Store!.Name} | Đặt Món & Giao ship tận nơi | ShopeeFood.vn";
+    var store = Model.Store;
+    var products = Model.Products;
+    var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+    var isStoreOpened = currentTime >= store.OpeningHour && currentTime <= store.ClosingHour;
+}
+<div class="store-details-main-section">
+    <div class="store-details-info-section container-fluid row">
+        <div class="store-details-cover-img d-flex col">
+            <img
+                class="ms-auto"
+                alt=""
+                src="@Url.Content($"~/images{store.CoverImagePath}")"
+                onerror="
+                    this.onerror = null; 
+                    this.src = '/images/stores/default-store-cover-img.jpg'"/>
+        </div>
+        <div class="col">
+            <div class="store-details-info border-bottom">
+                <h1 class="mb-2">@store.Name</h1>
+                <div class="store-details-address mb-1">@store!.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
+                <div class="store-details-rating d-flex align-items-center gap-1 mb-1">
+                    <div class="stars">
+                        <span><img class="" alt="" src="~/images/star-full.png"/></span>
+                        <span><img class="" alt="" src="~/images/star-full.png"/></span>
+                        <span><img class="" alt="" src="~/images/star-full.png"/></span>
+                        <span><img class="" alt="" src="~/images/star-half.png"/></span>
+                        <span><img class="" alt="" src="~/images/no-star.png"/></span>
+                    </div>
+                    <span class="number-rating">999+</span>
+                    đánh giá trên <span style="color: var(--primary-color)"><b> ShopeeFood</b></span>
+                </div>
+                <div class="store-details-status d-flex align-items-center gap-3 mb-1">
+                    <div class="opentime-status d-flex align-items-center gap-1">
+                        <span class="status online"></span>
+                        <span class="online-title">Mở cửa</span>
+                    </div>
+                    <div class="time">
+                        <i class="bi bi-clock"></i>
+                        @store.OpeningHour - @store.ClosingHour
+                    </div>
+                </div>
+                <div class="store-details-cost">
+                    <i class="bi bi-coin"></i>
+                    xx.000đ - xx.000đ
+                </div>
+            </div>
+            <div class="shopeefood-signature d-flex align-items-center gap-5">
+                <div>
+                    <div class="text-uppercase">Phí dịch vụ</div>
+                    <div>
+                        <span style="color: var(--primary-color)">0.0% Phí dịch vụ</span>
+                    </div>
+                    <img class="" alt="" src="~/images/partner-vi.png"/>
+                </div>
+                <div class="border-start ps-3">
+                    <div class="text-uppercase">Dịch vụ bởi</div>
+                    <div>
+                        <span style="color: var(--primary-color)">ShopeeFood</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="store-details-products-section">
+        <div></div>
+        <div class="products-list">
+            @foreach (var product in products)
+            {
+                <div class="product-item">
+                    <a class="row">
+                        <div class="col-auto product-img">
+                            <img class="" alt="@product.Name" src="@Url.Content($"~/images{product.CoverImagePath}")"/>
+                        </div>
+                        <div class="col-8 product-info">
+                            <h2 class="name">@product.Name</h2>
+                            <div class="description">@product.Description</div>
+                        </div>
+                        <div class="col-auto product-more ms-auto me-5">
+                            <div class="row">
+                                <div class="price col-auto">
+                                    @if (product.Discount > 0)
+                                    {
+                                        <div class="old-price">
+                                            @product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                            <span>đ</span>
+                                        </div>
+                                        <div class="actual-price">
+                                            @((product.Price - @product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                            <span>đ</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="actual-price">
+                                            @product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                            <span>đ</span>
+                                        </div>
+                                    }
+                                </div>
+                                <button class="btn btn-orange d-flex align-items-center col-auto">+</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <div></div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/get-items-for-store-details-page.js" asp-append-version="true"></script>
+}

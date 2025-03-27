@@ -40,11 +40,12 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult> Index(string province, string categoryName, int pageSize = 9, int pageNumber = 1)
+    public async Task<IActionResult> Index(string province, string districtsString, string categoryName, int pageSize = 9, int pageNumber = 1)
     {
         var subCategories = new List<SubCategoryDto>();
         var stores = new List<StoreDto>();
         var collections = new List<CollectionDto>();
+        var districts = districtsString?.Split(",").ToList() ?? new List<string>();
         
         Response? subCategoriesResponse = await _subCategoryService.GetAllByCategoryNameAsync(
             request: new GetSubCategoriesRequest
@@ -60,7 +61,11 @@ public class HomeController : Controller
         Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
             request: new GetStoresRequest
             {
-                LocationRequest = new LocationRequest { Province = province },
+                LocationRequest = new LocationRequest
+                {
+                    Province = province,
+                    Districts = districts
+                },
                 CategoryName = categoryName,
                 PageSize = pageSize,
                 PageNumber = pageNumber
@@ -90,6 +95,7 @@ public class HomeController : Controller
             SubCategories = subCategories,
             CategoryName = subCategories.First().Category!.Name,
             Stores = stores,
+            PromotionStores = stores.Where(store => store.IsPromoted).ToList(),
             Collections = collections,
             StoresCount = stores?.Count ?? 0
         };

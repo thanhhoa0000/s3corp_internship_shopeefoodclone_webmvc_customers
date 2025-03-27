@@ -3,4 +3,5 @@
 public interface IStoreService
 {
     Task<Response?> GetStoresByLocationAndCategoryAsync(GetStoresRequest request);
+    Task<Response?> GetStoreDetails(Guid storeId);
 }

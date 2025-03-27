@@ -1,4 +1,4 @@
-﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Enums;
+﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Models.Enums;
 
 public enum CollectionState : byte
 {
