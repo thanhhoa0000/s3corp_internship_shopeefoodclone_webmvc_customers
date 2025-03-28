@@ -4,17 +4,21 @@ public class StoreController : Controller
 {
     private readonly IStoreService _storeService;
     private readonly IProductService _productService;
+    private readonly IMenuService _menuService;
     private readonly ILogger<StoreController> _logger;
 
     public StoreController(
         IStoreService storeService,
         IProductService productService,
+        IMenuService menuService,
         ILogger<StoreController> logger)
     {
         _storeService = storeService;
         _productService = productService;
+        _menuService = menuService;
         _logger = logger;
     }
+    
     [HttpGet]
     public IActionResult Promotions() => View(new StorePromotionsViewModel());
 
@@ -65,6 +69,7 @@ public class StoreController : Controller
     {
         var store = new StoreDto();
         var products = new List<ProductDto>();
+        var menuItems = new List<MenuDto>();
         
         Response? storeResponse = await _storeService.GetStoreDetails(storeId);
 
@@ -90,12 +95,53 @@ public class StoreController : Controller
                 Convert.ToString(productsResponse.Body)!,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 
+        Response? menuItemsResponse = await _menuService.GetMenuItemsByStoreIdAsync(
+            request: new GetMenusRequest
+            {
+                StoreId = store.Id
+            });
+        
+        if (menuItemsResponse!.IsSuccessful)
+            menuItems = JsonSerializer.Deserialize<List<MenuDto>>(
+                Convert.ToString(menuItemsResponse.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+    
         var viewModel = new StoreDetailsViewModel
         {
             Store = store,
-            Products = products
+            Products = products,
+            MenuItems = menuItems.Where(i => i.Products.Any()).ToList(),
+            StarHtml = GenerateStarsHtml(products.Average(p => p.Rating))
         };
         
         return View(viewModel);
+    }
+    
+    private string GenerateStarsHtml(double rating)
+    {
+        int fullStars = (int)rating;
+        bool hasHalfStar = (rating - fullStars) >= 0.5;
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        StringBuilder html = new StringBuilder();
+        html.Append("<div class='stars'>");
+        
+        for (int i = 0; i < fullStars; i++)
+        {
+            html.Append("<span><img class='' alt='' src='~/images/star-full.png'/></span>");
+        }
+        
+        if (hasHalfStar)
+        {
+            html.Append("<span><img class='' alt='' src='~/images/star-half.png'/></span>");
+        }
+        
+        for (int i = 0; i < emptyStars; i++)
+        {
+            html.Append("<span><img class='' alt='' src='~/images/no-star.png'/></span>");
+        }
+
+        html.Append("</div>");
+        return html.ToString();
     }
 }

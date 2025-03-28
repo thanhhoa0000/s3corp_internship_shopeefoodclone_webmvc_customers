@@ -3,6 +3,9 @@
     ViewData["Title"] = $"{Model.Store!.Name} | Đặt Món & Giao ship tận nơi | ShopeeFood.vn";
     var store = Model.Store;
     var products = Model.Products;
+    var totalRateCount = products.Sum(p => p.RateCount);
+    var startHtml = Model.StarHtml;
+    var menuItems = Model.MenuItems;
     var currentTime = TimeOnly.FromDateTime(DateTime.Now);
     var isStoreOpened = currentTime >= store.OpeningHour && currentTime <= store.ClosingHour;
 }
@@ -22,14 +25,8 @@
                 <h1 class="mb-2">@store.Name</h1>
                 <div class="store-details-address mb-1">@store!.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
                 <div class="store-details-rating d-flex align-items-center gap-1 mb-1">
-                    <div class="stars">
-                        <span><img class="" alt="" src="~/images/star-full.png"/></span>
-                        <span><img class="" alt="" src="~/images/star-full.png"/></span>
-                        <span><img class="" alt="" src="~/images/star-full.png"/></span>
-                        <span><img class="" alt="" src="~/images/star-half.png"/></span>
-                        <span><img class="" alt="" src="~/images/no-star.png"/></span>
-                    </div>
-                    <span class="number-rating">999+</span>
+                    @Html.Raw(startHtml)
+                    <span class="number-rating">@(totalRateCount > 999 ? "999+" : totalRateCount)</span>
                     đánh giá trên <span style="color: var(--primary-color)"><b> ShopeeFood</b></span>
                 </div>
                 <div class="store-details-status d-flex align-items-center gap-3 mb-1">
@@ -44,7 +41,7 @@
                 </div>
                 <div class="store-details-cost">
                     <i class="bi bi-coin"></i>
-                    xx.000đ - xx.000đ
+                    @products.Min(p => p.Price).ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ - @products.Max(p => p.Price).ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ
                 </div>
             </div>
             <div class="shopeefood-signature d-flex align-items-center gap-5">
@@ -65,46 +62,65 @@
         </div>
     </div>
     <div class="store-details-products-section">
-        <div></div>
-        <div class="products-list">
-            @foreach (var product in products)
+        <div class="menu">
+            <h3 class="text-uppercase mb-4">Thực đơn</h3>
+            
+            @foreach (var item in menuItems)
             {
-                <div class="product-item">
-                    <a class="row">
-                        <div class="col-auto product-img">
-                            <img class="" alt="@product.Name" src="@Url.Content($"~/images{product.CoverImagePath}")"/>
-                        </div>
-                        <div class="col-8 product-info">
-                            <h2 class="name">@product.Name</h2>
-                            <div class="description">@product.Description</div>
-                        </div>
-                        <div class="col-auto product-more ms-auto me-5">
-                            <div class="row">
-                                <div class="price col-auto">
-                                    @if (product.Discount > 0)
-                                    {
-                                        <div class="old-price">
-                                            @product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
-                                            <span>đ</span>
-                                        </div>
-                                        <div class="actual-price">
-                                            @((product.Price - @product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
-                                            <span>đ</span>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="actual-price">
-                                            @product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
-                                            <span>đ</span>
-                                        </div>
-                                    }
-                                </div>
-                                <button class="btn btn-orange d-flex align-items-center col-auto">+</button>
+                <div class="item text-uppercase mb-1"><a href="@($"#{item.Id}")">@item.Title</a></div>
+            }
+        </div>
+        <div class="products-list">
+            <div class="product-search">
+                <form class="d-flex mb-5" role="search">
+                    <input class="form-control" type="search" placeholder="Tìm món" aria-label="Tìm món"/>
+                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+            
+            @foreach (var item in menuItems)
+            {
+                <div class="menu-title text-uppercase my-3" id="@item.Id"><span>@item.Title</span></div>
+                
+                @foreach (var product in products.Where(p => p.Menus.Any(i => i.Id == item.Id)))
+                {
+                    <div class="product-item">
+                        <a class="row" asp-controller="Product" asp-action="Details" asp-route-productId="@product.Id">
+                            <div class="col-auto product-img">
+                                <img class="" alt="@product.Name" src="@Url.Content($"~/images{product.CoverImagePath}")"/>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                            <div class="col-8 product-info">
+                                <h2 class="name">@product.Name</h2>
+                                <div class="description">@product.Description</div>
+                            </div>
+                            <div class="col-auto product-more ms-auto me-5">
+                                <div class="row">
+                                    <div class="price col-auto">
+                                        @if (product.Discount > 0)
+                                        {
+                                            <div class="old-price">
+                                                @product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                                <span>đ</span>
+                                            </div>
+                                            <div class="actual-price">
+                                                @((product.Price - @product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                                <span>đ</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="actual-price">
+                                                @product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                                <span>đ</span>
+                                            </div>
+                                        }
+                                    </div>
+                                    <button class="btn btn-orange d-flex align-items-center col-auto">+</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
             }
         </div>
         <div></div>
