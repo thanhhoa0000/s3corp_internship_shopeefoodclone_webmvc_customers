@@ -2,20 +2,6 @@
 
 public static partial class ServicesConfiguration
 {
-    public static IServiceCollection AddScopedServices(this IServiceCollection services)
-    {
-        services.AddScoped<IBaseService, BaseService>();
-        services.AddScoped<ITokenProcessor, TokenProcessor>();
-        services.AddScoped<IAccountService, AccountService>();
-        services.AddScoped<ICategoryService, CategoryService>();
-        services.AddScoped<ISubCategoryService, SubCategoryService>();
-        services.AddScoped<IStoreService, StoreService>();
-        services.AddScoped<IProductService, ProductService>();
-        services.AddScoped<ICollectionService, CollectionService>();
-        
-        return services;
-    }
-
     public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
     {
         services.AddHttpClient<ITokenProcessor, TokenProcessor>();
@@ -25,6 +11,7 @@ public static partial class ServicesConfiguration
         services.AddHttpClient<IStoreService, StoreService>();
         services.AddHttpClient<IProductService, ProductService>();
         services.AddHttpClient<ICollectionService, CollectionService>();
+        services.AddHttpClient<IMenuService, MenuService>();
         
         return services;
     }

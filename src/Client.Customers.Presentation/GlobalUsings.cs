@@ -1,4 +1,5 @@
-﻿global using System.Text.Json;
+﻿global using System.Text;
+global using System.Text.Json;
 global using System.Diagnostics;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;

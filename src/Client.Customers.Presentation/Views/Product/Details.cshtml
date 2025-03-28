@@ -1,0 +1,61 @@
+﻿@model ProductDetailsViewModel
+@{
+    ViewData["Title"] = $"{Model.Product!.Name} | Đặt Món & Giao ship tận nơi | ShopeeFood.vn";
+
+    var product = Model.Product;
+    var startHtml = Model.StartHtml;
+    var totalRateCount = product.RateCount;
+}
+
+<div class="product-details-main-section">
+    <div class="product-details-info-section row">
+        <div class="product-details-cover-img d-flex col">
+            <img
+                class="ms-auto"
+                alt=""
+                src="@Url.Content($"~/images{product.CoverImagePath}")"
+                onerror="
+                    this.onerror = null; 
+                    this.src = '/images/stores/default-store-cover-img.jpg'"/>
+        </div>
+        <div class="col">
+            <div class="product-details-info">
+                <h1 class="mb-4">@product.Name</h1>
+                <div class="product-details-rating d-flex align-items-center gap-1 mb-2">
+                    @Html.Raw(startHtml)
+                    <span class="number-rating">@(totalRateCount > 999 ? "999+" : totalRateCount)</span>
+                    đánh giá trên <span style="color: var(--primary-color)"><b> ShopeeFood</b></span>
+                </div>
+                <div class="product-details-sold-count mb-2">
+                    Đã bán <span>@product.BookingCount</span> sản phẩm
+                </div>
+                @if (product.Discount > 0)
+                {
+                    <div class="product-details-cost mb-5 row">
+                        <div class="old-price col-auto">
+                            @product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                            <span>đ</span>
+                        </div>
+                        <div class="actual-price col-auto">
+                            @((product.Price - @product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                            <span>đ</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="product-details-cost mb-5 row">
+                        <div class="actual-price">
+                            @((product.Price - @product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                            <span>đ</span>
+                        </div>
+                    </div>
+                }
+                <div class="add-to-cart">
+                    <a class="btn btn-orange">Thêm vào giỏ hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

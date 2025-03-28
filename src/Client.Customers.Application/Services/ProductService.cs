@@ -17,5 +17,14 @@ public class ProductService : IProductService
             Body = request,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/products/get-from-store"
         });
-    }    
+    }
+
+    public async Task<Response?> GetProductByIdAsync(Guid productId)
+    {
+        return await _service.SendAsync(new Request()
+        {
+            ApiMethod = ApiMethod.Get,
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/products/{productId}"
+        });
+    }
 }
