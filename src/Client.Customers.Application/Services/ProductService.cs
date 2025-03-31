@@ -16,7 +16,7 @@ public class ProductService : IProductService
             ApiMethod = ApiMethod.Post,
             Body = request,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/products/get-from-store"
-        });
+        }, bearer: false);
     }
 
     public async Task<Response?> GetProductByIdAsync(Guid productId)
@@ -25,6 +25,6 @@ public class ProductService : IProductService
         {
             ApiMethod = ApiMethod.Get,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/products/{productId}"
-        });
+        }, bearer: false);
     }
 }

@@ -16,6 +16,6 @@ public class CollectionService : ICollectionService
             ApiMethod = ApiMethod.Post,
             Body = request,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/collections/get"
-        });
+        }, bearer: false);
     }
 }

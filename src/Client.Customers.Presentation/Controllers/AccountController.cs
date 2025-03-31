@@ -106,7 +106,21 @@ public class AccountController : Controller
         await HttpContext.SignOutAsync();
         _tokenHandler.ClearTokens();
 
+        TempData["success"] = "Đăng xuất thành công!";
+
         return RedirectToAction("Index", "Home");
+    }
+    
+    [HttpGet]
+    public IActionResult IsUserAuthenticated()
+    {
+        if (User.Identity!.IsAuthenticated)
+        {
+            return Json(new { isAuthenticated = true });
+        }
+
+        TempData["error"] = "Vui lòng đăng nhập trước khi sử dụng dịch vụ!";
+        return Json(new { isAuthenticated = false });
     }
 
     private async Task SignUserIn(LoginResponse response, string nameClaim)

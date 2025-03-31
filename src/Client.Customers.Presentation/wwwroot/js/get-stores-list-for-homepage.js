@@ -14,6 +14,10 @@ function getStores(province, provinceName) {
             homeMainSection.find('#home-search-location-placeholder').text(provinceName);
             homeMainSection.find('.home-search-tags-section a').attr('cate-name', activeCate);
             homeMainSection.find('.home-search-tags-section a').attr('province', province);
+
+            document.querySelectorAll('.home-search-tags-section a').forEach(tag => {
+                tag.onclick = () => saveSubCategoryToLocalStorage(tag.getAttribute('sub-category'));
+            });
         },
         error: function () {
             console.error("Failed to fetch stores.");

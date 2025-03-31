@@ -1,0 +1,10 @@
+﻿@model CartViewModel
+@{
+    ViewData["Title"] = "Order Đồ ăn in TP. HCM & Delivery Service | Food Delivery & Shipping Service | ShopeeFood.vn";
+
+    var cartHeader = Model.Cart!.CartHeader;
+    var cartItem = Model.Cart!.CartItems;
+}
+
+<h1>@cartHeader!.TotalPrice</h1>
+

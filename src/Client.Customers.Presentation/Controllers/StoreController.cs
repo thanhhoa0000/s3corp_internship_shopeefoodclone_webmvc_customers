@@ -71,6 +71,8 @@ public class StoreController : Controller
         var products = new List<ProductDto>();
         var menuItems = new List<MenuDto>();
         
+        _logger.LogDebug($"storeId: {storeId.ToString()}");
+        
         Response? storeResponse = await _storeService.GetStoreDetails(storeId);
 
         if (storeResponse!.IsSuccessful && storeResponse.Body is not null)
@@ -87,13 +89,20 @@ public class StoreController : Controller
         Response? productsResponse = await _productService.GetProductsByStoreIdAsync(
             request: new GetProductsRequest
             {
-                StoreId = store.Id
+                StoreId = storeId
             });
         
         if (productsResponse!.IsSuccessful)
             products = JsonSerializer.Deserialize<List<ProductDto>>(
                 Convert.ToString(productsResponse.Body)!,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+        if (products.Count == 0)
+        {
+            TempData["error"] = "Store has no products";
+            
+            return RedirectToAction("Index", "Home");
+        }
 
         Response? menuItemsResponse = await _menuService.GetMenuItemsByStoreIdAsync(
             request: new GetMenusRequest
@@ -128,17 +137,17 @@ public class StoreController : Controller
         
         for (int i = 0; i < fullStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-full.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-full.png'/></span>");
         }
         
         if (hasHalfStar)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-half.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-half.png'/></span>");
         }
         
         for (int i = 0; i < emptyStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/no-star.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/no-star.png'/></span>");
         }
 
         html.Append("</div>");

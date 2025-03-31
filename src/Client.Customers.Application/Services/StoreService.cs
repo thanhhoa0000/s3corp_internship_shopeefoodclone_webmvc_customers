@@ -16,7 +16,7 @@ public class StoreService : IStoreService
             ApiMethod = ApiMethod.Post,
             Body = request,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/get"
-        });
+        }, bearer: false);
     }
 
     public async Task<Response?> GetStoreDetails(Guid storeId)
@@ -25,6 +25,6 @@ public class StoreService : IStoreService
         {
             ApiMethod = ApiMethod.Get,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/{storeId}"
-        });
+        }, bearer: false);
     }
 }

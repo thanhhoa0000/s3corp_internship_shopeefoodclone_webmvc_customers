@@ -5,14 +5,21 @@ $(document).ready(function () {
     let clickCount = 0;
     
     let category = JSON.parse(localStorage.getItem('cate'));
+    let subCategory = JSON.parse(localStorage.getItem('sub-category'));
 
     let provinceButtonObserver = new MutationObserver(() => {
         let province = $("#location-dropdown-btn").attr("province-code");
         
-        if (province) {                       
+        if (province) {
             getDistrictListForStorePage(province);
             getSubCategoriesListForStorePage(category);
-            getItemsForStorePage(province, [], category, []);
+            if (subCategory) {
+                getItemsForStorePage(province, [], category, [subCategory]);
+                localStorage.setItem('sub-category', null);
+            }
+            else {
+                getItemsForStorePage(province, [], category, []);
+            }
             provinceButtonObserver.disconnect();
         }
     });
@@ -84,27 +91,23 @@ $(document).ready(function () {
         () => initializeFilterTag(document.querySelectorAll(
             '.store-district-item .form-check-input'), 
             document.querySelector('.store-section-location-filter-tag')));
-    $(document).on('click', '.store-section-location-filter-tag button', function () {
-        document.querySelectorAll('.store-district-item .form-check-input').forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        document.querySelector('.store-section-location-filter-tag').style.display = 'none';
-    });
 
     $(document).on('click', '.store-category-item .form-check-input',
         () => initializeFilterTag(document.querySelectorAll(
                 '.store-category-item .form-check-input'),
             document.querySelector('.store-section-category-filter-tag')));
+    
     $(document).on('click', '.store-section-category-filter-tag button', function () {
-        document.querySelectorAll('.store-category-item .form-check-input').forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        document.querySelector('.store-section-category-filter-tag').style.display = 'none';
-
         let districtCodes = []
         let subcategoryCodes = []
         let province = $("#location-dropdown-btn").attr("province-code");
 
+        document.querySelectorAll('.store-category-item .form-check-input').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        document.querySelector('.store-section-category-filter-tag').style.display = 'none';
+        
         document.querySelectorAll('.store-district-item .form-check-input:checked').forEach(checkbox => {
             districtCodes.push(checkbox.id);
         });
@@ -116,10 +119,26 @@ $(document).ready(function () {
         getItemsForStorePage(province, districtCodes, category, subcategoryCodes);
     });
 
-    $(document).on('classChanged', '#store-district-dropdown', function () {
-        if (!$('#store-district-dropdown').hasClass('show')) {
-            console.log("removed");
-        }
+    $(document).on('click', '.store-section-location-filter-tag button', function () {
+        let districtCodes = []
+        let subcategoryCodes = []
+        let province = $("#location-dropdown-btn").attr("province-code");
+        
+        document.querySelectorAll('.store-district-item .form-check-input').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        document.querySelector('.store-section-location-filter-tag').style.display = 'none';        
+
+        document.querySelectorAll('.store-district-item .form-check-input:checked').forEach(checkbox => {
+            districtCodes.push(checkbox.id);
+        });
+
+        document.querySelectorAll('.store-category-item .form-check-input:checked').forEach(checkbox => {
+            subcategoryCodes.push(checkbox.id);
+        });
+
+        getItemsForStorePage(province, districtCodes, category, subcategoryCodes);
     });
 });
 

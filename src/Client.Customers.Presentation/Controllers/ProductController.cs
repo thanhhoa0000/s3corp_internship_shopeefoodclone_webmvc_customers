@@ -50,17 +50,17 @@ public class ProductController : Controller
         
         for (int i = 0; i < fullStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-full.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-full.png'/></span>");
         }
         
         if (hasHalfStar)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-half.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-half.png'/></span>");
         }
         
         for (int i = 0; i < emptyStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/no-star.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/no-star.png'/></span>");
         }
 
         html.Append("</div>");
