@@ -3,4 +3,5 @@
 public class CartViewModel
 {
     public CartDto? Cart { get; set; }
+    public StoreDto? Store { get; set; }
 }

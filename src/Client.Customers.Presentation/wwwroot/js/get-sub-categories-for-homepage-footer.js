@@ -19,7 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 var subCategories = response.body;
 
                 subCategories.forEach(function (subCategory) {
-                    itemList.append(`<a href="/Store" onclick="localStorage.setItem('cate', JSON.stringify('${subCategory.category.codeName}'));">${subCategory.name}</a>`)
+                    itemList.append(`<a href="/Store/Promotions" cate="${subCategory.category.codeName}" sub-cate="${subCategory.codeName}">${subCategory.name}</a>`)
+                });
+                
+                document.querySelectorAll('.home-footer-item-list a').forEach(item => {
+                    item.onclick = () => setCateLocalStorage(item.getAttribute("cate"), item.getAttribute("sub-cate"));
                 })
             },
             error: function () {
@@ -28,3 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     })
 })
+
+function setCateLocalStorage(cate, subCate) {
+    localStorage.setItem('cate', JSON.stringify(cate));
+    localStorage.setItem('sub-category', JSON.stringify(subCate));
+}

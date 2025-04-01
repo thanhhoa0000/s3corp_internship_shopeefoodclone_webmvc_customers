@@ -1094,7 +1094,8 @@ footer div div div p {
   display: grid;
   grid-template-columns: auto auto 1fr;
   gap: 10px;
-  margin-top: 50px;
+  margin: 50px 0 30px 0;
+
 }
 
 .store-details-products-section .menu h3 {
@@ -1152,13 +1153,13 @@ footer div div div p {
 }
 
 .product-item {
-  height: 109px;
+  height: 120px;
   width: 100%;
   cursor: pointer;
   border-radius: 4px;
   transition: box-shadow 0.3s ease-in-out;
   margin-bottom: 15px;
-  padding-left: 10px;
+  padding: 10px 0 10px 10px;
 }
 
 .product-item:hover {
@@ -1173,6 +1174,7 @@ footer div div div p {
   height: 100px;
   width: 100px;
   border-radius: 6px;
+  padding-left: 0;
 }
 
 .product-item a .product-img img {
@@ -1186,6 +1188,7 @@ footer div div div p {
   margin: 0 15px;
   padding-top: 20px;
   padding-left: 30px;
+  width: 660px
 }
 
 .product-item a .product-info h2 {
@@ -1228,13 +1231,14 @@ footer div div div p {
   font-size: 10px;
 }
 
-.product-item a .product-more div button {
+.product-item button {
   width: 22px;
   height: 22px;
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 20px;
   font-weight: 700;
   padding: 5px;
+  margin-top: 1.1rem
 }
 
 .product-search form input {
@@ -1248,4 +1252,129 @@ footer div div div p {
 
 .product-search form button {
   border-radius: 0 6px 6px 0;
+}
+
+.cart-main-section .store {
+  text-decoration: none;
+  width: 1296px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 30px 0 10px 0;
+}
+
+.cart-main-section .store .img {
+  border-radius: 6px;
+  border: 1px solid #d7d7d7;
+  height: 90px;
+  width: 142px;
+  margin-right: 15px;
+  padding: 0;
+}
+
+.cart-main-section .store .img img {
+  border-radius: 6px;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-main-section .store .basic-info {
+  height: 90px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 6px;
+}
+
+.cart-main-section .store .basic-info h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #252525;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 1px;
+  padding-top: 12px;
+}
+
+.cart-main-section .store .basic-info h4 img {
+  height: 17px;
+  width: 17px;
+  margin-top: -3px;
+}
+
+.cart-main-section .store .basic-info p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #959595;
+  overflow: hidden;
+  padding-bottom: 12px;
+}
+
+.cart-main-section .cart-products-list {
+  background-color: white;
+  border-radius: 4px;
+}
+
+.cart-main-section .cart-products-list div .item {
+  text-decoration: none;
+  padding: 10px;
+}
+
+.cart-main-section .cart-products-list div .item .img {
+  height: 80px;
+  width: 80px;
+  border-radius: 6px;
+  padding-left: 0;
+}
+
+.cart-main-section .cart-products-list div .item .img img {
+  height: 100%;
+  width: auto;
+  border-radius: 6px;
+  border: 1px solid #e6dfdf;
+}
+
+.cart-main-section .cart-products-list div .item .info {
+  margin: 0 15px;
+  padding-top: 20px;
+  padding-left: 30px;
+  width: 660px;
+}
+
+.cart-main-section .cart-products-list div .item .info .name {
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: #464646;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.cart-main-section .cart-products-list div .item .info .description {
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: #464646;
+  font-size: 12px;
+  font-weight: 400;
+  padding-top: 5px;
+  line-height: 1.6rem;
+}
+
+.cart-main-section .cart-products-list div .item .price .old-price {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #6d6f71;
+  text-decoration: line-through;
+}
+
+.cart-main-section .cart-products-list div .item .price .old-price span, .cart-main-section .cart-products-list div .item .price .actual-price span {
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.cart-main-section .cart-products-list div .item .price .actual-price {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0288d1;
 }

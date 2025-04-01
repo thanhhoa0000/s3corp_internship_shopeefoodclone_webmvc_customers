@@ -16,18 +16,3 @@ $(document).ready(function () {
         });
     });
 });
-
-function handleButtonClick(button, customerId) {
-    checkUserIsAuthenticatedWithCallback(function(isAuthenticated) {
-        if (isAuthenticated) {
-            if (customerId) {
-                window.location.href = `/Cart/Index?customerId=${customerId}`;
-            }
-            else {
-                console.error("CustomerId not found!");
-            }
-        }
-    });
-    
-    return false;
-}

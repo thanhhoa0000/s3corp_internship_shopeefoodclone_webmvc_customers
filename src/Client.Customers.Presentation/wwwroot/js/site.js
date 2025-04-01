@@ -41,7 +41,7 @@ function getItemsForStorePage(province, districts, category, subcategories) {
     });
 }
 
-function checkUserIsAuthenticatedWithCallback(callback) {
+function checkUserIsAuthenticated(customerId) {
     $.ajax({
         url: "/Account/IsUserAuthenticated",
         type: "GET",
@@ -50,16 +50,16 @@ function checkUserIsAuthenticatedWithCallback(callback) {
                 window.location.href = "/Account/Login";
             }
             else {
-                if (typeof callback === "function") {
-                    callback(true);
+                if (customerId) {
+                    window.location.href = `/Cart/Index?customerId=${customerId}`;
+                }
+                else {
+                    console.error("CustomerId not found!");
                 }
             }
         },
         error: function() {
             console.error("Error checking authentication!");
-            if (typeof callback === 'function') {
-                callback(false);
-            }
         }
     });
 }

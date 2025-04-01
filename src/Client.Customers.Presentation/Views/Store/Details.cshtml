@@ -86,16 +86,21 @@
                 
                 @foreach (var product in products.Where(p => p.Menus.Any(i => i.Id == item.Id)))
                 {
-                    <div class="product-item">
-                        <a class="row" asp-controller="Product" asp-action="Details" asp-route-productId="@product.Id">
+                    <div class="product-item row ms-1">
+                        <a class="row col-auto" asp-controller="Product" asp-action="Details" asp-route-productId="@product.Id">
                             <div class="col-auto product-img">
-                                <img class="" alt="@product.Name" src="@Url.Content($"~/images{product.CoverImagePath}")"/>
+                                <img class="" 
+                                     alt="@product.Name" 
+                                     src="@Url.Content($"~/images{product.CoverImagePath}")"
+                                     onerror="
+                                        this.onerror = null;
+                                        this.src = '/images/stores/product-img.png'"/>
                             </div>
                             <div class="col-8 product-info">
                                 <h2 class="name">@product.Name</h2>
                                 <div class="description">@product.Description</div>
                             </div>
-                            <div class="col-auto product-more ms-auto me-5">
+                            <div class="col-auto product-more ms-auto me-3">
                                 <div class="row">
                                     <div class="price col-auto">
                                         @if (product.Discount > 0)
@@ -105,7 +110,7 @@
                                                 <span>đ</span>
                                             </div>
                                             <div class="actual-price">
-                                                @((product.Price - @product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                                @((product.Price - product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
                                                 <span>đ</span>
                                             </div>
                                         }
@@ -117,10 +122,11 @@
                                             </div>
                                         }
                                     </div>
-                                    <button type="button" class="btn btn-orange d-flex align-items-center col-auto" onclick="return handleButtonClick(this, @(customerId ?? "")">+</button>
+                                    
                                 </div>
                             </div>
                         </a>
+                        <button type="button" class="btn btn-orange d-flex align-items-center col-auto ms-auto me-4" onclick="checkUserIsAuthenticated('@(customerId ?? "")')">+</button>
                     </div>
                 }
             }
