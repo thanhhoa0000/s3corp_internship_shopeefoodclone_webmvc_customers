@@ -13,6 +13,7 @@ public class ProductController : Controller
         _logger = logger;
     }
         
+    [HttpGet]
     public async Task<ActionResult> Details(Guid productId)
     {
         var product = new ProductDto();

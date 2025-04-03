@@ -59,4 +59,30 @@ public class CartController : Controller
         
         return View(viewModel);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> AddToCart(Guid customerId, Guid productId, int quantity)
+    {
+        var cart = new CartDto();
+        
+        var request = new AddToCartRequest
+        {
+            CustomerId = customerId,
+            ProductId = productId,
+            Quantity = quantity
+        };
+        
+        await _cartService.AddToCartAsync(request);
+        
+        var cartResponse = await _cartService.GetCartAsync(customerId);
+        
+        if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
+            cart = JsonSerializer.Deserialize<CartDto>(
+                Convert.ToString(cartResponse.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        
+        var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
+        
+        return PartialView("_CartItemQuantityPartial", cartItem);
+    }
 }

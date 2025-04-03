@@ -46,6 +46,7 @@ public class HomeController : Controller
         var stores = new List<StoreDto>();
         var collections = new List<CollectionDto>();
         var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+        var storesCount = 0;
         
         Response? subCategoriesResponse = await _subCategoryService.GetAllByCategoryNameAsync(
             request: new GetSubCategoriesRequest
@@ -75,6 +76,13 @@ public class HomeController : Controller
             stores = JsonSerializer.Deserialize<List<StoreDto>>(
                 Convert.ToString(storesResponse.Body)!,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+        Response? storesCountResponse = await _storeService.GetStoresCount();
+        
+        if (storesCountResponse!.IsSuccessful)
+            storesCount = JsonSerializer.Deserialize<int>(
+                Convert.ToString(storesCountResponse.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         
         Response? collectionsResponse = await _collectionService.GetCollectionsByLocationAndCategoryAsync(
             request: new GetCollectionsRequest
@@ -97,7 +105,7 @@ public class HomeController : Controller
             Stores = stores,
             PromotionStores = stores.Where(store => store.IsPromoted).ToList(),
             Collections = collections,
-            StoresCount = stores?.Count ?? 0
+            StoresCount = storesCount
         };
         
         return View(viewModel);

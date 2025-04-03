@@ -133,6 +133,7 @@ footer {
 
 .district-item, .district-item a {
   width: 167px;
+  cursor: pointer;
 }
 
 .location-item a span {
@@ -1377,4 +1378,26 @@ footer div div div p {
   font-size: 16px;
   font-weight: 700;
   color: #0288d1;
+}
+
+.cart-main-section .cart-products-list div .button-section {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cart-main-section .cart-products-list div .button-section a {
+  height: 25px;
+  width: 25px;
+}
+
+.checkout-section {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.checkout-section .total-price span {
+  color: var(--primary-color);
+  font-weight: 700;
 }

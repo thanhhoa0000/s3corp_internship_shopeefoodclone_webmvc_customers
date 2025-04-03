@@ -47,7 +47,7 @@
                             <h4 class="name">@item.Product.Name</h4>
                             <div class="description">@item.Product.Description</div>
                         </div>
-                        <div class="price col-auto">
+                        <div class="price col-auto mt-2">
                             @if (item.Product.Discount > 0)
                             {
                                 <div class="old-price">
@@ -68,9 +68,23 @@
                             }
                         </div>
                     </a>
-                    <div class="button-section col-auto"></div>
+                    <div class="button-section d-flex justify-content-end col-auto row mt-3 me-2">
+                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-increase" customerId="@cartHeader!.CustomerId" productId="@item.Product.Id" quantity="-1" onclick="updateCartItemQuantity(this)">-</a>
+                        <div class="col-auto">@item.Quantity</div>
+                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-decrease" customerId="@cartHeader!.CustomerId" productId="@item.Product.Id" quantity="1" onclick="updateCartItemQuantity(this)">+</a>
+                    </div>
                 </div>
             }
         </div>
+        
+        <div class="checkout-section row d-flex justify-content-end mt-4 me-0">
+            <div class="total-price col-auto mt-1 me-1">Thành tiền: <span>@cartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")</span></div>
+            <button type="button" class="btn btn-outline-orange col-auto">Thanh toán</button>
+        </div>
     }
 </div>
+
+@section Scripts
+{
+    <script src="~/js/update-cart-item-quantity.js" asp-append-version="true"></script>
+}

@@ -27,4 +27,13 @@ public class StoreService : IStoreService
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/{storeId}"
         }, bearer: false);
     }
+
+    public async Task<Response?> GetStoresCount()
+    {
+        return await _service.SendAsync(new Request()
+        {
+            ApiMethod = ApiMethod.Get,
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/get-count"
+        }, bearer: false);
+    }
 }

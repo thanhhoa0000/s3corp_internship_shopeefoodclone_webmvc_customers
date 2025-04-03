@@ -17,4 +17,14 @@ public class CartService : ICartService
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/cart/user/{customerId}"
         }, bearer: true);
     }
+
+    public async Task<Response?> AddToCartAsync(AddToCartRequest request)
+    {
+        return await _service.SendAsync(new Request()
+        {
+            ApiMethod = ApiMethod.Post,
+            Body = request,
+            Url = $"{ApiUrlProperties.ApiGatewayUrl}/cart"
+        }, bearer: true);
+    }
 }

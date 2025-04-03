@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: 'https://localhost:5001/provinces',
+        url: `${gatewayUrl}/provinces/with-stores-count`,
         type: 'GET',
         success: function (response) {
             if (!response.isSuccessful || !response.body) {
@@ -8,12 +8,12 @@ $(document).ready(function () {
                 return;
             }
 
-            var dropdown = $('#location-dropdown');
+            let dropdown = $('#location-dropdown');
             dropdown.empty();
 
-            var locations = response.body;
+            let locations = response.body;
 
-            var selectedLocation = localStorage.getItem("selectedLocation") || "Hồ Chí Minh";
+            let selectedLocation = "Hồ Chí Minh";
             $('#location-dropdown-btn').text(selectedLocation);
 
             locations.sort((a, b) => {
@@ -26,24 +26,17 @@ $(document).ready(function () {
 
             locations.forEach(function (location) {
                 var listItem = $(`
-                    <li class="location-item">
-                        <a class="dropdown-item d-flex justify-content-between" onclick="getStores('${location.code}', '${location.name}')" data-location="${location.name}" province-code="${location.code}">${location.name} <span class="col">Loading...</span></a>
-                    </li>
-                `);
-
+                            <li class="location-item">
+                                <a class="dropdown-item d-flex justify-content-between" onclick="getStores('${location.code}', '${location.name}')" data-location="${location.name}" province-code="${location.code}">${location.name} <span class="col">${location.storesCount} địa điểm</span></a>
+                            </li>
+                        `);
                 dropdown.append(listItem);
-                
-                getStoresCountByProvince(location.code).done(function (count) {
-                    listItem.find('a span').text(`${count} địa điểm`);
-                }).fail(function () {
-                    listItem.find('a span').text(`0 địa điểm`);
-                });
             });
 
             $('.dropdown-item').click(function () {
-                var selectedLocation = $(this).data('location');
-                var provinceCode = $(this).attr('province-code');
-                var dropdownBtn = $('#location-dropdown-btn');
+                selectedLocation = $(this).data('location');
+                let provinceCode = $(this).attr('province-code');
+                let dropdownBtn = $('#location-dropdown-btn');
 
                 dropdownBtn.text(selectedLocation);
                 dropdownBtn.attr('province-code', provinceCode);
@@ -64,24 +57,3 @@ $(document).ready(function () {
         }
     });
 });
-
-function getStoresCountByProvince(province) {
-    return $.ajax({
-        url: `https://localhost:5001/stores/get`,
-        type: 'POST',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify({
-            locationRequest: { province: province }
-        })
-    }).then(function (response) {
-        if (!response.isSuccessful || !response.body) {
-            console.error("Invalid API response");
-            return 0;
-        }
-        return response.body.length;
-    }).catch(function (error) {
-        console.error("Request failed:", error);
-        return 0;
-    });
-}
