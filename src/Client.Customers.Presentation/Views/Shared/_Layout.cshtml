@@ -1,4 +1,4 @@
-﻿@{
+@{
     var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
@@ -43,12 +43,12 @@
                     <div class="navbar-nav" id="navbarNav">
                         <ul class="navbar-nav main-nav">
                             <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="food" href="/" onclick="event.preventDefault(); getSubCategories(this.getAttribute('code-name'))">Đồ ăn</a></li>
-                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="fresh" href="/#" onclick="getSubCategories(this.getAttribute('code-name'))">Thực phẩm</a></li>
-                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="alcohol" href="/#" onclick="getSubCategories(this.getAttribute('code-name'))">Rượu bia</a></li>
-                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="flowers" href="/#" onclick="getSubCategories(this.getAttribute('code-name'))">Hoa</a></li>
-                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="fmcg" href="/#" onclick="getSubCategories(this.getAttribute('code-name'))">Siêu thị</a></li>
-                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="medicine" href="/#" onclick="getSubCategories(this.getAttribute('code-name'))">Thuốc</a></li>
-                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="pets" href="/#" onclick="getSubCategories(this.getAttribute('code-name'))">Thú cưng</a></li>
+                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="fresh" href="/" onclick="event.preventDefault(); getSubCategories(this.getAttribute('code-name'))">Thực phẩm</a></li>
+                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="alcohol" href="/" onclick="event.preventDefault(); getSubCategories(this.getAttribute('code-name'))">Rượu bia</a></li>
+                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="flowers" href="/" onclick="event.preventDefault(); getSubCategories(this.getAttribute('code-name'))">Hoa</a></li>
+                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="fmcg" href="/" onclick="event.preventDefault(); getSubCategories(this.getAttribute('code-name'))">Siêu thị</a></li>
+                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="medicine" href="/" onclick="event.preventDefault(); getSubCategories(this.getAttribute('code-name'))">Thuốc</a></li>
+                            <li class="nav-item p-1"><a class="nav-link main-nav-item" code-name="pets" href="/" onclick="event.preventDefault(); getSubCategories(this.getAttribute('code-name'))">Thú cưng</a></li>
                         </ul>
                     </div>
 
@@ -158,16 +158,10 @@
             <button id="back-to-top-btn" class="btn-outline-orange"><i class="bi bi-arrow-up"></i></button>
         </div>
     </footer>
-    
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/get-provinces-list.js" asp-append-version="true"></script>
-        <script src="~/js/get-districts-list.js" asp-append-version="true"></script>
-        <script src="~/js/get-sub-categories-for-homepage-footer.js" asp-append-version="true"></script>
-        <script src="~/js/get-sub-categories-for-homepage-search.js" asp-append-version="true"></script>
-        <script src="~/js/get-stores-by-district.js" asp-append-version="true"></script>
-        <script src="~/js/back-to-top.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)
     </body>
 </html>

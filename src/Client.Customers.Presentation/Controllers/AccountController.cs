@@ -62,9 +62,9 @@ public class AccountController : Controller
             return View(model);
         }
 
-        if (response.Message.Contains("Tên đăng nhập hoặc mật khẩu không chính xác!"))
+        if (response.Message.Contains("Username or password is incorrect!"))
         {
-            TempData["error"] = response.Message;
+            TempData["error"] = "Tên đăng nhập hoặc mật khẩu không đúng!";
         }
         else
         {

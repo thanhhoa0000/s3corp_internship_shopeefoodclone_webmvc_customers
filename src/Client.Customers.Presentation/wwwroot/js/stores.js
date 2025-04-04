@@ -151,11 +151,11 @@ function getDistrictListForStorePage(province) {
                 return;
             }
 
-            var dropdown = $('#store-district-dropdown .row');
+            let dropdown = $('#store-district-dropdown .row');
             dropdown.empty();
 
             response.body.forEach(function (district) {
-                var districtItem =
+                let districtItem =
                     `<div class="col-4">
                         <div class="form-check store-district-item ps-5">
                             <input class="form-check-input" type="checkbox" id="${district.code}" value="${district.name}" />
@@ -169,4 +169,82 @@ function getDistrictListForStorePage(province) {
             console.error("Failed to fetch districts.");
         }
     });
+}
+
+function getSubCategoriesListForStorePage(categoryName) {
+    $.ajax({
+        url: `${gatewayUrl}/categories/sub-categories/get-by-cateName`,
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            categoryName: categoryName
+        }),
+        success: function (response) {
+            if (!response || !response.isSuccessful || !Array.isArray(response.body)) {
+                console.error("Invalid API response format:", response);
+                return;
+            }
+
+            let dropdown = $('#store-category-dropdown .row');
+            dropdown.empty();
+
+            response.body.forEach(function (subCategory) {
+                let subCategoryItem =
+                    `<div class="col-4">
+                        <div class="form-check store-category-item ps-5">
+                            <input class="form-check-input" type="checkbox" id="${subCategory.codeName}" value="${subCategory.name}" />
+                            <label class="form-check-label" for="${subCategory.codeName}">${subCategory.name}</label>
+                        </div>
+                    </div>`
+                dropdown.append(subCategoryItem);
+            });
+        },
+        error: function () {
+            console.error("Failed to fetch districts.");
+        }
+    });
+}
+
+function getItemsForStorePage(province, districts, category, subcategories) {
+    $.ajax({
+        url: `/Store/Promotions?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}`,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            let tempDom = $('<div></div>').html(response);
+            let newStoresSection = tempDom.find('.store-main-content').html();
+            $('.store-main-content').html(newStoresSection);
+            $('.store-section-options p').html(tempDom.find('.store-section-options p').html());
+
+            if (subcategories.length > 0) {
+                setTimeout(function () {
+                    $('.store-category-item input').each(function () {
+                        if (subcategories.includes(this.id)) {
+                            $(this).prop('checked', true);
+
+                            let filterTag = document.querySelector('.store-section-category-filter-tag');
+                            let checkboxes = document.querySelectorAll('.store-category-item input');
+                            let checkedCount = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+
+                            filterTag.style.display = 'flex';
+                            filterTag.querySelector('span').textContent = `(${checkedCount})`;
+                        }
+                    });
+                }, 100);
+            }
+        }
+    });
+}
+
+function initializeFilterTag(checkboxes, filterTag) {
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", () => updateFilterTag(checkboxes, filterTag));
+    });
+}
+
+function updateFilterTag(checkboxes, filterTag) {
+    const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+    filterTag.style.display = anyChecked ? "flex" : "none";
+    const checkedCount = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+    filterTag.querySelector('span').textContent = `(${checkedCount})`;
 }

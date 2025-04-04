@@ -53,10 +53,15 @@
                     </div>
                 }
                 <div class="add-to-cart">
-                    <button type="button" class="btn btn-orange" onclick="checkUserIsAuthenticated('@(customerId ?? "")')">Thêm vào giỏ hàng</button>
+                    <button type="button" class="btn btn-orange" customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" onclick="checkUserIsAuthenticated(this, '@(customerId ?? String.Empty)')">Thêm vào giỏ hàng</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts
+{
+    <script src="~/js/product-details.js" asp-append-version="true"></script>
+    <script src="~/js/cart.js" asp-append-version="true"></script>
+}

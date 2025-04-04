@@ -4,7 +4,6 @@ $(document).ready(function () {
     
     document.querySelectorAll(`.nav-link`).forEach((item) => {
         item.classList.remove("active");
-        item.removeAttribute("onclick");
     })
     
     document.querySelector(`.nav-link[code-name='${cate}']`).classList.add("active");

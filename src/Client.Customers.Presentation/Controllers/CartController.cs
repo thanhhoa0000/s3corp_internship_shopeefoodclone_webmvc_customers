@@ -19,6 +19,14 @@ public class CartController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(Guid customerId)
     {
+        if (!User.Identity!.IsAuthenticated)
+        {
+            TempData["error"] = "Vui lòng đăng nhập trước khi sử dụng dịch vụ!";
+
+            return RedirectToAction("Login", "Account");
+        }
+
+        
         var cart = new CartDto();
         var store = new StoreDto();
         
@@ -49,7 +57,7 @@ public class CartController : Controller
         
         else
         {
-            TempData["error"] = cartResponse.Message;
+            TempData["error"] = "Có lỗi xảy ra khi truy cập giỏ hàng!";
             
             return RedirectToAction("Index", "Home");
         }
@@ -75,7 +83,7 @@ public class CartController : Controller
         await _cartService.AddToCartAsync(request);
         
         var cartResponse = await _cartService.GetCartAsync(customerId);
-        
+
         if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
             cart = JsonSerializer.Deserialize<CartDto>(
                 Convert.ToString(cartResponse.Body)!,

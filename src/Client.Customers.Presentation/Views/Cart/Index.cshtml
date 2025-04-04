@@ -16,7 +16,7 @@
                 <img
                     class="ms-auto"
                     alt=""
-                    src="@Url.Content($"~/images{store!.CoverImagePath}")"
+                    src="@Url.Content($"~/images{store.CoverImagePath}")"
                     onerror="
                     this.onerror = null; 
                     this.src = '/images/stores/default-store-cover-img.jpg'"/>
@@ -69,22 +69,22 @@
                         </div>
                     </a>
                     <div class="button-section d-flex justify-content-end col-auto row mt-3 me-2">
-                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-increase" customerId="@cartHeader!.CustomerId" productId="@item.Product.Id" quantity="-1" onclick="updateCartItemQuantity(this)">-</a>
-                        <div class="col-auto">@item.Quantity</div>
-                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-decrease" customerId="@cartHeader!.CustomerId" productId="@item.Product.Id" quantity="1" onclick="updateCartItemQuantity(this)">+</a>
+                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-increase" item-id="@item.Id" customerId="@cartHeader!.CustomerId" productId="@item.ProductId" quantity="-1" onclick="updateCartItemQuantity(this)">-</a>
+                        <div class="col-auto" id="@item.Id">@item.Quantity</div>
+                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-decrease" item-id="@item.Id" customerId="@cartHeader.CustomerId" productId="@item.ProductId" quantity="1" onclick="updateCartItemQuantity(this)">+</a>
                     </div>
                 </div>
             }
         </div>
         
         <div class="checkout-section row d-flex justify-content-end mt-4 me-0">
-            <div class="total-price col-auto mt-1 me-1">Thành tiền: <span>@cartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")</span></div>
-            <button type="button" class="btn btn-outline-orange col-auto">Thanh toán</button>
+            <div class="total-price col-auto d-flex align-items-center justify-content-center">Thành tiền: <span>@cartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")</span></div>
+            <button type="button" class="btn btn-outline-orange col-auto d-flex align-items-center justify-content-center">Thanh toán</button>
         </div>
     }
 </div>
 
 @section Scripts
 {
-    <script src="~/js/update-cart-item-quantity.js" asp-append-version="true"></script>
+    <script src="~/js/cart.js" asp-append-version="true"></script>
 }

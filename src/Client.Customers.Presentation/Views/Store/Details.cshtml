@@ -126,7 +126,7 @@
                                 </div>
                             </div>
                         </a>
-                        <button type="button" class="btn btn-orange d-flex align-items-center col-auto ms-auto me-4" onclick="checkUserIsAuthenticated('@(customerId ?? "")')">+</button>
+                        <button type="button" class="btn btn-orange d-flex align-items-center col-auto ms-auto me-4" customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" onclick="checkUserIsAuthenticated(this, '@(customerId ?? String.Empty)')">+</button>
                     </div>
                 }
             }
@@ -137,5 +137,6 @@
 
 @section Scripts
 {
-    <script src="~/js/get-items-for-store-details-page.js" asp-append-version="true"></script>
+    <script src="~/js/store-details.js" asp-append-version="true"></script>
+    <script src="~/js/cart.js" asp-append-version="true"></script>
 }
