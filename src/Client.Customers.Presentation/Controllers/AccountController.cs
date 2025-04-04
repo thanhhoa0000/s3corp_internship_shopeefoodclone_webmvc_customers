@@ -42,6 +42,7 @@ public class AccountController : Controller
             if (roleClaim.IsNullOrEmpty())
             {
                 TempData["error"] = "Đã xảy ra lỗi!";
+                _logger.LogDebug("flag");
 
                 return View(model);
             }

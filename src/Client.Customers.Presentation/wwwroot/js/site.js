@@ -14,7 +14,7 @@ function getProvinces() {
             dropdown.empty();
 
             let locations = response.body;
-
+            
             let selectedLocation = localStorage.getItem("selectedLocation") ?? "Hồ Chí Minh";
             $('#location-dropdown-btn').text(selectedLocation);
 

@@ -47,3 +47,13 @@ function updateCartItemQuantity(element) {
         }
     });
 }
+
+function proceedToOrderInit(customerId) {
+    $.ajax({
+        url: `/Order/OrderInit?customerId=${customerId}`,
+        type: "GET",
+        success: function (response) {
+            alert("OK");
+        }
+    })
+}
