@@ -123,6 +123,15 @@ public class AccountController : Controller
         return Json(new { isAuthenticated = false });
     }
 
+    [Route("Account/dangnhap")]
+    [Route("taikhoan/dangnhap")]
+    [Route("Account/dang-nhap")]
+    [Route("taikhoan/dang-nhap")]
+    public IActionResult RedirectToLogin()
+    {
+        return RedirectToRoutePermanent("Default", new { controller = "Account", action = "Login" });
+    }
+
     private async Task SignUserIn(LoginResponse response, string nameClaim)
     {
         var handler = new JwtSecurityTokenHandler();
