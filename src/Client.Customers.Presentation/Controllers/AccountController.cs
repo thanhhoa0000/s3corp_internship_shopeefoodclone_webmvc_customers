@@ -127,9 +127,20 @@ public class AccountController : Controller
     [Route("taikhoan/dangnhap")]
     [Route("Account/dang-nhap")]
     [Route("taikhoan/dang-nhap")]
+    [Route("taikhoan/login")]
     public IActionResult RedirectToLogin()
     {
         return RedirectToRoutePermanent("Default", new { controller = "Account", action = "Login" });
+    }
+    
+    [Route("Account/dangky")]
+    [Route("taikhoan/dangky")]
+    [Route("Account/dang-ky")]
+    [Route("taikhoan/dang-ky")]
+    [Route("taikhoan/register")]
+    public IActionResult RedirectToRegister()
+    {
+        return RedirectToRoutePermanent("Default", new { controller = "Account", action = "Register" });
     }
 
     private async Task SignUserIn(LoginResponse response, string nameClaim)
