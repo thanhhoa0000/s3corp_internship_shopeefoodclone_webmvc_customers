@@ -38,8 +38,11 @@ function updateCartItemQuantity(element) {
         url: `/Cart/AddToCart?productId=${productId}&quantity=${quantity}&customerId=${customerId}`,
         type: "POST",
         success: function (response) {
-            let itemId = $(element).attr("item-id")
-            $(`#${itemId}`).replaceWith(response);
+            let itemId = $(element).attr("item-id");
+            let parsed = $('<div>').html(response);
+            
+            $(`#${itemId}`).replaceWith(parsed.find(`#${itemId}`));
+            $('.total-price span').replaceWith(parsed.find('span'));
             toastr.success("Cập nhật giỏ hàng thành công!");
         },
         error: function () {
@@ -49,11 +52,5 @@ function updateCartItemQuantity(element) {
 }
 
 function proceedToOrderInit(customerId) {
-    $.ajax({
-        url: `/Order/OrderInit?customerId=${customerId}`,
-        type: "GET",
-        success: function (response) {
-            alert("OK");
-        }
-    })
+    window.location.href = `/Order/OrderInit?customerId=${customerId}`;
 }

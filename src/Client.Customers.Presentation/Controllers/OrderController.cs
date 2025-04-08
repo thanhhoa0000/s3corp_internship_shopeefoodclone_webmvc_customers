@@ -19,15 +19,21 @@ public class OrderController : Controller
     [HttpGet]
     public async Task<IActionResult> OrderInit(Guid customerId)
     {
+        if (!User.Identity!.IsAuthenticated)
+        {
+            TempData["error"] = "Vui lòng đăng nhập trước khi sử dụng dịch vụ!";
+
+            return RedirectToAction("Login", "Account");
+        }
+        
         var cart = new CartDto();
         var viewModel = new OrderDetailsViewModel();
-
 
         Response? cartResponse = await _cartService.GetCartAsync(customerId);
 
         if (cartResponse!.Message.Contains("The cart is empty"))
         {
-            return View(viewModel);
+            return RedirectToAction("CartEmpty", "Cart");
         }
 
         if (cartResponse!.IsSuccessful && cartResponse.Body is not null)

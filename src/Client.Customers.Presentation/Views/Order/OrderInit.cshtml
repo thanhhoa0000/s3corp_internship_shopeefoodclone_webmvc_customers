@@ -1,8 +1,63 @@
 ﻿@model OrderDetailsViewModel
 @{
-    ViewData["Title"] = $"{User.Identity!.Name}'s Order | Food Delivery & Shipping Service | ShopeeFood.vn";
-}
+    var customerName = User.Identity!.Name;
 
-<div class="order-detail-main-section">
-    
-</div>
+    ViewData["Title"] = $"{customerName}'s Order | Food Delivery & Shipping Service | ShopeeFood.vn";
+}
+<form>
+    @Html.AntiForgeryToken()
+    <div class="order-detail-main-section shadow mt-5">
+        <div class="customer-address-section pt-4 ps-4">
+            
+            <h4><i class="bi bi-geo-alt"></i> Địa chỉ nhận hàng</h4>
+            <div class="customer-basic-info row ps-5 mb-3">
+                <div class="customer-name">Tên khách hàng: <span>@customerName</span></div>
+                <div class="customer-phone-number row d-flex align-items-center justify-content-start mt-1">
+                    <label class="form-label col-auto">Số điện thoại:</label>
+                    <input class="form-control col-auto ms-2" type="number" pattern="^\+\d{12}$|^\d{11}$" asp-for="CustomerPhoneNumber"/>
+                    <span asp-validation-for="CustomerPhoneNumber" class="text-danger"/>
+                </div>
+                <input type="hidden" asp-for="CustomerName" value="@customerName"/>
+            </div>
+            <div class="ps-5 row">
+                <div class="dropdown col-auto p-0 me-3">
+                    <button id="province-btn"
+                            class="btn dropdown-toggle d-flex align-items-center justify-content-start" type="button"
+                            data-bs-toggle="dropdown">
+                        Tỉnh/Thành phố
+                    </button>
+                    <ul class="dropdown-menu" id="order-province-dropdown">
+
+                    </ul>
+                </div>
+                <div class="dropdown col-auto p-0 me-3">
+                    <button id="district-btn"
+                            class="btn dropdown-toggle d-flex align-items-center justify-content-start" type="button"
+                            data-bs-toggle="dropdown">
+                        Quận/Huyện
+                    </button>
+                    <ul class="dropdown-menu" id="order-district-dropdown">
+
+                    </ul>
+                </div>
+                <div class="dropdown col-auto p-0 me-3">
+                    <button id="ward-btn" class="btn dropdown-toggle d-flex align-items-center justify-content-start"
+                            type="button" data-bs-toggle="dropdown">
+                        Phường/Xã
+                    </button>
+                    <ul class="dropdown-menu" id="order-ward-dropdown">
+
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <input type="text" placeholder="Tên toà nhà/Số nhà/Tên đường..."/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script src="~/js/order-init.js" asp-append-version="true"></script>
+}

@@ -4,19 +4,33 @@ function getProvinces() {
     $.ajax({
         url: `${gatewayUrl}/provinces/with-stores-count`,
         type: 'GET',
-        success: function (response) {
+        success: function (response) {            
             if (!response.isSuccessful || !response.body) {
                 console.error("Invalid API response");
                 return;
             }
 
             let dropdown = $('#location-dropdown');
-            dropdown.empty();
 
             let locations = response.body;
             
-            let selectedLocation = localStorage.getItem("selectedLocation") ?? "Hồ Chí Minh";
-            $('#location-dropdown-btn').text(selectedLocation);
+            let selectedLocation = localStorage.getItem("selectedLocation");
+            let selectedLocationCode = localStorage.getItem("selectedLocationCode");
+            
+            if (!selectedLocation || selectedLocation === "undefined") {
+                selectedLocation = "Hồ Chí Minh";
+            }
+            
+            if (!selectedLocationCode) {
+                selectedLocationCode = "79";
+            }
+            
+            let locationButton = $('#location-dropdown-btn');
+
+            dropdown.empty();
+
+            locationButton.text(selectedLocation);
+            locationButton.attr("province-code", selectedLocationCode);
 
             locations.sort((a, b) => {
                 if (a.codeName === "ho_chi_minh") return -1;

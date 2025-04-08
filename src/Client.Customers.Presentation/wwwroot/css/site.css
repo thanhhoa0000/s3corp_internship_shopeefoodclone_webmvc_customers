@@ -53,6 +53,10 @@ footer {
   width: 1296px;
 }
 
+.dropdown-item:active, .dropdown-item:focus {
+  background-color: #959595 !important;
+  color: #ffffff !important;
+}
 
 .company-address {
   margin-top: -150px;
@@ -1400,4 +1404,65 @@ footer div div div p {
 .checkout-section .total-price span {
   color: var(--primary-color);
   font-weight: 700;
+}
+
+.order-detail-main-section .customer-address-section {
+  background-color: white;
+  border-radius: 4px;
+}
+
+.order-detail-main-section .customer-address-section h4 {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.order-detail-main-section .customer-address-section div {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.order-detail-main-section .customer-address-section div div button {
+  width: auto;
+  height: 30px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.order-detail-main-section .customer-address-section div div ul li {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.order-detail-main-section .customer-address-section div div input, .order-detail-main-section .customer-address-section .customer-basic-info div input {
+  width: 400px;
+  height: 30px;
+  border-color: #959595;
+  border-radius: 6px;
+}
+
+.order-detail-main-section .customer-address-section div div input::placeholder {
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: #959595;
+}
+
+.order-detail-main-section .customer-address-section div div ul li:hover {
+  background-color: #aaa2a2 !important;
+  color: #ffffff !important;
+}
+
+.order-detail-main-section .customer-address-section .customer-basic-info {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.order-detail-main-section .customer-address-section .customer-basic-info div span, .order-detail-main-section .customer-address-section .customer-basic-info div input {
+  font-weight: 700;
+}
+
+.order-detail-main-section .customer-address-section .customer-basic-info div input::placeholder {
+  font-family: "Noto Sans", Arial, sans-serif;
+  color: #959595;
 }

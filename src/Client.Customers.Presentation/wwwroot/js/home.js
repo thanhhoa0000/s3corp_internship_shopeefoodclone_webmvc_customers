@@ -4,12 +4,16 @@ window.addEventListener("pageshow", getProvinces);
 
 $(document).ready(function () {
     let cate = JSON.parse(localStorage.getItem('cate'));
+    
+    if (!cate) {
+        localStorage.setItem('cate', JSON.stringify("food"));
+    }
 
-    document.querySelectorAll(`.nav-link`).forEach((item) => {
+    document.querySelectorAll(`.main-nav-item`).forEach((item) => {
         item.classList.remove("active");
     })
 
-    document.querySelector(`.nav-link[code-name='${cate}']`).classList.add("active");
+    $(`.main-nav-item[code-name='${cate}']`).addClass("active");
 });
 
 // Divide categories and their sub-categories in columns evenly on footer

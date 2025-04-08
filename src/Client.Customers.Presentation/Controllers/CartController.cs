@@ -25,7 +25,6 @@ public class CartController : Controller
 
             return RedirectToAction("Login", "Account");
         }
-
         
         var cart = new CartDto();
         var store = new StoreDto();
@@ -40,7 +39,7 @@ public class CartController : Controller
 
         if (cartResponse!.Message.Contains("The cart is empty"))
         {
-            return View(viewModel);
+            return RedirectToAction("CartEmpty", "Cart");
         }
         
         if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
@@ -67,6 +66,9 @@ public class CartController : Controller
         
         return View(viewModel);
     }
+
+    [HttpGet]
+    public IActionResult CartEmpty() => View();
 
     [HttpPost]
     public async Task<IActionResult> AddToCart(Guid customerId, Guid productId, int quantity)
