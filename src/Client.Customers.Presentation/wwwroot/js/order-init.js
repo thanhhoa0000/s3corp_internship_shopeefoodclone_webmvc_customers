@@ -1,4 +1,9 @@
 document.addEventListener("configLoaded", getProvinces);
+document.querySelector(".customer-phone-number input").addEventListener("keypress", function (event) {
+    if (!/[0-9]/.test(event.key)) {
+        event.preventDefault();
+    }
+})
 
 $(document).ready(function () {
     let cate = JSON.parse(localStorage.getItem('cate'));

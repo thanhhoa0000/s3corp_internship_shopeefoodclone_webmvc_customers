@@ -25,90 +25,110 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var categories = new List<CategoryDto>();
-        
-        Response? categoriesResponse = await _categoryService.GetAllAsync();
-        
-        if (categoriesResponse!.IsSuccessful)
-            categories = JsonSerializer.Deserialize<List<CategoryDto>>(
-                JsonSerializer.Serialize(categoriesResponse.Body),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-        
-        var viewModel = new HomeViewModel(){ Categories = categories };
-        
-        return View(viewModel);
+        try
+        {
+            var categories = new List<CategoryDto>();
+
+            Response? categoriesResponse = await _categoryService.GetAllAsync();
+
+            if (categoriesResponse!.IsSuccessful)
+                categories = JsonSerializer.Deserialize<List<CategoryDto>>(
+                    JsonSerializer.Serialize(categoriesResponse.Body),
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            var viewModel = new HomeViewModel() { Categories = categories };
+
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex.ToString()}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return View(new HomeViewModel());
+        }
     }
     
     [HttpPost]
     public async Task<IActionResult> Index(string province, string districtsString, string categoryName, int pageSize = 9, int pageNumber = 1)
     {
-        var subCategories = new List<SubCategoryDto>();
-        var stores = new List<StoreDto>();
-        var collections = new List<CollectionDto>();
-        var districts = districtsString?.Split(",").ToList() ?? new List<string>();
-        var storesCount = 0;
-        
-        Response? subCategoriesResponse = await _subCategoryService.GetAllByCategoryNameAsync(
-            request: new GetSubCategoriesRequest
-            {
-                CategoryName = categoryName
-            });
-        
-        if (subCategoriesResponse!.IsSuccessful)
-            subCategories = JsonSerializer.Deserialize<List<SubCategoryDto>>(
-                JsonSerializer.Serialize(subCategoriesResponse.Body),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-        
-        Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
-            request: new GetStoresRequest
-            {
-                LocationRequest = new LocationRequest
-                {
-                    Province = province,
-                    Districts = districts
-                },
-                CategoryName = categoryName,
-                PageSize = pageSize,
-                PageNumber = pageNumber
-            });
-        
-        if (storesResponse!.IsSuccessful)
-            stores = JsonSerializer.Deserialize<List<StoreDto>>(
-                Convert.ToString(storesResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-
-        Response? storesCountResponse = await _storeService.GetStoresCount();
-        
-        if (storesCountResponse!.IsSuccessful)
-            storesCount = JsonSerializer.Deserialize<int>(
-                Convert.ToString(storesCountResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-        
-        Response? collectionsResponse = await _collectionService.GetCollectionsByLocationAndCategoryAsync(
-            request: new GetCollectionsRequest
-            {
-                LocationRequest = new LocationRequest { Province = province },
-                CategoryName = categoryName,
-                PageSize = pageSize,
-                PageNumber = pageNumber
-            });
-        
-        if (collectionsResponse!.IsSuccessful)
-            collections = JsonSerializer.Deserialize<List<CollectionDto>>(
-                Convert.ToString(collectionsResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-
-        var viewModel = new HomeViewModel()
+        try
         {
-            SubCategories = subCategories,
-            CategoryName = subCategories.First().Category!.Name,
-            Stores = stores,
-            PromotionStores = stores.Where(store => store.IsPromoted).ToList(),
-            Collections = collections,
-            StoresCount = storesCount
-        };
-        
-        return View(viewModel);
+            var subCategories = new List<SubCategoryDto>();
+            var stores = new List<StoreDto>();
+            var collections = new List<CollectionDto>();
+            var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+            var storesCount = 0;
+
+            Response? subCategoriesResponse = await _subCategoryService.GetAllByCategoryNameAsync(
+                request: new GetSubCategoriesRequest
+                {
+                    CategoryName = categoryName
+                });
+
+            if (subCategoriesResponse!.IsSuccessful)
+                subCategories = JsonSerializer.Deserialize<List<SubCategoryDto>>(
+                    JsonSerializer.Serialize(subCategoriesResponse.Body),
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
+                request: new GetStoresRequest
+                {
+                    LocationRequest = new LocationRequest
+                    {
+                        Province = province,
+                        Districts = districts
+                    },
+                    CategoryName = categoryName,
+                    PageSize = pageSize,
+                    PageNumber = pageNumber
+                });
+
+            if (storesResponse!.IsSuccessful)
+                stores = JsonSerializer.Deserialize<List<StoreDto>>(
+                    Convert.ToString(storesResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            Response? storesCountResponse = await _storeService.GetStoresCount();
+
+            if (storesCountResponse!.IsSuccessful)
+                storesCount = JsonSerializer.Deserialize<int>(
+                    Convert.ToString(storesCountResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            Response? collectionsResponse = await _collectionService.GetCollectionsByLocationAndCategoryAsync(
+                request: new GetCollectionsRequest
+                {
+                    LocationRequest = new LocationRequest { Province = province },
+                    CategoryName = categoryName,
+                    PageSize = pageSize,
+                    PageNumber = pageNumber
+                });
+
+            if (collectionsResponse!.IsSuccessful)
+                collections = JsonSerializer.Deserialize<List<CollectionDto>>(
+                    Convert.ToString(collectionsResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            var viewModel = new HomeViewModel()
+            {
+                SubCategories = subCategories,
+                CategoryName = subCategories.First().Category!.Name,
+                Stores = stores,
+                PromotionStores = stores.Where(store => store.IsPromoted).ToList(),
+                Collections = collections,
+                StoresCount = storesCount
+            };
+
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex.ToString()}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return View(new HomeViewModel());
+        }
     }
 
     public IActionResult Privacy()

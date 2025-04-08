@@ -3,6 +3,7 @@
 public class OrderDetailsViewModel
 {
     public CartDto? Cart { get; set; }
+    public StoreDto? Store { get; set; }
     public string? CustomerName { get; set; }
     [Required(ErrorMessage = "Số điện thoại không thể để trống")]
     [RegularExpression(@"^\d{1,11}$", ErrorMessage = "Số điện thoại không hợp lệ")]

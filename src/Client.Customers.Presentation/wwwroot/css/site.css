@@ -1415,12 +1415,14 @@ footer div div div p {
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
+  color: #252525;
 }
 
 .order-detail-main-section .customer-address-section div {
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
+  color: #252525;
 }
 
 .order-detail-main-section .customer-address-section div div button {
@@ -1428,11 +1430,13 @@ footer div div div p {
   height: 30px;
   font-size: 14px;
   font-weight: 400;
+  color: #252525;
 }
 
 .order-detail-main-section .customer-address-section div div ul li {
   font-size: 13px;
   font-weight: 400;
+  color: #252525;
 }
 
 .order-detail-main-section .customer-address-section div div input, .order-detail-main-section .customer-address-section .customer-basic-info div input {
@@ -1440,6 +1444,7 @@ footer div div div p {
   height: 30px;
   border-color: #959595;
   border-radius: 6px;
+  color: #252525;
 }
 
 .order-detail-main-section .customer-address-section div div input::placeholder {
@@ -1456,6 +1461,7 @@ footer div div div p {
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
+  color: #252525;
 }
 
 .order-detail-main-section .customer-address-section .customer-basic-info div span, .order-detail-main-section .customer-address-section .customer-basic-info div input {
@@ -1465,4 +1471,87 @@ footer div div div p {
 .order-detail-main-section .customer-address-section .customer-basic-info div input::placeholder {
   font-family: "Noto Sans", Arial, sans-serif;
   color: #959595;
+}
+
+.order-detail-main-section .products-list-section {
+  background-color: white;
+  border-radius: 4px;
+}
+
+.order-detail-main-section .products-list-section .store-name * {
+  text-decoration: none;
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #252525;
+}
+
+.order-detail-main-section .products-list-section .store-name h4 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  border: 1px solid #959595;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-img img {
+  width: 100%;
+  height: 100%;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-info * {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-info .name {
+  font-weight: 700;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-info .name .description {
+  font-size: 13px;
+  color: #959595;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-price .old-price {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #6d6f71;
+  text-decoration: line-through;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-price .actual-price {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0288d1;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-price .old-price span, .order-detail-main-section .products-list-section .product-items .item .item-price .actual-price span{
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.order-detail-main-section .order-total-price {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #252525;
+}
+
+.order-detail-main-section .order-total-price span {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.order-detail-main-section button {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
 }

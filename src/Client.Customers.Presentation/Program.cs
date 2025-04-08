@@ -80,6 +80,20 @@ try
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
     
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+            context.Response.StatusCode = 500;
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsync(new
+            {
+                error = "An unexpected error occurred."
+            }.ToString()!);
+        });
+    });
+    
     app.UseSession();
 
     app.Run();

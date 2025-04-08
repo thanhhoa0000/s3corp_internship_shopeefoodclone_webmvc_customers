@@ -102,6 +102,7 @@ public class TokenProcessor : ITokenProcessor
         }
         
         SetTokens(loginResponse.AccessToken, loginResponse.RefreshToken);
+        
         return loginResponse.AccessToken;
     }
     

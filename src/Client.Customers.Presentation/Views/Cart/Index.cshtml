@@ -82,10 +82,10 @@
 
     <div class="checkout-section row d-flex justify-content-end mt-4 me-0">
         <div class="total-price col-auto d-flex align-items-center justify-content-center">Thành tiền:
-            <span class="ms-1">@cartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")</span>
+            <span class="ms-1">@cartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
         </div>
         <button type="button" class="btn btn-outline-orange col-auto d-flex align-items-center justify-content-center"
-                onclick="proceedToOrderInit('@cartHeader.CustomerId')">Thanh toán
+                onclick="proceedToOrderInit('@cartHeader.CustomerId')">Khởi tạo đơn hàng
         </button>
     </div>
 </div>
