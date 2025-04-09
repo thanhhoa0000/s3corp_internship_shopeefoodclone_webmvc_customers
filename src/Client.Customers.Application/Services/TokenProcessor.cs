@@ -42,11 +42,23 @@ public class TokenProcessor : ITokenProcessor
 
     public void SetTokens(string accessToken, string refreshToken)
     {
-        _accessor.HttpContext?.Response.Cookies.Append(
-            CookieProperties.AccessTokenCookie, accessToken);
+        if (_accessor.HttpContext is null)
+        {
+            _logger.Error("HttpContext is null");
+        }
+
+        var options = new CookieOptions
+        {
+            Secure = true,
+            HttpOnly = false,
+            IsEssential = true
+        };
         
         _accessor.HttpContext?.Response.Cookies.Append(
-            CookieProperties.RefreshTokenCookie, refreshToken);
+            CookieProperties.AccessTokenCookie, accessToken, options);
+        
+        _accessor.HttpContext?.Response.Cookies.Append(
+            CookieProperties.RefreshTokenCookie, refreshToken, options);
     }
 
     public async Task<LoginResponse?> GetValidAccessTokenAsync(string accessToken, string refreshToken)
