@@ -13,30 +13,41 @@ public class ProductController : Controller
         _logger = logger;
     }
         
+    [HttpGet]
     public async Task<ActionResult> Details(Guid productId)
     {
-        var product = new ProductDto();
-        
-        Response? productResponse = await _productService.GetProductByIdAsync(productId);
-        
-        if (productResponse!.IsSuccessful && productResponse.Body is not null)
-            product = JsonSerializer.Deserialize<ProductDto>(
-                Convert.ToString(productResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-        else 
+        try
         {
-            TempData["error"] = "Error occured when getting store details";
+            var product = new ProductDto();
 
+            Response? productResponse = await _productService.GetProductByIdAsync(productId);
+
+            if (productResponse!.IsSuccessful && productResponse.Body is not null)
+                product = JsonSerializer.Deserialize<ProductDto>(
+                    Convert.ToString(productResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            else
+            {
+                TempData["error"] = "Error occured when getting store details";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            var viewModel = new ProductDetailsViewModel
+            {
+                Product = product,
+                StartHtml = GenerateStarsHtml(product.Rating)
+            };
+
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex.ToString()}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
             return RedirectToAction("Index", "Home");
         }
-
-        var viewModel = new ProductDetailsViewModel
-        {
-            Product = product,
-            StartHtml = GenerateStarsHtml(product.Rating)
-        };
-
-        return View(viewModel);
     }
     
     private string GenerateStarsHtml(double rating)
@@ -50,17 +61,17 @@ public class ProductController : Controller
         
         for (int i = 0; i < fullStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-full.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-full.png'/></span>");
         }
         
         if (hasHalfStar)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-half.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-half.png'/></span>");
         }
         
         for (int i = 0; i < emptyStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/no-star.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/no-star.png'/></span>");
         }
 
         html.Append("</div>");

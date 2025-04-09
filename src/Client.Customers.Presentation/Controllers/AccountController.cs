@@ -22,56 +22,69 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        Response? response = await _service.LoginAsync(model);
-
-        if (response!.Body is not null && response.IsSuccessful)
+        try
         {
-            LoginResponse loginResponse
-                = JsonSerializer.Deserialize<LoginResponse>(
-                    Convert.ToString(response.Body)!,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            Response? response = await _service.LoginAsync(model);
 
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(loginResponse.AccessToken);
-
-            var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role || c.Type == "Role")?.Value ??
-                            "";
-            var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name || c.Type == "name")?.Value ??
-                            "";
-
-            if (roleClaim.IsNullOrEmpty())
+            if (response!.Body is not null && response.IsSuccessful)
             {
-                TempData["error"] = "Đã xảy ra lỗi!";
+                LoginResponse loginResponse
+                    = JsonSerializer.Deserialize<LoginResponse>(
+                        Convert.ToString(response.Body)!,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(loginResponse.AccessToken);
+
+                var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role || c.Type == "Role")
+                                    ?.Value ??
+                                "";
+                var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name || c.Type == "name")
+                                    ?.Value ??
+                                "";
+
+                if (roleClaim.IsNullOrEmpty())
+                {
+                    TempData["error"] = "Đã xảy ra lỗi!";
+                    _logger.LogDebug("flag");
+
+                    return View(model);
+                }
+
+                await SignUserIn(loginResponse, nameClaim);
+
+                _tokenHandler.SetTokens(loginResponse.AccessToken, loginResponse.RefreshToken);
+
+                if (roleClaim == "Customer")
+                {
+                    TempData["success"] = $"Xin chào {nameClaim}";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                TempData["error"] = $"Đã xảy ra lỗi!";
 
                 return View(model);
             }
 
-            await SignUserIn(loginResponse, nameClaim);
-
-            _tokenHandler.SetTokens(loginResponse.AccessToken, loginResponse.RefreshToken);
-
-            if (roleClaim == "Customer")
+            if (response.Message.Contains("Username or password is incorrect!"))
             {
-                TempData["success"] = $"Xin chào {nameClaim}";
-
-                return RedirectToAction("Index", "Home");
+                TempData["error"] = "Tên đăng nhập hoặc mật khẩu không đúng!";
             }
-
-            TempData["error"] = $"Đã xảy ra lỗi: {response.Message}";
+            else
+            {
+                TempData["error"] = $"Đã xảy ra lỗi!";
+            }
 
             return View(model);
         }
-
-        if (response.Message.Contains("Tên đăng nhập hoặc mật khẩu không chính xác!"))
+        catch (Exception ex)
         {
-            TempData["error"] = response.Message;
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return View(new LoginViewModel());
         }
-        else
-        {
-            TempData["error"] = $"Đã xảy ra lỗi: {response.Message}";
-        }
-
-        return View(model);
     }
 
     [HttpGet]
@@ -83,21 +96,31 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        Response? response = await _service.RegisterAsync(model);
-
-        if (response is not null && response.IsSuccessful)
+        try
         {
-            if (model.Role.ToString().IsNullOrEmpty())
-                model.Role = Role.Customer;
+            Response? response = await _service.RegisterAsync(model);
 
-            TempData["success"] = "Đăng ký tài khoản thành công!";
+            if (response is not null && response.IsSuccessful)
+            {
+                if (model.Role.ToString().IsNullOrEmpty())
+                    model.Role = Role.Customer;
 
-            return RedirectToAction("Login", "Account");
+                TempData["success"] = "Đăng ký tài khoản thành công!";
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            TempData["error"] = response!.Message;
+
+            return View(model);
         }
-
-        TempData["error"] = response!.Message;
-
-        return View(model);
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return View(new RegisterViewModel());
+        }
     }
 
     [AllowAnonymous]
@@ -106,7 +129,41 @@ public class AccountController : Controller
         await HttpContext.SignOutAsync();
         _tokenHandler.ClearTokens();
 
+        TempData["success"] = "Đăng xuất thành công!";
+
         return RedirectToAction("Index", "Home");
+    }
+    
+    [HttpGet]
+    public IActionResult IsUserAuthenticated()
+    {
+        if (User.Identity!.IsAuthenticated)
+        {
+            return Json(new { isAuthenticated = true });
+        }
+
+        TempData["error"] = "Vui lòng đăng nhập trước khi sử dụng dịch vụ!";
+        return Json(new { isAuthenticated = false });
+    }
+
+    [Route("Account/dangnhap")]
+    [Route("taikhoan/dangnhap")]
+    [Route("Account/dang-nhap")]
+    [Route("taikhoan/dang-nhap")]
+    [Route("taikhoan/login")]
+    public IActionResult RedirectToLogin()
+    {
+        return RedirectToRoutePermanent("Default", new { controller = "Account", action = "Login" });
+    }
+    
+    [Route("Account/dangky")]
+    [Route("taikhoan/dangky")]
+    [Route("Account/dang-ky")]
+    [Route("taikhoan/dang-ky")]
+    [Route("taikhoan/register")]
+    public IActionResult RedirectToRegister()
+    {
+        return RedirectToRoutePermanent("Default", new { controller = "Account", action = "Register" });
     }
 
     private async Task SignUserIn(LoginResponse response, string nameClaim)

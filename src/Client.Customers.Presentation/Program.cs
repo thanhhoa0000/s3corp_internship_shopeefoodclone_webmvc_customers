@@ -1,7 +1,7 @@
-var apiName = "[Customers] Web MVC";
+var clientName = "[Customers] Web MVC";
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Debug($"Initializing {apiName}...\n-----\n");
+logger.Debug($"Initializing {clientName}...\n-----\n");
 
 try 
 {
@@ -41,6 +41,17 @@ try
         });
 
     builder.Services.AddSession();
+    
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSelfFrontend",
+            policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .WithMethods("GET", "POST")
+                    .AllowAnyHeader();
+            });
+    });
 
     var app = builder.Build();
 
@@ -56,6 +67,8 @@ try
     app.UseStaticFiles();
 
     app.UseRouting();
+    
+    app.UseCors("AllowSelfFrontend");
 
     app.UseAuthorization();
     
@@ -67,13 +80,38 @@ try
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
     
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+            context.Response.StatusCode = 500;
+            context.Response.ContentType = "application/json";
+
+            var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+            var exception = exceptionHandlerPathFeature?.Error;
+            
+            var errorMessage = exception?.ToString();
+            logger.Error($"--------\nUnhandled exception:\n {errorMessage}\n--------");
+
+            var error = new
+            {
+                error = "An unexpected error occurred."
+            };
+
+            var json = JsonSerializer.Serialize(error);
+
+            await context.Response.WriteAsync(json);
+        });
+    });
+    
     app.UseSession();
 
     app.Run();
 }
 catch (Exception ex)
 {
-    logger.Error($"Error(s) occured when starting {apiName}:\n-----\n{ex}");
+    logger.Error($"Error(s) occured when starting {clientName}:\n-----\n{ex}");
 }
 finally
 {

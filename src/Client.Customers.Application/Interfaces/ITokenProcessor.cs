@@ -8,6 +8,6 @@ public interface ITokenProcessor
     void SetTokens(string accessToken, string refreshToken);
     string? GetAccessToken();
     string? GetRefreshToken();
-    Task<string?> GetValidAccessTokenAsync(string accessToken, string refreshToken);
+    Task<LoginResponse?> GetValidAccessTokenAsync(string accessToken, string refreshToken);
     void ClearTokens();
 }

@@ -13,6 +13,8 @@ public static partial class ServicesConfiguration
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICollectionService, CollectionService>();
         services.AddScoped<IMenuService, MenuService>();
+        services.AddScoped<ICartService, CartService>();
+        services.AddScoped<IOrderService, OrderService>();
         
         return services;
     }

@@ -5,6 +5,7 @@
     var product = Model.Product;
     var startHtml = Model.StartHtml;
     var totalRateCount = product.RateCount;
+    var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="product-details-main-section">
@@ -15,8 +16,8 @@
                 alt=""
                 src="@Url.Content($"~/images{product.CoverImagePath}")"
                 onerror="
-                    this.onerror = null; 
-                    this.src = '/images/stores/default-store-cover-img.jpg'"/>
+                    this.onerror = null;
+                    this.src = '/images/stores/product-img.png'"/>
         </div>
         <div class="col">
             <div class="product-details-info">
@@ -37,7 +38,7 @@
                             <span>đ</span>
                         </div>
                         <div class="actual-price col-auto">
-                            @((product.Price - @product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                            @((product.Price - product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
                             <span>đ</span>
                         </div>
                     </div>
@@ -52,10 +53,15 @@
                     </div>
                 }
                 <div class="add-to-cart">
-                    <a class="btn btn-orange">Thêm vào giỏ hàng</a>
+                    <button type="button" class="btn btn-orange" customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" onclick="checkUserIsAuthenticated(this, '@(customerId ?? String.Empty)')">Thêm vào giỏ hàng</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts
+{
+    <script src="~/js/product-details.js" asp-append-version="true"></script>
+    <script src="~/js/cart.js" asp-append-version="true"></script>
+}

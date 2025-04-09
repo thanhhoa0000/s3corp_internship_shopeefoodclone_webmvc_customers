@@ -1,0 +1,117 @@
+﻿@model OrderDetailsViewModel
+@{
+    var customerName = User.Identity!.Name;
+    var cartHeader = Model.Cart!.CartHeader;
+    var storeName = Model.Store!.Name;
+    var cartItems = Model.Cart!.CartItems;
+
+    ViewData["Title"] = $"{customerName}'s Order | Food Delivery & Shipping Service | ShopeeFood.vn";
+}
+<form>
+    @Html.AntiForgeryToken()
+    <div class="order-detail-main-section mt-5 mb-5">
+        <div class="customer-address-section pt-4 ps-4 pb-4 mb-4 shadow">
+            <h4><i class="bi bi-geo-alt"></i> Địa chỉ nhận hàng</h4>
+            <div class="customer-basic-info row ps-5 mb-3">
+                <div class="customer-name">Tên khách hàng: <span>@customerName</span></div>
+                <div class="customer-phone-number row d-flex align-items-center justify-content-start mt-1">
+                    <label class="form-label col-auto">Số điện thoại:</label>
+                    <input class="form-control col-auto ms-2" type="text" pattern="^\+\d{12}$|^\d{11}$" asp-for="CustomerPhoneNumber"/>
+                    <span asp-validation-for="CustomerPhoneNumber" class="text-danger"/>
+                </div>
+                <input type="hidden" asp-for="CustomerName" value="@customerName"/>
+            </div>
+            <div class="ps-5 row">
+                <div class="dropdown col-auto p-0 me-3">
+                    <button id="province-btn"
+                            class="btn dropdown-toggle d-flex align-items-center justify-content-start" type="button"
+                            data-bs-toggle="dropdown">
+                        Tỉnh/Thành phố
+                    </button>
+                    <ul class="dropdown-menu" id="order-province-dropdown">
+
+                    </ul>
+                </div>
+                <div class="dropdown col-auto p-0 me-3">
+                    <button id="district-btn"
+                            class="btn dropdown-toggle d-flex align-items-center justify-content-start" type="button"
+                            data-bs-toggle="dropdown">
+                        Quận/Huyện
+                    </button>
+                    <ul class="dropdown-menu" id="order-district-dropdown">
+
+                    </ul>
+                </div>
+                <div class="dropdown col-auto p-0 me-3">
+                    <button id="ward-btn" class="btn dropdown-toggle d-flex align-items-center justify-content-start"
+                            type="button" data-bs-toggle="dropdown">
+                        Phường/Xã
+                    </button>
+                    <ul class="dropdown-menu" id="order-ward-dropdown">
+
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <input type="text" placeholder="Tên toà nhà/Số nhà/Tên đường..."/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="products-list-section pt-4 ps-4 pb-4 pe-4 mb-4 shadow">
+            <div class="store-name d-flex align-items-center justify-content-between mb-3">
+                <h4 class="d-flex justify-content-start align-items-center"><i class="bi bi-shop"></i> @storeName</h4>
+                <a class="d-flex justify-content-end align-items-center" asp-controller="Store" asp-action="Details" asp-route-storeId="@cartHeader!.StoreId">Xem Shop <i class="bi bi-chevron-right"></i></a>
+            </div>
+            
+            <div class="product-items">
+                @foreach (var item in cartItems)
+                {
+                    <div class="item row m-0 ms-2" item-id="@item.Id">
+                        <div class="item-img col-auto p-0">
+                            <img class=""
+                                 alt="@item.Product!.Name"
+                                 src="@Url.Content($"~/images{@item.Product!.CoverImagePath}")"
+                                 onerror="
+                                        this.onerror = null;
+                                        this.src = '/images/stores/product-img.png'"/>
+                        </div>
+                        <div class="item-info col-auto p-0 ms-3">
+                            <div class="name">@item.Product!.Name</div>
+                            <div class="description">@item.Product!.Description</div>
+                        </div>
+                        <div class="item-price col-auto p-0 ms-auto">
+                            @if (item.Product!.Discount > 0)
+                            {
+                                <div class="old-price">
+                                    @item.Product!.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                    <span>đ</span>
+                                </div>
+                                <div class="actual-price">
+                                    @((item.Product!.Price - item.Product!.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                    <span>đ</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="actual-price">
+                                    @item.Product!.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                    <span>đ</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="order-total-price d-flex align-items-center justify-content-end me-4 mb-3">
+            Thành tiền: <span class="ms-1">@cartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
+        </div>
+        <button type="submit" class="btn btn-orange d-flex align-items-center justify-content-end me-4 ms-auto">Thanh toán</button>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script src="~/js/order-init.js" asp-append-version="true"></script>
+}

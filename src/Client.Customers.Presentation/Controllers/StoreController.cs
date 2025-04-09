@@ -31,90 +31,120 @@ public class StoreController : Controller
         int pageSize = 30,
         int pageNumber = 1)
     {
-        var stores = new List<StoreDto>();
-        var districts = districtsString?.Split(",").ToList() ?? new List<string>();
-        var subcategories = subcategoriesString?.Split(",").ToList() ?? new List<string>();
-
-        Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
-            request: new GetStoresRequest
-            {
-                LocationRequest = new LocationRequest
-                {
-                    Province = province,
-                    Districts = districts
-                },
-                CategoryName = categoryName,
-                SubCategoryNames = subcategories,
-                PageSize = pageSize,
-                PageNumber = pageNumber
-            });
-
-        if (storesResponse!.IsSuccessful)
-            stores = JsonSerializer.Deserialize<List<StoreDto>>(
-                Convert.ToString(storesResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-
-        var viewModel = new StorePromotionsViewModel
+        try
         {
-            Stores = stores.Where(store => store.IsPromoted).ToList(),
-            PagesCount = (int)Math.Ceiling((double)stores.Where(store => store.IsPromoted).ToList().Count / pageSize),
-            CurrentPage = pageNumber
-        };
+            var stores = new List<StoreDto>();
+            var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+            var subcategories = subcategoriesString?.Split(",").ToList() ?? new List<string>();
 
-        return View(viewModel);
+            Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
+                request: new GetStoresRequest
+                {
+                    LocationRequest = new LocationRequest
+                    {
+                        Province = province,
+                        Districts = districts
+                    },
+                    CategoryName = categoryName,
+                    SubCategoryNames = subcategories,
+                    PageSize = pageSize,
+                    PageNumber = pageNumber
+                });
+
+            if (storesResponse!.IsSuccessful)
+                stores = JsonSerializer.Deserialize<List<StoreDto>>(
+                    Convert.ToString(storesResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            var viewModel = new StorePromotionsViewModel
+            {
+                Stores = stores.Where(store => store.IsPromoted).ToList(),
+                PagesCount =
+                    (int)Math.Ceiling((double)stores.Where(store => store.IsPromoted).ToList().Count / pageSize),
+                CurrentPage = pageNumber
+            };
+
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex.ToString()}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return View(new StorePromotionsViewModel());
+        }
     }
 
     [HttpGet]
     public async Task<IActionResult> Details(Guid storeId)
     {
-        var store = new StoreDto();
-        var products = new List<ProductDto>();
-        var menuItems = new List<MenuDto>();
-        
-        Response? storeResponse = await _storeService.GetStoreDetails(storeId);
-
-        if (storeResponse!.IsSuccessful && storeResponse.Body is not null)
-            store = JsonSerializer.Deserialize<StoreDto>(
-                Convert.ToString(storeResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-        else 
+        try
         {
-            TempData["error"] = "Error occured when getting store details";
+            var store = new StoreDto();
+            var products = new List<ProductDto>();
+            var menuItems = new List<MenuDto>();
 
-            return RedirectToAction("Index", "Home");
+            _logger.LogDebug($"storeId: {storeId.ToString()}");
+
+            Response? storeResponse = await _storeService.GetStoreDetails(storeId);
+
+            if (storeResponse!.IsSuccessful && storeResponse.Body is not null)
+                store = JsonSerializer.Deserialize<StoreDto>(
+                    Convert.ToString(storeResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            else
+            {
+                TempData["error"] = "Error occured when getting store details";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            Response? productsResponse = await _productService.GetProductsByStoreIdAsync(
+                request: new GetProductsRequest
+                {
+                    StoreId = storeId
+                });
+
+            if (productsResponse!.IsSuccessful)
+                products = JsonSerializer.Deserialize<List<ProductDto>>(
+                    Convert.ToString(productsResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            if (products.Count == 0)
+            {
+                TempData["error"] = "Store has no products";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            Response? menuItemsResponse = await _menuService.GetMenuItemsByStoreIdAsync(
+                request: new GetMenusRequest
+                {
+                    StoreId = store.Id
+                });
+
+            if (menuItemsResponse!.IsSuccessful)
+                menuItems = JsonSerializer.Deserialize<List<MenuDto>>(
+                    Convert.ToString(menuItemsResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            var viewModel = new StoreDetailsViewModel
+            {
+                Store = store,
+                Products = products,
+                MenuItems = menuItems.Where(i => i.Products.Any()).ToList(),
+                StarHtml = GenerateStarsHtml(products.Average(p => p.Rating))
+            };
+
+            return View(viewModel);
         }
-
-        Response? productsResponse = await _productService.GetProductsByStoreIdAsync(
-            request: new GetProductsRequest
-            {
-                StoreId = store.Id
-            });
-        
-        if (productsResponse!.IsSuccessful)
-            products = JsonSerializer.Deserialize<List<ProductDto>>(
-                Convert.ToString(productsResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-
-        Response? menuItemsResponse = await _menuService.GetMenuItemsByStoreIdAsync(
-            request: new GetMenusRequest
-            {
-                StoreId = store.Id
-            });
-        
-        if (menuItemsResponse!.IsSuccessful)
-            menuItems = JsonSerializer.Deserialize<List<MenuDto>>(
-                Convert.ToString(menuItemsResponse.Body)!,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-    
-        var viewModel = new StoreDetailsViewModel
+        catch (Exception ex)
         {
-            Store = store,
-            Products = products,
-            MenuItems = menuItems.Where(i => i.Products.Any()).ToList(),
-            StarHtml = GenerateStarsHtml(products.Average(p => p.Rating))
-        };
-        
-        return View(viewModel);
+            _logger.LogError($"Error occurred: {ex.ToString()}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return View(new StoreDetailsViewModel());
+        }
     }
     
     private string GenerateStarsHtml(double rating)
@@ -128,17 +158,17 @@ public class StoreController : Controller
         
         for (int i = 0; i < fullStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-full.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-full.png'/></span>");
         }
         
         if (hasHalfStar)
         {
-            html.Append("<span><img class='' alt='' src='~/images/star-half.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/star-half.png'/></span>");
         }
         
         for (int i = 0; i < emptyStars; i++)
         {
-            html.Append("<span><img class='' alt='' src='~/images/no-star.png'/></span>");
+            html.Append("<span><img class='' alt='' src='/images/no-star.png'/></span>");
         }
 
         html.Append("</div>");

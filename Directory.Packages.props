@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Version together with NLog -->
+    <PackageVersion Include="Microsoft.AspNetCore.Cors" Version="2.3.0" />
     <PackageVersion Include="NLog.Web.AspNetCore" Version="$(NLogVersion)" />
     <PackageVersion Include="NLog" Version="$(NLogVersion)" />
     <!-- Version together with runtime -->

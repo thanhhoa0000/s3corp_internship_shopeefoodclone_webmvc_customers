@@ -12,6 +12,8 @@ public static partial class ServicesConfiguration
         services.AddHttpClient<IProductService, ProductService>();
         services.AddHttpClient<ICollectionService, CollectionService>();
         services.AddHttpClient<IMenuService, MenuService>();
+        services.AddHttpClient<ICartService, CartService>();
+        services.AddHttpClient<IOrderService, OrderService>();
         
         return services;
     }

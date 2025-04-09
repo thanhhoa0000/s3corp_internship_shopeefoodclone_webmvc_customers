@@ -16,6 +16,6 @@ public class MenuService : IMenuService
             ApiMethod = ApiMethod.Post,
             Body = request,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/menus/get-from-store"
-        });
+        }, bearer: false);
     }    
 }
