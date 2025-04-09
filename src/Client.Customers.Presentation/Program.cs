@@ -87,10 +87,21 @@ try
             context.Response.StatusCode = 500;
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsync(new
+            var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+            var exception = exceptionHandlerPathFeature?.Error;
+            
+            var errorMessage = exception?.ToString();
+            logger.Error($"--------\nUnhandled exception:\n {errorMessage}\n--------");
+
+            var error = new
             {
                 error = "An unexpected error occurred."
-            }.ToString()!);
+            };
+
+            var json = JsonSerializer.Serialize(error);
+
+            await context.Response.WriteAsync(json);
         });
     });
     

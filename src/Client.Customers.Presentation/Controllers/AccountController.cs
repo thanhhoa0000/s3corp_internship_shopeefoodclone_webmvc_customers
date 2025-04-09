@@ -80,7 +80,7 @@ public class AccountController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
+            _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
             
             return View(new LoginViewModel());
@@ -116,7 +116,7 @@ public class AccountController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
+            _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
             
             return View(new RegisterViewModel());

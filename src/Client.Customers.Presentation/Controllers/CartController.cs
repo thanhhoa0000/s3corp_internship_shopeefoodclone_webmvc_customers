@@ -48,6 +48,13 @@ public class CartController : Controller
                 cart = JsonSerializer.Deserialize<CartDto>(
                     Convert.ToString(cartResponse.Body)!,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            else
+            {
+                TempData["error"] = "Có lỗi xảy ra khi truy cập giỏ hàng!";
+                _logger.LogError(cartResponse.Message);
+
+                return RedirectToAction("Index", "Home");
+            }
 
             Response? storeResponse = await _storeService.GetStoreDetails(cart.CartHeader!.StoreId);
 

@@ -49,17 +49,21 @@ public class TokenProcessor : ITokenProcessor
             CookieProperties.RefreshTokenCookie, refreshToken);
     }
 
-    public async Task<string?> GetValidAccessTokenAsync(string accessToken, string refreshToken)
+    public async Task<LoginResponse?> GetValidAccessTokenAsync(string accessToken, string refreshToken)
     {
         if (!IsTokenExpired(accessToken))
-            return accessToken;
+            return new LoginResponse
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
 
         return await RefreshAccessTokenAsync(refreshToken);
     }
 
-    private async Task<string?> RefreshAccessTokenAsync(string refreshToken)
+    private async Task<LoginResponse?> RefreshAccessTokenAsync(string refreshToken)
     {
-        _logger.Debug("\n----\nRefreshing access token\n----\n");
+        _logger.Debug("\n----------\nRefreshing tokens\n----------");
         
         var request = new HttpRequestMessage(HttpMethod.Post,
             $"{ApiUrlProperties.ApiGatewayUrl}/refresh_token_login")
@@ -71,8 +75,6 @@ public class TokenProcessor : ITokenProcessor
         };
         
         var response = await _client.SendAsync(request);
-        
-        _logger.Debug(response.Content.ToString());
         
         if (!response.IsSuccessStatusCode)
         {
@@ -101,9 +103,9 @@ public class TokenProcessor : ITokenProcessor
             return null;
         }
         
-        SetTokens(loginResponse.AccessToken, loginResponse.RefreshToken);
-        
-        return loginResponse.AccessToken;
+        _logger.Debug("\n----------\nTokens refreshed\n----------");
+
+        return loginResponse;
     }
     
     private static bool IsTokenExpired(string? token)
