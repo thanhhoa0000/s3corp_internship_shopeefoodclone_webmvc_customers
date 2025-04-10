@@ -3,7 +3,35 @@ document.querySelector(".customer-phone-number input").addEventListener("keypres
     if (!/[0-9]/.test(event.key)) {
         event.preventDefault();
     }
-})
+});
+
+function proceedOrder() {
+    const isProvinceSelected = isValidSelection("province-btn", "Tỉnh/Thành phố");
+    const isDistrictSelected = isValidSelection("district-btn", "Quận/Huyện");
+    const isWardSelected = isValidSelection("ward-btn", "Phường/Xã");
+    const addressInput = document.querySelector('#detail-address').value.trim();
+
+    if (isProvinceSelected && isDistrictSelected && isWardSelected && addressInput !== "") {
+        let streetAddress = addressInput;
+        let ward = getSelectedText("ward-btn");
+        let district = getSelectedText("district-btn");
+        let province = getSelectedText("province-btn");
+        let customerName = document.querySelector('.customer-basic-info .customer-name span').textContent.trim();
+        
+        ward = ward.split(/\s+/).length === 1 ? "Phường" + ward : ward;
+        district = district.split(/\s+/).length === 1 ? "Quận" + district : district;
+        
+        const fullAddress = `${streetAddress}, ${ward}, ${district}, ${province}`;
+        
+        $("#full-address").val(fullAddress);
+        $("#customer-name-input").val(customerName);
+        
+        return true;
+    } else {
+        toastr.error("Vui lòng chọn đầy đủ Tỉnh/Thành phố, Quận/Huyện, Phường/Xã và nhập địa chỉ chi tiết!");        
+        return false;
+    }
+}
 
 $(document).ready(function () {
     let cate = JSON.parse(localStorage.getItem('cate'));
@@ -111,4 +139,13 @@ function getWards(district) {
             });
         }
     });
+}
+
+function getSelectedText(buttonId) {
+    const btn = document.getElementById(buttonId);
+    return btn.textContent.trim();
+}
+
+function isValidSelection(buttonId, defaultText) {
+    return getSelectedText(buttonId) !== defaultText;
 }

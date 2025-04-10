@@ -24,3 +24,5 @@ global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Responses;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Models.ViewModels;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Enums;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Interfaces;
+
+global using ShopeeFoodClone.WebMvc.Customers.Presentation.Middlewares;

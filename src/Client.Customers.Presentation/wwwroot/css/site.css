@@ -1395,6 +1395,33 @@ footer div div div p {
   width: 25px;
 }
 
+.cart-empty-main-section {
+  width: 1296px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 40px;
+  margin-top: 30px;
+  font-family: "Noto Sans", Arial, sans-serif;
+}
+
+.cart-empty-main-section div h4 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #252525;
+}
+
+.cart-empty-main-section div p {
+  font-size: 22px;
+  font-weight: 400;
+  color: #4a4949;
+}
+
+.cart-empty-main-section div p a {
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
 .checkout-section {
   font-family: "Noto Sans", Arial, sans-serif;
   font-size: 16px;
@@ -1445,6 +1472,12 @@ footer div div div p {
   border-color: #959595;
   border-radius: 6px;
   color: #252525;
+}
+
+.order-detail-main-section .customer-address-section div div span {
+  margin-left: 60px;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .order-detail-main-section .customer-address-section div div input::placeholder {
@@ -1513,9 +1546,18 @@ footer div div div p {
   font-weight: 700;
 }
 
-.order-detail-main-section .products-list-section .product-items .item .item-info .name .description {
+.order-detail-main-section .products-list-section .product-items .item .item-info .description {
   font-size: 13px;
   color: #959595;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-info .quantity {
+  font-size: 13px;
+}
+
+.order-detail-main-section .products-list-section .product-items .item .item-info .quantity span {
+  font-weight: 700;
+  color: var(--primary-color);
 }
 
 .order-detail-main-section .products-list-section .product-items .item .item-price .old-price {

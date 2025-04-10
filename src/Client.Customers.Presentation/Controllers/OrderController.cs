@@ -61,10 +61,34 @@ public class OrderController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
+            _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
             
             return RedirectToAction("Index", "Cart", new { customerId = customerId });
         }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> OrderInit(OrderDetailsViewModel model)
+    {
+        Response? response = await _orderService.CreateOrderAsync(request: new CreateOrderRequest
+        {
+            Cart = model.Cart,
+            CustomerName = model.CustomerName,
+            Address = model.CustomerAddress,
+            PhoneNumber = model.CustomerPhoneNumber
+        });
+
+        if (response!.IsSuccessful)
+        {
+            TempData["success"] = "Đặt hàng thành công!";
+            
+            return RedirectToAction("Index", "Home");
+        }
+        
+        TempData["error"] = "Đã xảy ra lỗi!";
+
+        return View(model);
     }
 }

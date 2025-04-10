@@ -38,10 +38,13 @@ function updateCartItemQuantity(element) {
         url: `/Cart/AddToCart?productId=${productId}&quantity=${quantity}&customerId=${customerId}`,
         type: "POST",
         success: function (response) {
+            if (response.isCartEmpty){
+                window.location.href = "/Cart/CartEmpty";
+            }
             let itemId = $(element).attr("item-id");
             let parsed = $('<div>').html(response);
             
-            $(`#${itemId}`).replaceWith(parsed.find(`#${itemId}`));
+            $(`div[cart-item-id=${itemId}]`).replaceWith(parsed.find(`div[cart-item-id=${itemId}]`));
             $('.total-price span').replaceWith(parsed.find('span'));
             toastr.success("Cập nhật giỏ hàng thành công!");
         },

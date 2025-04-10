@@ -32,7 +32,7 @@
     <div class="cart-products-list ms-4">
         @foreach (var item in cartItems)
         {
-            <div class="row">
+            <div class="row" cart-item-id="@item.Id">
                 <a class="item row ms-3 col">
                     <div class="img col-auto">
                         <img class=""

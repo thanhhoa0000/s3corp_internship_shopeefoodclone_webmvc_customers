@@ -85,7 +85,17 @@ public class CartController : Controller
     }
 
     [HttpGet]
-    public IActionResult CartEmpty() => View();
+    public IActionResult CartEmpty()
+    {
+        if (!User.Identity!.IsAuthenticated)
+        {
+            TempData["error"] = "Vui lòng đăng nhập trước khi sử dụng dịch vụ!";
+
+            return RedirectToAction("Login", "Account");
+        }
+        
+        return View();
+    }
 
     [HttpPost]
     public async Task<IActionResult> AddToCart(Guid customerId, Guid productId, int quantity)
@@ -104,6 +114,11 @@ public class CartController : Controller
             await _cartService.AddToCartAsync(request);
 
             var cartResponse = await _cartService.GetCartAsync(customerId);
+            
+            if (cartResponse!.Message.Contains("The cart is empty"))
+            {
+                return Json(new { isCartEmpty = true });
+            }
 
             if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
                 cart = JsonSerializer.Deserialize<CartDto>(
@@ -112,11 +127,16 @@ public class CartController : Controller
 
             var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
 
+            if (cartItem is null)
+            {
+                return PartialView("_CartItemEmptyPartial", cart.CartHeader);
+            }
+
             return PartialView("_CartItemQuantityPartial", cartItem);
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
+            _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
             
             return RedirectToAction("Index", "Cart", new { CustomerId = customerId });

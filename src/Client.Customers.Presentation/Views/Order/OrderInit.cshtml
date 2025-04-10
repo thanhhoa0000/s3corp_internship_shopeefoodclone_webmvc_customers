@@ -13,10 +13,11 @@
         <div class="customer-address-section pt-4 ps-4 pb-4 mb-4 shadow">
             <h4><i class="bi bi-geo-alt"></i> Địa chỉ nhận hàng</h4>
             <div class="customer-basic-info row ps-5 mb-3">
-                <div class="customer-name">Tên khách hàng: <span>@customerName</span></div>
+                <div class="customer-name">Tên khách hàng: <span class="ms-2">@customerName</span></div>
+                <input id="customer-name-input" type="hidden" asp-for="CustomerName"/>
                 <div class="customer-phone-number row d-flex align-items-center justify-content-start mt-1">
                     <label class="form-label col-auto">Số điện thoại:</label>
-                    <input class="form-control col-auto ms-2" type="text" pattern="^\+\d{12}$|^\d{11}$" asp-for="CustomerPhoneNumber"/>
+                    <input class="form-control col-auto ms-3" type="text" pattern="^\+\d{12}$|^\d{11}$" asp-for="CustomerPhoneNumber"/>
                     <span asp-validation-for="CustomerPhoneNumber" class="text-danger"/>
                 </div>
                 <input type="hidden" asp-for="CustomerName" value="@customerName"/>
@@ -52,8 +53,10 @@
                     </ul>
                 </div>
                 <div class="col-auto">
-                    <input type="text" placeholder="Tên toà nhà/Số nhà/Tên đường..."/>
+                    <input id="detail-address" type="text" placeholder="Tên toà nhà/Số nhà/Tên đường..."/>
                 </div>
+                
+                <input type="hidden" asp-for="CustomerAddress" id="full-address"/>
             </div>
         </div>
         
@@ -78,6 +81,7 @@
                         <div class="item-info col-auto p-0 ms-3">
                             <div class="name">@item.Product!.Name</div>
                             <div class="description">@item.Product!.Description</div>
+                            <div class="quantity mt-3">Số lượng: <span>@item.Quantity</span></div>
                         </div>
                         <div class="item-price col-auto p-0 ms-auto">
                             @if (item.Product!.Discount > 0)
@@ -107,11 +111,12 @@
         <div class="order-total-price d-flex align-items-center justify-content-end me-4 mb-3">
             Thành tiền: <span class="ms-1">@cartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
         </div>
-        <button type="submit" class="btn btn-orange d-flex align-items-center justify-content-end me-4 ms-auto">Thanh toán</button>
+        <button type="submit" class="btn btn-orange d-flex align-items-center justify-content-end me-4 ms-auto" onclick="return proceedOrder()">Thanh toán</button>
     </div>
 </form>
 
 @section Scripts
 {
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/order-init.js" asp-append-version="true"></script>
 }
