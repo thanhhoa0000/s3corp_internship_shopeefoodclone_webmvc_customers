@@ -63,32 +63,60 @@ public class OrderController : Controller
         {
             _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
-            
+
             return RedirectToAction("Index", "Cart", new { customerId = customerId });
         }
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> OrderInit(OrderDetailsViewModel model)
+    public async Task<IActionResult> CreateOrder(OrderDetailsViewModel model)
     {
-        Response? response = await _orderService.CreateOrderAsync(request: new CreateOrderRequest
+        try
         {
-            Cart = model.Cart,
-            CustomerName = model.CustomerName,
-            Address = model.CustomerAddress,
-            PhoneNumber = model.CustomerPhoneNumber
-        });
+            var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (response!.IsSuccessful)
-        {
-            TempData["success"] = "Đặt hàng thành công!";
-            
+            Response? cartResponse = await _cartService.GetCartAsync(Guid.Parse(customerId!));
+
+            if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
+                model.Cart = JsonSerializer.Deserialize<CartDto>(
+                    Convert.ToString(cartResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            else
+            {
+                TempData["error"] = "Đã xảy ra lỗi!";
+
+                return View(model);
+            }
+
+            Response? response = await _orderService.CreateOrderAsync(request: new CreateOrderRequest
+            {
+                Cart = model.Cart,
+                CustomerName = model.CustomerName,
+                Address = model.CustomerAddress,
+                PhoneNumber = model.CustomerPhoneNumber
+            });
+
+            _logger.LogDebug($"\n-------\n{response!.Message}\n-------");
+
+            if (response!.IsSuccessful)
+            {
+                TempData["success"] = "Đặt hàng thành công!";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            TempData["error"] = "Đã xảy ra lỗi!";
+
             return RedirectToAction("Index", "Home");
         }
-        
-        TempData["error"] = "Đã xảy ra lỗi!";
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
 
-        return View(model);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

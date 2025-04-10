@@ -7,7 +7,7 @@
 
     ViewData["Title"] = $"{customerName}'s Order | Food Delivery & Shipping Service | ShopeeFood.vn";
 }
-<form>
+<form asp-controller="Order" asp-action="CreateOrder" method="POST">
     @Html.AntiForgeryToken()
     <div class="order-detail-main-section mt-5 mb-5">
         <div class="customer-address-section pt-4 ps-4 pb-4 mb-4 shadow">
