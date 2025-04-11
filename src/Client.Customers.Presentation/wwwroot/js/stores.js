@@ -139,6 +139,23 @@ $(document).ready(function () {
 
         getItemsForStorePage(province, districtCodes, category, subcategoryCodes);
     });
+    
+    $(document).on('click', '.pagination a',function (){
+        let province = $("#location-dropdown-btn").attr("province-code");
+        let districtCodes = []
+        let subcategoryCodes = []
+        let pageNumber = $(this).attr('page');
+
+        document.querySelectorAll('.store-district-item .form-check-input:checked').forEach(checkbox => {
+            districtCodes.push(checkbox.id);
+        });
+
+        document.querySelectorAll('.store-category-item .form-check-input:checked').forEach(checkbox => {
+            subcategoryCodes.push(checkbox.id);
+        });
+
+        getItemsForStorePage(province, districtCodes, category, subcategoryCodes, 15, pageNumber);
+    });
 });
 
 function getDistrictListForStorePage(province) {
@@ -205,10 +222,10 @@ function getSubCategoriesListForStorePage(categoryName) {
     });
 }
 
-function getItemsForStorePage(province, districts, category, subcategories) {
+function getItemsForStorePage(province, districts, category, subcategories, pageSize = 15, pageNumber = 1) {
     const path = window.location.pathname;
     $.ajax({
-        url: `${path}?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}`,
+        url: `${path}?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}&pageSize=${pageSize}&pageNumber=${pageNumber}`,
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
