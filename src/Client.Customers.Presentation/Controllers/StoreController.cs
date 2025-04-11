@@ -18,6 +18,73 @@ public class StoreController : Controller
         _menuService = menuService;
         _logger = logger;
     }
+    [HttpGet]
+    public IActionResult List() => View(new StorePromotionsViewModel());
+    
+    [HttpPost]
+    public async Task<IActionResult> List(
+        string province,
+        string districtsString,
+        string categoryName,
+        string subcategoriesString,
+        int pageSize = 15,
+        int pageNumber = 1)
+    {
+        try
+        {
+            var stores = new List<StoreDto>();
+            var storesCount = 0;
+            var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+            var subcategories = subcategoriesString?.Split(",").ToList() ?? new List<string>();
+            
+            Response? storesCountResponse = await _storeService.GetStoresCount(new GetStoresCountRequest
+            {
+                LocationRequest = new LocationRequest { Province = province },
+                IsPromoted = false
+            });
+
+            if (storesCountResponse!.IsSuccessful)
+                storesCount = JsonSerializer.Deserialize<int>(
+                    Convert.ToString(storesCountResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
+                request: new GetStoresRequest
+                {
+                    LocationRequest = new LocationRequest
+                    {
+                        Province = province,
+                        Districts = districts
+                    },
+                    CategoryName = categoryName,
+                    SubCategoryNames = subcategories,
+                    PageSize = pageSize,
+                    PageNumber = pageNumber
+                });
+
+            if (storesResponse!.IsSuccessful)
+                stores = JsonSerializer.Deserialize<List<StoreDto>>(
+                    Convert.ToString(storesResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            var viewModel = new StorePromotionsViewModel
+            {
+                Stores = stores.ToList(),
+                PagesCount = (int)Math.Ceiling((double)storesCount / pageSize),
+                CurrentPage = pageNumber,
+                TotalStoresCount = storesCount
+            };
+
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return View(new StorePromotionsViewModel());
+        }
+    }
     
     [HttpGet]
     public IActionResult Promotions() => View(new StorePromotionsViewModel());
@@ -28,14 +95,27 @@ public class StoreController : Controller
         string districtsString,
         string categoryName,
         string subcategoriesString,
-        int pageSize = 30,
+        int pageSize = 15,
         int pageNumber = 1)
     {
         try
         {
             var stores = new List<StoreDto>();
+            var storesCount = 0;
             var districts = districtsString?.Split(",").ToList() ?? new List<string>();
             var subcategories = subcategoriesString?.Split(",").ToList() ?? new List<string>();
+            
+            Response? storesCountResponse = await _storeService.GetStoresCount(new GetStoresCountRequest
+            {
+                LocationRequest = new LocationRequest { Province = province },
+                IsPromoted = true
+            });
+
+            if (storesCountResponse!.IsSuccessful)
+                storesCount = JsonSerializer.Deserialize<int>(
+                    Convert.ToString(storesCountResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
 
             Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
                 request: new GetStoresRequest
@@ -59,16 +139,16 @@ public class StoreController : Controller
             var viewModel = new StorePromotionsViewModel
             {
                 Stores = stores.Where(store => store.IsPromoted).ToList(),
-                PagesCount =
-                    (int)Math.Ceiling((double)stores.Where(store => store.IsPromoted).ToList().Count / pageSize),
-                CurrentPage = pageNumber
+                PagesCount = (int)Math.Ceiling((double)storesCount / pageSize),
+                CurrentPage = pageNumber,
+                TotalStoresCount = storesCount,
             };
 
             return View(viewModel);
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
+            _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
             
             return View(new StorePromotionsViewModel());

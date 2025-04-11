@@ -95,8 +95,10 @@ function getDistricts(province) {
 
             let dropdown = $('#order-district-dropdown');
             dropdown.empty();
+            
+            let districtsList = response.body.sort();
 
-            response.body.forEach(function (district) {
+            districtsList.forEach(function (district) {
                 let districtItem = `<li class="order-district-item"><a class="dropdown-item" onclick="getWards('${district.code}');" district-code="${district.code}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</a></li>`;
                 dropdown.append(districtItem);
             });
@@ -127,9 +129,11 @@ function getWards(district) {
             
             let dropdown = $('#order-ward-dropdown');
             dropdown.empty();
+            
+            let wardsList = response.body.sort();
 
-            response.body.forEach(function (ward) {
-                let wardItem = `<li class="order-ward-item"><a class="dropdown-item" ward-code="${ward.code}">${ward.name}</a></li>`;
+            wardsList.forEach(function (ward) {
+                let wardItem = `<li class="order-ward-item"><a class="dropdown-item" ward-code="${ward.code}">${ward.name.split(/\s+/).length === 1 ? "Phường" + ward.name : ward.name}</a></li>`;
                 dropdown.append(wardItem);
             });
 

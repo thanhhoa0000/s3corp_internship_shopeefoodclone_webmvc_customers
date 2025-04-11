@@ -89,7 +89,11 @@ public class HomeController : Controller
                     Convert.ToString(storesResponse.Body)!,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 
-            Response? storesCountResponse = await _storeService.GetStoresCount();
+            Response? storesCountResponse = await _storeService.GetStoresCount(new GetStoresCountRequest
+            {
+                LocationRequest = new LocationRequest { Province = province },
+                IsPromoted = false
+            });
 
             if (storesCountResponse!.IsSuccessful)
                 storesCount = JsonSerializer.Deserialize<int>(
@@ -124,7 +128,7 @@ public class HomeController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
+            _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
             
             return View(new HomeViewModel());
