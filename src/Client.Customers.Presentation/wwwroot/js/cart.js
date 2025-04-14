@@ -8,15 +8,21 @@ $(document).ready(function () {
     document.querySelector(`.nav-link[code-name='${cate}']`).classList.add("active");
 });
 
-document.addEventListener("cartUpdated", function () {
-    const customerId = $('.cart').attr('customerId');
+document.addEventListener("cartUpdated", function (event) {
+    const customerId = event.detail.customerId;
     
     $.ajax({
         url: `/Store/GetCartPartial?customerId=${customerId}`,
         type: 'GET',
         success: function (response) {
             let parsed = $('<div>').html(response);
-            $('.cart').replaceWith(parsed.find('.cart'));
+            let cart = $('.cart');
+            if (cart.length > 0){
+                cart.replaceWith(parsed.find('.cart'));
+            }
+            else {
+                $('.store-details-products-section').append(parsed.find('.cart'));
+            }
         },
         error: function () {
             toastr.error("Đã xảy ra lỗi!");
@@ -62,7 +68,7 @@ $(document).on('click', '.button-section div', function () {
                     type: "POST",
                     success: function (response) {
                         if (response.isCartEmpty) {
-                            window.location.href = "/Cart/CartEmpty";
+                            $('.cart').remove();
                         }
                         let parsed = $('<div>').html(response);
                         $(`div[cart-item-id=${id}]`).replaceWith(parsed.find(`div[cart-item-id=${id}]`));
@@ -160,7 +166,11 @@ function updateCartItemQuantity(element) {
                 $('.total-price span').text(parsed.find('span').text());
                 toastr.success("Cập nhật giỏ hàng thành công!");
 
-                document.dispatchEvent(new Event("cartUpdated"));
+                document.dispatchEvent(new CustomEvent("cartUpdated", {
+                    detail: {
+                        customerId: customerId,
+                    }
+                }));
             },
             error: function () {
                 toastr.error("Đã xảy ra lỗi!");

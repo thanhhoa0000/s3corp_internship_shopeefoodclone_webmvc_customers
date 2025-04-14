@@ -232,6 +232,8 @@ public class StoreController : Controller
                 StarHtml = GenerateStarsHtml(products.Average(p => p.Rating))
             };
 
+            viewModel.Cart = null;
+
             if (User.Identity!.IsAuthenticated)
             {
                 var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -239,12 +241,27 @@ public class StoreController : Controller
 
                 Response? cartResponse = await _cartService.GetCartAsync(Guid.Parse(customerId!));
 
+                if (cartResponse!.Message.Contains("The cart is empty"))
+                {
+                    viewModel.Cart = null;
+
+                    return View(viewModel);
+                }
+
                 if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
+                {
                     cart = JsonSerializer.Deserialize<CartDto>(
                         Convert.ToString(cartResponse.Body)!,
                         new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 
-                viewModel.Cart = cart;
+                    viewModel.Cart = cart;
+
+                    return View(viewModel);
+                }
+
+                viewModel.Cart = null;
+
+                return View(viewModel);
             }
 
             return View(viewModel);
@@ -263,6 +280,11 @@ public class StoreController : Controller
     {
         var cart = new CartDto();
         var cartResponse = await _cartService.GetCartAsync(customerId);
+        
+        if (cartResponse!.Message.Contains("The cart is empty"))
+        {
+            _logger.LogDebug($"customerId: {customerId.ToString()} nullll");
+        }
 
         if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
             cart = JsonSerializer.Deserialize<CartDto>(

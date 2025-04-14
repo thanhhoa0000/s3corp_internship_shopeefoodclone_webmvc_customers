@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    <div class="store-details-products-section">
+    <div class="store-details-products-section" customerId="@(customerId == String.Empty ? customerId : "")">
         <div class="menu">
             <h3 class="text-uppercase mb-4">Thực đơn</h3>
 
@@ -129,7 +129,7 @@
                             </div>
                         </a>
                         <button type="button" class="btn btn-orange d-flex align-items-center col-auto ms-auto me-4"
-                                customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" storeId="@Model.Cart!.CartHeader!.StoreId"
+                                customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" storeId="@store.Id"
                                 onclick="checkUserIsAuthenticated(this, '@(customerId ?? String.Empty)')">+
                         </button>
                     </div>
