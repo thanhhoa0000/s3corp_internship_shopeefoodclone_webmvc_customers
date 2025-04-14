@@ -13,14 +13,13 @@
         <div class="customer-address-section pt-4 ps-4 pb-4 mb-4 shadow">
             <h4><i class="bi bi-geo-alt"></i> Địa chỉ nhận hàng</h4>
             <div class="customer-basic-info row ps-5 mb-3">
-                <div class="customer-name">Tên khách hàng: <span class="ms-2">@customerName</span></div>
-                <input id="customer-name-input" type="hidden" asp-for="CustomerName"/>
+                <div class="customer-name">Tên khách hàng: <span class="ms-2">@customerName</span> <i class="bi bi-pencil-square"></i></div>
+                <input id="customer-name-input" type="hidden" asp-for="CustomerName" value="@customerName"/>
                 <div class="customer-phone-number row d-flex align-items-center justify-content-start mt-1">
                     <label class="form-label col-auto">Số điện thoại:</label>
                     <input class="form-control col-auto ms-3" type="text" pattern="^\+\d{12}$|^\d{11}$" asp-for="CustomerPhoneNumber"/>
                     <span asp-validation-for="CustomerPhoneNumber" class="text-danger"/>
                 </div>
-                <input type="hidden" asp-for="CustomerName" value="@customerName"/>
             </div>
             <div class="ps-5 row">
                 <div class="dropdown col-auto p-0 me-3">
@@ -58,6 +57,7 @@
                 
                 <input type="hidden" asp-for="CustomerAddress" id="full-address"/>
             </div>
+            <span class="address-validation-message text-danger ps-5">"Vui lòng chọn đầy đủ Tỉnh/Thành phố, Quận/Huyện, Phường/Xã và nhập địa chỉ chi tiết!"</span>
         </div>
         
         <div class="products-list-section pt-4 ps-4 pb-4 pe-4 mb-4 shadow">
@@ -69,7 +69,7 @@
             <div class="product-items">
                 @foreach (var item in cartItems)
                 {
-                    <div class="item row m-0 ms-2" item-id="@item.Id">
+                    <div class="item row m-0 ms-2 mb-2" item-id="@item.Id">
                         <div class="item-img col-auto p-0">
                             <img class=""
                                  alt="@item.Product!.Name"

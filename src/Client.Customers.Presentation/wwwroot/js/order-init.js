@@ -1,8 +1,30 @@
 document.addEventListener("configLoaded", getProvinces);
-document.querySelector(".customer-phone-number input").addEventListener("keypress", function (event) {
+$(document).on("keypress", ".customer-phone-number input", function (event) {
     if (!/[0-9]/.test(event.key)) {
         event.preventDefault();
     }
+});
+
+$(document).on("click", ".customer-name i", function () {
+    const $container = $(this).closest(".customer-name");
+    const $span = $container.find("span");
+    const $icon = $(this);
+    
+    if ($container.find("input").length) return;
+
+    const currentName = $span.text();
+    const $input = $(`<input class="edit-name-input ps-1 ms-1 me-1" type="text" value="${currentName}" />`);
+
+    $input.on('blur', function () {
+        const newText = $(this).val();
+        $(this).replaceWith(`<span class="ms-2">${newText}</span>`);
+        $icon.show();
+        $('#customer-name-input').val(newText); // optional hidden input update
+    });
+
+    $span.replaceWith($input);
+    $input.focus();
+    $icon.hide();
 });
 
 function proceedOrder() {
@@ -18,8 +40,8 @@ function proceedOrder() {
         let province = getSelectedText("province-btn");
         let customerName = document.querySelector('.customer-basic-info .customer-name span').textContent.trim();
         
-        ward = ward.split(/\s+/).length === 1 ? "Phường" + ward : ward;
-        district = district.split(/\s+/).length === 1 ? "Quận" + district : district;
+        ward = ward.split(/\s+/).length === 1 ? "Phường " + ward : ward;
+        district = district.split(/\s+/).length === 1 ? "Quận " + district : district;
         
         const fullAddress = `${streetAddress}, ${ward}, ${district}, ${province}`;
         
@@ -28,7 +50,7 @@ function proceedOrder() {
         
         return true;
     } else {
-        toastr.error("Vui lòng chọn đầy đủ Tỉnh/Thành phố, Quận/Huyện, Phường/Xã và nhập địa chỉ chi tiết!");        
+        $('.address-validation-message').show();      
         return false;
     }
 }
@@ -43,7 +65,23 @@ $(document).ready(function () {
     document.querySelector(`.nav-link[code-name='${cate}']`).classList.add("active");
 });
 
-function getProvinces() {
+$(document).on("click", ".customer-address-section div div button", function () {
+    const validationAddress = $('.address-validation-message');
+
+    if (validationAddress.is(':visible')) {
+        validationAddress.hide();
+    }
+});
+
+$(document).on("click", "#detail-address", function () {
+    const validationAddress = $('.address-validation-message');
+
+    if (validationAddress.is(':visible')) {
+        validationAddress.hide();
+    }
+});
+
+function getProvinces() {    
     $.ajax({
         url: `${gatewayUrl}/provinces`,
         type: 'GET',
@@ -83,7 +121,7 @@ function getProvinces() {
     });
 }
 
-function getDistricts(province) {
+function getDistricts(province) {    
     $.ajax({
         url: `${gatewayUrl}/districts?province=${province}`,
         type: 'GET',
@@ -117,7 +155,7 @@ function getDistricts(province) {
     });
 }
 
-function getWards(district) {
+function getWards(district) {    
     $.ajax({
         url: `${gatewayUrl}/wards?district=${district}`,
         type: 'GET',

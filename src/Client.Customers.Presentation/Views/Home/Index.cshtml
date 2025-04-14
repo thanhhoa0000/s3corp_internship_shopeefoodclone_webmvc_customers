@@ -83,7 +83,7 @@
                         }
 
                     </div>
-                    @if (Model.PromotionStores.Count >= 9)
+                    @if (!(Model.PromotionStores.Count < Model.PromotionsPageSize))
                     {
                         <div class="home-promotion-see-more">
                             <a class="">Xem thêm <i class="bi bi-arrow-clockwise rotate"></i></a>
@@ -117,7 +117,7 @@
                             </div>
                         }
                     </div>
-                    @if (Model.Collections.Count >= 9)
+                    @if (!(Model.Collections.Count < Model.CollectionsPageSize))
                     {
                         <div class="home-collection-see-more">
                             <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
@@ -168,7 +168,7 @@
                                 </div>
                             }
                         </div>
-                        @if (Model.Stores.Count >= 9)
+                        @if (!(Model.Stores.Count < Model.StoresListPageSize))
                         {
                             <div class="home-stores-see-more">
                                 <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
@@ -264,14 +264,7 @@
     <div class="container mx-auto d-flex flex-column justify-content-center">
         <p>DANH MỤC</p>
         <div class="row justify-content-center footer-main-content">
-            @foreach (var category in @Model.Categories){
-                <div class="home-footer-item">
-                    <a class="home-footer-item-title" code-name="@category.CodeName" href="#">@category.Name!.ToUpper()</a>
-                    <ul class="home-footer-item-list">
-                        
-                    </ul>
-                </div>
-            }
+            
         </div>
     </div>
 </div>

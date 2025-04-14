@@ -3,24 +3,28 @@ namespace ShopeeFoodClone.WebMvc.Customers.Presentation.Controllers;
 public class StoreController : Controller
 {
     private readonly IStoreService _storeService;
+    private readonly ICartService _cartService;
     private readonly IProductService _productService;
     private readonly IMenuService _menuService;
     private readonly ILogger<StoreController> _logger;
 
     public StoreController(
         IStoreService storeService,
+        ICartService cartService,
         IProductService productService,
         IMenuService menuService,
         ILogger<StoreController> logger)
     {
         _storeService = storeService;
+        _cartService = cartService;
         _productService = productService;
         _menuService = menuService;
         _logger = logger;
     }
+
     [HttpGet]
     public IActionResult List() => View(new StorePromotionsViewModel());
-    
+
     [HttpPost]
     public async Task<IActionResult> List(
         string province,
@@ -36,10 +40,16 @@ public class StoreController : Controller
             var storesCount = 0;
             var districts = districtsString?.Split(",").ToList() ?? new List<string>();
             var subcategories = subcategoriesString?.Split(",").ToList() ?? new List<string>();
-            
+
             Response? storesCountResponse = await _storeService.GetStoresCount(new GetStoresCountRequest
             {
-                LocationRequest = new LocationRequest { Province = province },
+                LocationRequest = new LocationRequest
+                {
+                    Province = province,
+                    Districts = districts
+                },
+                CategoryName = categoryName,
+                SubCategoryNames = subcategories,
                 IsPromoted = false
             });
 
@@ -81,11 +91,11 @@ public class StoreController : Controller
         {
             _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
-            
+
             return View(new StorePromotionsViewModel());
         }
     }
-    
+
     [HttpGet]
     public IActionResult Promotions() => View(new StorePromotionsViewModel());
 
@@ -104,11 +114,17 @@ public class StoreController : Controller
             var storesCount = 0;
             var districts = districtsString?.Split(",").ToList() ?? new List<string>();
             var subcategories = subcategoriesString?.Split(",").ToList() ?? new List<string>();
-            
+
             Response? storesCountResponse = await _storeService.GetStoresCount(new GetStoresCountRequest
             {
-                LocationRequest = new LocationRequest { Province = province },
-                IsPromoted = true
+                LocationRequest = new LocationRequest
+                {
+                    Province = province,
+                    Districts = districts
+                },
+                CategoryName = categoryName,
+                SubCategoryNames = subcategories,
+                IsPromoted = false
             });
 
             if (storesCountResponse!.IsSuccessful)
@@ -150,7 +166,7 @@ public class StoreController : Controller
         {
             _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
-            
+
             return View(new StorePromotionsViewModel());
         }
     }
@@ -216,17 +232,46 @@ public class StoreController : Controller
                 StarHtml = GenerateStarsHtml(products.Average(p => p.Rating))
             };
 
+            if (User.Identity!.IsAuthenticated)
+            {
+                var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var cart = new CartDto();
+
+                Response? cartResponse = await _cartService.GetCartAsync(Guid.Parse(customerId!));
+
+                if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
+                    cart = JsonSerializer.Deserialize<CartDto>(
+                        Convert.ToString(cartResponse.Body)!,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+                viewModel.Cart = cart;
+            }
+
             return View(viewModel);
         }
         catch (Exception ex)
         {
             _logger.LogError($"Error occurred: {ex.ToString()}");
             TempData["error"] = "Đã xảy ra lỗi!";
-            
+
             return View(new StoreDetailsViewModel());
         }
     }
-    
+
+    [HttpGet]
+    public async Task<IActionResult> GetCartPartial(Guid customerId)
+    {
+        var cart = new CartDto();
+        var cartResponse = await _cartService.GetCartAsync(customerId);
+
+        if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
+            cart = JsonSerializer.Deserialize<CartDto>(
+                Convert.ToString(cartResponse.Body)!,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+        return PartialView("_CartPartial", cart);
+    }
+
     private string GenerateStarsHtml(double rating)
     {
         int fullStars = (int)rating;
@@ -235,17 +280,17 @@ public class StoreController : Controller
 
         StringBuilder html = new StringBuilder();
         html.Append("<div class='stars'>");
-        
+
         for (int i = 0; i < fullStars; i++)
         {
             html.Append("<span><img class='' alt='' src='/images/star-full.png'/></span>");
         }
-        
+
         if (hasHalfStar)
         {
             html.Append("<span><img class='' alt='' src='/images/star-half.png'/></span>");
         }
-        
+
         for (int i = 0; i < emptyStars; i++)
         {
             html.Append("<span><img class='' alt='' src='/images/no-star.png'/></span>");

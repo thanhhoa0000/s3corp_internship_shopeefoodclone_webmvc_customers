@@ -1,6 +1,6 @@
 ﻿namespace ShopeeFoodClone.WebMvc.Customers.Application.Models.ViewModels;
 
-public class OrderDetailsViewModel
+public sealed class OrderDetailsViewModel
 {
     public CartDto? Cart { get; set; }
     public StoreDto? Store { get; set; }

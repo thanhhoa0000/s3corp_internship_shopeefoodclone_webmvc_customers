@@ -2,27 +2,29 @@
 
 public sealed class RegisterViewModel
 {
-    [Required(ErrorMessage = "Enter your username")]
-    [MinLength(6, ErrorMessage = "Username must be at least 6 characters")]
+    [Required(ErrorMessage = "Vui lòng nhập tên người dùng của bạn")]
+    [MinLength(6, ErrorMessage = "Tên đăng nhập phải chứa ít nhất 6 ký tự")]
     public string? UserName { get; set; }
-    [Required(ErrorMessage = "Enter your email")]
+    [Required(ErrorMessage = "Vui lòng nhập email")]
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string? Email { get; set; }
-    [Required(ErrorMessage = "Enter your passwoord")]
-    [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
+    [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
+    [MinLength(8, ErrorMessage = "Mật khẩu phải chứa ít nhất 8 ký tự")]
     [DataType(DataType.Password)]
     public string? Password { get; set; }
-    [Required(ErrorMessage = "Confirm your password")]
+    [Required(ErrorMessage = "Vui lòng xác nhận mật khẩu")]
     [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Passwords do not match")]
+    [Compare("Password", ErrorMessage = "Mật khẩu không trùng khớp")]
     public string? ConfirmPassword { get; set; }
-    [Phone(ErrorMessage = "Invalid phone number format"), MaxLength(12)]
+    [Required(ErrorMessage = "Vui lòng nhập số điện thoại của bạn")]
+    [Phone(ErrorMessage = "Số điện thoại không hợp lệ"), MaxLength(12)]
     public string? PhoneNumber { get; set; }
-    [Required(ErrorMessage = "Enter your first name")]
-    [MinLength(2, ErrorMessage = "Must be at least 2 characters"), MaxLength(30)]
+    [Required(ErrorMessage = "Vui lòng nhập tên của bạn")]
+    [MinLength(2, ErrorMessage = "Tên phải chứa ít nhất 2 ký tự"), MaxLength(30)]
     public string? FirstName { get; set; }
-    [Required(ErrorMessage = "Enter your last name")]
-    [MinLength(2, ErrorMessage = "Must be at least 2 characters"), MaxLength(50)]
+    [Required(ErrorMessage = "Vui lòng nhập họ của bạn")]
+    [MinLength(2, ErrorMessage = "Tên phải chứa ít nhất 2 ký tự"), MaxLength(50)]
     public string? LastName { get; set; }
-    public Role Role { get; set; }
+
+    public Role Role { get; set; } = Role.Customer;
 }

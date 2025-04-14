@@ -43,7 +43,8 @@
                 </div>
                 <div class="store-details-cost">
                     <i class="bi bi-coin"></i>
-                    @products.Min(p => p.Price).ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ - @products.Max(p => p.Price).ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ
+                    @products.Min(p => p.Price).ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ
+                    - @products.Max(p => p.Price).ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ
                 </div>
             </div>
             <div class="shopeefood-signature d-flex align-items-center gap-5">
@@ -66,7 +67,7 @@
     <div class="store-details-products-section">
         <div class="menu">
             <h3 class="text-uppercase mb-4">Thực đơn</h3>
-            
+
             @foreach (var item in menuItems)
             {
                 <div class="item text-uppercase mb-1"><a href="@($"#{item.Id}")">@item.Title</a></div>
@@ -79,18 +80,19 @@
                     <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
                 </form>
             </div>
-            
+
             @foreach (var item in menuItems)
             {
                 <div class="menu-title text-uppercase my-3" id="@item.Id"><span>@item.Title</span></div>
-                
+
                 @foreach (var product in products.Where(p => p.Menus.Any(i => i.Id == item.Id)))
                 {
                     <div class="product-item row ms-1">
-                        <a class="row col-auto" asp-controller="Product" asp-action="Details" asp-route-productId="@product.Id">
+                        <a class="row col-auto" asp-controller="Product" asp-action="Details"
+                           asp-route-productId="@product.Id">
                             <div class="col-auto product-img">
-                                <img class="" 
-                                     alt="@product.Name" 
+                                <img class=""
+                                     alt="@product.Name"
                                      src="@Url.Content($"~/images{product.CoverImagePath}")"
                                      onerror="
                                         this.onerror = null;
@@ -122,16 +124,81 @@
                                             </div>
                                         }
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </a>
-                        <button type="button" class="btn btn-orange d-flex align-items-center col-auto ms-auto me-4" customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" onclick="checkUserIsAuthenticated(this, '@(customerId ?? String.Empty)')">+</button>
+                        <button type="button" class="btn btn-orange d-flex align-items-center col-auto ms-auto me-4"
+                                customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" storeId="@Model.Cart!.CartHeader!.StoreId"
+                                onclick="checkUserIsAuthenticated(this, '@(customerId ?? String.Empty)')">+
+                        </button>
                     </div>
                 }
             }
         </div>
-        <div></div>
+        @if (Model.Cart is not null)
+        {
+            <div class="cart" customerId="@customerId">
+                <h3 class="text-uppercase mb-4">Giỏ hàng</h3>
+
+                <div class="items-list">
+                    @foreach (var item in Model.Cart.CartItems)
+                    {
+                        <div cart-item-id="@item.Id" class="item row m-0 mb-2">
+                            <div class="img col-auto">
+                                <img class=""
+                                     alt="@item.Product!.Name"
+                                     src="@Url.Content($"~/images{item.Product.CoverImagePath}")"
+                                     onerror="
+                                        this.onerror = null;
+                                        this.src = '/images/stores/product-img.png'"/>
+                            </div>
+                            <div class="info col-auto d-flex align-items-center justify-content-start">
+                                <h4 class="name">@item.Product.Name</h4>
+                            </div>
+                            <div class="price col-auto mt-3">
+                                @if (item.Product.Discount > 0)
+                                {
+                                    <div class="actual-price">
+                                        @((item.Product.Price - item.Product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                        <span>đ</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="actual-price">
+                                        @item.Product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                        <span>đ</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="button-section d-flex justify-content-end col-auto row mt-3 ms-auto">
+                                <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-increase"
+                                   item-id="@item.Id" customerId="@Model.Cart.CartHeader!.CustomerId"
+                                   productId="@item.ProductId" quantity="-1"
+                                   onclick="updateCartItemQuantity(this)">-</a>
+                                <div class="col-auto" id="@item.Id" productId="@item.ProductId"
+                                     customerId="@Model.Cart.CartHeader!.CustomerId">@item.Quantity</div>
+                                <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-decrease"
+                                   item-id="@item.Id" customerId="@Model.Cart.CartHeader!.CustomerId"
+                                   productId="@item.ProductId" quantity="1"
+                                   onclick="updateCartItemQuantity(this)">+</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="checkout-section row d-flex justify-content-end mt-4 me-0">
+                    <div class="total-price col-auto d-flex align-items-center justify-content-center">Thành tiền:
+                        <span
+                            class="ms-1">@Model.Cart.CartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
+                    </div>
+                    <button type="button"
+                            class="btn btn-outline-orange col-auto d-flex align-items-center justify-content-center ms-auto"
+                            onclick="proceedToOrderInit('@Model.Cart.CartHeader!.CustomerId')">Khởi tạo đơn hàng
+                    </button>
+                </div>
+            </div>
+        }
     </div>
 </div>
 

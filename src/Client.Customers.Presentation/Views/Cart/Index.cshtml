@@ -71,7 +71,7 @@
                     <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-increase"
                        item-id="@item.Id" customerId="@cartHeader!.CustomerId" productId="@item.ProductId" quantity="-1"
                        onclick="updateCartItemQuantity(this)">-</a>
-                    <div class="col-auto" id="@item.Id">@item.Quantity</div>
+                    <div class="col-auto" id="@item.Id" productId="@item.ProductId" customerId="@cartHeader!.CustomerId">@item.Quantity</div>
                     <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-decrease"
                        item-id="@item.Id" customerId="@cartHeader.CustomerId" productId="@item.ProductId" quantity="1"
                        onclick="updateCartItemQuantity(this)">+</a>
