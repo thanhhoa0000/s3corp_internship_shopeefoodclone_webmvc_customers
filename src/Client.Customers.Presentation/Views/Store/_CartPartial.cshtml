@@ -1,62 +1,65 @@
 ﻿@model CartDto
 
-<div class="cart" customerId="@Model.CartHeader!.CustomerId">
-    <h3 class="text-uppercase mb-4">Giỏ hàng</h3>
+@if (Model.CartHeader is not null)
+{
+    <div class="cart" customerId="@Model.CartHeader!.CustomerId">
+        <h3 class="text-uppercase mb-4">Giỏ hàng</h3>
 
-    <div class="items-list">
-        @foreach (var item in Model.CartItems)
-        {
-            <div cart-item-id="@item.Id" class="item row m-0 mb-2">
-                <div class="img col-auto">
-                    <img class=""
-                         alt="@item.Product!.Name"
-                         src="@Url.Content($"~/images{item.Product.CoverImagePath}")"
-                         onerror="
+        <div class="items-list">
+            @foreach (var item in Model.CartItems)
+            {
+                <div cart-item-id="@item.Id" class="item row m-0 mb-2">
+                    <div class="img col-auto">
+                        <img class=""
+                             alt="@item.Product!.Name"
+                             src="@Url.Content($"~/images{item.Product.CoverImagePath}")"
+                             onerror="
                                         this.onerror = null;
                                         this.src = '/images/stores/product-img.png'"/>
+                    </div>
+                    <div class="info col-auto d-flex align-items-center justify-content-start">
+                        <h4 class="name">@item.Product.Name</h4>
+                    </div>
+                    <div class="price col-auto mt-3">
+                        @if (item.Product.Discount > 0)
+                        {
+                            <div class="actual-price">
+                                @((item.Product.Price - item.Product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                <span>đ</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="actual-price">
+                                @item.Product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                <span>đ</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="button-section d-flex justify-content-end col-auto row mt-3 ms-auto">
+                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-increase"
+                           item-id="@item.Id" customerId="@Model.CartHeader!.CustomerId"
+                           productId="@item.ProductId" quantity="-1"
+                           onclick="updateCartItemQuantity(this)">-</a>
+                        <div class="col-auto" id="@item.Id" productId="@item.ProductId"
+                             customerId="@Model.CartHeader!.CustomerId">@item.Quantity</div>
+                        <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-decrease"
+                           item-id="@item.Id" customerId="@Model.CartHeader!.CustomerId"
+                           productId="@item.ProductId" quantity="1"
+                           onclick="updateCartItemQuantity(this)">+</a>
+                    </div>
                 </div>
-                <div class="info col-auto d-flex align-items-center justify-content-start">
-                    <h4 class="name">@item.Product.Name</h4>
-                </div>
-                <div class="price col-auto mt-3">
-                    @if (item.Product.Discount > 0)
-                    {
-                        <div class="actual-price">
-                            @((item.Product.Price - item.Product.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
-                            <span>đ</span>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="actual-price">
-                            @item.Product.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
-                            <span>đ</span>
-                        </div>
-                    }
-                </div>
-                <div class="button-section d-flex justify-content-end col-auto row mt-3 ms-auto">
-                    <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-increase"
-                       item-id="@item.Id" customerId="@Model.CartHeader!.CustomerId"
-                       productId="@item.ProductId" quantity="-1"
-                       onclick="updateCartItemQuantity(this)">-</a>
-                    <div class="col-auto" id="@item.Id" productId="@item.ProductId"
-                         customerId="@Model.CartHeader!.CustomerId">@item.Quantity</div>
-                    <a class="btn btn-danger d-flex align-items-center justify-content-center col-auto cart-item-decrease"
-                       item-id="@item.Id" customerId="@Model.CartHeader!.CustomerId"
-                       productId="@item.ProductId" quantity="1"
-                       onclick="updateCartItemQuantity(this)">+</a>
-                </div>
-            </div>
-        }
-    </div>
-    <div class="checkout-section row d-flex justify-content-end mt-4 me-0">
-        <div class="total-price col-auto d-flex align-items-center justify-content-center">Thành tiền:
-            <span
-                class="ms-1">@Model.CartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
+            }
         </div>
-        <button type="button"
-                class="btn btn-outline-orange col-auto d-flex align-items-center justify-content-center ms-auto"
-                onclick="proceedToOrderInit('@Model.CartHeader!.CustomerId')">Khởi tạo đơn hàng
-        </button>
+        <div class="checkout-section row d-flex justify-content-end mt-4 me-0">
+            <div class="total-price col-auto d-flex align-items-center justify-content-center">Thành tiền:
+                <span
+                    class="ms-1">@Model.CartHeader!.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
+            </div>
+            <button type="button"
+                    class="btn btn-outline-orange col-auto d-flex align-items-center justify-content-center ms-auto"
+                    onclick="proceedToOrderInit('@Model.CartHeader!.CustomerId')">Khởi tạo đơn hàng
+            </button>
+        </div>
     </div>
-</div>
+}

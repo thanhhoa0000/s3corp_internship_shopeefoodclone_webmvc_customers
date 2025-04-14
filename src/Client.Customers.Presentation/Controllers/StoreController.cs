@@ -280,11 +280,6 @@ public class StoreController : Controller
     {
         var cart = new CartDto();
         var cartResponse = await _cartService.GetCartAsync(customerId);
-        
-        if (cartResponse!.Message.Contains("The cart is empty"))
-        {
-            _logger.LogDebug($"customerId: {customerId.ToString()} nullll");
-        }
 
         if (cartResponse!.IsSuccessful && cartResponse.Body is not null)
             cart = JsonSerializer.Deserialize<CartDto>(
