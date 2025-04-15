@@ -14,9 +14,20 @@ $(document).on("click", ".customer-name i", function () {
 
     const currentName = $span.text();
     const $input = $(`<input class="edit-name-input ps-1 ms-1 me-1" type="text" value="${currentName}" />`);
+    
+    $input.on("click", function () {
+        $(this).css('border-color', '#959595');
+    });
 
     $input.on('blur', function () {
         const newText = $(this).val();
+
+        if (!newText) {
+            $(this).css('border-color', '#e74c3c');
+            $(this).focus();
+            return;
+        }
+        
         $(this).replaceWith(`<span class="ms-2">${newText}</span>`);
         $icon.show();
         $('#customer-name-input').val(newText); // optional hidden input update
@@ -32,8 +43,9 @@ function proceedOrder() {
     const isDistrictSelected = isValidSelection("district-btn", "Quận/Huyện");
     const isWardSelected = isValidSelection("ward-btn", "Phường/Xã");
     const addressInput = document.querySelector('#detail-address').value.trim();
+    const telephoneInput = document.querySelector('.customer-phone-number input').value.trim();
 
-    if (isProvinceSelected && isDistrictSelected && isWardSelected && addressInput !== "") {
+    if (isProvinceSelected && isDistrictSelected && isWardSelected && addressInput !== "" && telephoneInput !== "") {
         let streetAddress = addressInput;
         let ward = getSelectedText("ward-btn");
         let district = getSelectedText("district-btn");
@@ -50,7 +62,25 @@ function proceedOrder() {
         
         return true;
     } else {
-        $('.address-validation-message').show();      
+        $('.address-validation-message').show();
+        if (!isProvinceSelected) {
+            $('#province-btn').css('border', '1px solid #e74c3c');
+        }
+        if (!isDistrictSelected) {
+            $('#district-btn').css('border', '1px solid #e74c3c');
+        }
+        if (!isWardSelected) {
+            $('#ward-btn').css('border', '1px solid #e74c3c');
+        }
+        if (addressInput === ""){
+            $('#detail-address').css('border', '1px solid #e74c3c');
+        }
+        if (telephoneInput === ""){
+            let input = $('.customer-phone-number input')
+            $.validator.unobtrusive.parse('form');
+            input.valid();
+            input.css('border', '1px solid #e74c3c');
+        }
         return false;
     }
 }
@@ -70,6 +100,7 @@ $(document).on("click", ".customer-address-section div div button", function () 
 
     if (validationAddress.is(':visible')) {
         validationAddress.hide();
+        $(this).css('border', '');
     }
 });
 
@@ -78,6 +109,16 @@ $(document).on("click", "#detail-address", function () {
 
     if (validationAddress.is(':visible')) {
         validationAddress.hide();
+        $(this).css('border', '');
+    }
+});
+
+$(document).on("click", '.customer-phone-number input', function () {
+    const validationAddress = $('.address-validation-message');
+
+    if (validationAddress.is(':visible')) {
+        validationAddress.hide();
+        $(this).css('border', '');
     }
 });
 
@@ -182,6 +223,14 @@ function getWards(district) {
         }
     });
 }
+
+$(function () {
+    $.validator.unobtrusive.parse('form');
+
+    $('.customer-phone-number input').on('blur', function () {
+        $(this).valid();
+    });
+});
 
 function getSelectedText(buttonId) {
     const btn = document.getElementById(buttonId);

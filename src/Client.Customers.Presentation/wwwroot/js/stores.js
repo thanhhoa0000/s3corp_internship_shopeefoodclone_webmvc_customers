@@ -8,7 +8,7 @@ $(document).ready(function () {
     let subCategory = JSON.parse(localStorage.getItem('sub-category'));
 
     let provinceButtonObserver = new MutationObserver(() => {
-        let province = $("#location-dropdown-btn").attr("province-code");
+        let province = JSON.parse(localStorage.getItem('selectedLocationCode'));
 
         if (province) {
             getDistrictListForStorePage(province);

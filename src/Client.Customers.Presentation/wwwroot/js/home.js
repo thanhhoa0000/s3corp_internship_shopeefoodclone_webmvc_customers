@@ -6,6 +6,7 @@ $(document).ready(function () {
     let cate = JSON.parse(localStorage.getItem('cate'));
     
     if (!cate) {
+        cate = "food";
         localStorage.setItem('cate', JSON.stringify("food"));
     }
 
@@ -14,6 +15,10 @@ $(document).ready(function () {
     })
 
     $(`.main-nav-item[code-name='${cate}']`).addClass("active");
+    
+    localStorage.setItem('promotionsPageSize', "9");
+    localStorage.setItem('collectionsPageSize', "9");
+    localStorage.setItem('storesPageSize', "9");
 });
 
 document.addEventListener("scroll", updateSearchSection);
@@ -72,6 +77,59 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-$('.home-stores-see-more').on('click', function () {
-    
+$(document).on('click', '.home-stores-see-more', function (e) {
+    e.preventDefault();
+    loadMoreContent('stores');
 });
+
+$(document).on('click', '.home-collection-see-more', function (e) {
+    e.preventDefault();
+    loadMoreContent('collections');
+});
+
+$(document).on('click', '.home-promotion-see-more', function (e) {
+    e.preventDefault();
+    loadMoreContent('promotions');
+});
+
+function loadMoreContent(type) {
+    let promotionsPageSize = parseInt(localStorage.getItem('promotionsPageSize')) || 0;
+    let collectionsPageSize = parseInt(localStorage.getItem('collectionsPageSize')) || 0;
+    let storesPageSize = parseInt(localStorage.getItem('storesPageSize')) || 0;
+    let province = localStorage.getItem('selectedLocationCode');
+    let cate = JSON.parse(localStorage.getItem('cate'));
+    let districts = [];
+    let districtButton = $('#district-dropdown-btn');
+
+    if (districtButton.is('[district-code]')) {
+        let districtCode = districtButton.attr('district-code');
+        districts.push(districtCode);
+    }
+
+    switch (type) {
+        case 'promotions':
+            promotionsPageSize += 9;
+            localStorage.setItem('promotionsPageSize', promotionsPageSize.toString());
+            break;
+        case 'collections':
+            collectionsPageSize += 9;
+            localStorage.setItem('collectionsPageSize', collectionsPageSize.toString());
+            break;
+        case 'stores':
+            storesPageSize += 9;
+            localStorage.setItem('storesPageSize', storesPageSize.toString());
+            break;
+    }
+
+    $.ajax({
+        url: `/Home/Index?province=${province}&categoryName=${cate}&districtsString=${districts}&collectionsPageSize=${collectionsPageSize}&storesListPageSize=${storesPageSize}&promotionsPageSize=${promotionsPageSize}`,
+        type: 'POST',
+        success: function (response) {
+            let parsed = $('<div>').html(response);
+            $('.home-stores-main').replaceWith(parsed.find('.home-stores-main'));
+        },
+        error: function () {
+            toastr.error("Đã xảy ra lỗi!");
+        }
+    });
+}

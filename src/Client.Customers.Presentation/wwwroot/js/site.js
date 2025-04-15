@@ -16,13 +16,15 @@ function getProvinces() {
 
             let selectedLocation = localStorage.getItem("selectedLocation");
             let selectedLocationCode = localStorage.getItem("selectedLocationCode");
-
+            
             if (!selectedLocation || selectedLocation === "undefined") {
                 selectedLocation = "Hồ Chí Minh";
+                localStorage.setItem("selectedLocation", selectedLocation);
             }
 
-            if (!selectedLocationCode) {
+            if (!selectedLocationCode || selectedLocationCode === "undefined") {
                 selectedLocationCode = "79";
+                localStorage.setItem("selectedLocationCode", selectedLocationCode);
             }
 
             let locationButton = $('#location-dropdown-btn');
@@ -59,6 +61,7 @@ function getProvinces() {
                 dropdownBtn.attr('province-code', provinceCode);
 
                 localStorage.setItem("selectedLocation", selectedLocation);
+                localStorage.setItem("selectedLocationCode", provinceCode);
             });
 
             if (window.location.pathname === "/") {
@@ -92,14 +95,17 @@ function getDistricts(province) {
             dropdown.empty();
 
             response.body.forEach(function (district) {
-                let districtItem = `<li class="district-item"><a class="dropdown-item" onclick="getStoresByDistrict('${province}', '${district.code}');" data-district="${district.name}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</a></li>`;
+                let districtItem = `<li class="district-item"><a class="dropdown-item" district-code="${district.code}" onclick="getStoresByDistrict('${province}', '${district.code}');" data-district="${district.name}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</a></li>`;
                 dropdown.append(districtItem);
             });
 
             dropdown.on('click', '.dropdown-item', function () {
                 let selectedDistrict = String($(this).data('district') || "").trim();
-                $('#district-dropdown-btn').text(selectedDistrict.split(/\s+/).length === 1 ? "Quận " + selectedDistrict : selectedDistrict);
+                let button = $('#district-dropdown-btn');
+                button.text(selectedDistrict.split(/\s+/).length === 1 ? "Quận " + selectedDistrict : selectedDistrict);
+                button.attr('district-code', $(this).attr('district-code'));
                 localStorage.setItem("selectedDistrict", selectedDistrict);
+                localStorage.setItem("selectedDistrictCode", button.attr('district-code'));
             });
         },
         error: function () {

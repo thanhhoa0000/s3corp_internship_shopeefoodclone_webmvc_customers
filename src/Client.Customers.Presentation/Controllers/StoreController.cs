@@ -124,7 +124,7 @@ public class StoreController : Controller
                 },
                 CategoryName = categoryName,
                 SubCategoryNames = subcategories,
-                IsPromoted = false
+                IsPromoted = true
             });
 
             if (storesCountResponse!.IsSuccessful)

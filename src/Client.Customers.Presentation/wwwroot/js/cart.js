@@ -1,5 +1,6 @@
 $(document).ready(function () {
     let cate = JSON.parse(localStorage.getItem('cate'));
+    let locationButton = $('#location-dropdown-btn');
 
     document.querySelectorAll(`.nav-link`).forEach((item) => {
         item.classList.remove("active");
@@ -55,7 +56,6 @@ $(document).on('click', '.button-section div', function () {
                         let parsed = $('<div>').html(response);
                         $(`div[cart-item-id=${id}]`).replaceWith(parsed.find(`div[cart-item-id=${id}]`));
                         $('.total-price span').text(parsed.find('span').text());
-                        toastr.success("Cập nhật giỏ hàng thành công!");
                     },
                     error: function () {
                         toastr.error("Đã xảy ra lỗi!");
@@ -73,7 +73,6 @@ $(document).on('click', '.button-section div', function () {
                         let parsed = $('<div>').html(response);
                         $(`div[cart-item-id=${id}]`).replaceWith(parsed.find(`div[cart-item-id=${id}]`));
                         $('.total-price span').text(parsed.find('span').text());
-                        toastr.success("Cập nhật giỏ hàng thành công!");
                     },
                     error: function () {
                         toastr.error("Đã xảy ra lỗi!");
@@ -136,7 +135,6 @@ function updateCartItemQuantity(element) {
 
                 $(`div[cart-item-id=${itemId}]`).replaceWith(parsed.find(`div[cart-item-id=${itemId}]`));
                 $('.total-price span').text(parsed.find('span').text());
-                toastr.success("Cập nhật giỏ hàng thành công!");
             },
             error: function () {
                 toastr.error("Đã xảy ra lỗi!");
@@ -164,7 +162,6 @@ function updateCartItemQuantity(element) {
                 }
                 
                 $('.total-price span').text(parsed.find('span').text());
-                toastr.success("Cập nhật giỏ hàng thành công!");
 
                 document.dispatchEvent(new CustomEvent("cartUpdated", {
                     detail: {

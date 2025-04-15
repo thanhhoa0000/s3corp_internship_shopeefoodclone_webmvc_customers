@@ -33,7 +33,7 @@ public class OrderController : Controller
 
             var cart = new CartDto();
             var store = new StoreDto();
-            var viewModel = new OrderDetailsViewModel();
+            var viewModel = new OrderInitViewModel();
 
             Response? cartResponse = await _cartService.GetCartAsync(customerId);
 
@@ -70,7 +70,7 @@ public class OrderController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateOrder(OrderDetailsViewModel model)
+    public async Task<IActionResult> CreateOrder(OrderInitViewModel model)
     {
         try
         {
@@ -101,15 +101,63 @@ public class OrderController : Controller
 
             if (response!.IsSuccessful)
             {
+                var orders = new List<OrderDto>();
+                
+                Response? orderToReturn = await _orderService.GetByCustomerIdAsync(new GetOrdersRequest
+                {
+                    CustomerId = Guid.Parse(customerId!)
+                });
+                
+                if (orderToReturn!.IsSuccessful && orderToReturn.Body is not null)
+                    orders = JsonSerializer.Deserialize<List<OrderDto>>(
+                        Convert.ToString(orderToReturn.Body)!,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+                
                 TempData["success"] = "Đặt hàng thành công!";
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", "Order", new { orderId = orders.First().Id });
             }
-
 
             TempData["error"] = "Đã xảy ra lỗi!";
 
             return RedirectToAction("Index", "Home");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+
+            return RedirectToAction("Index", "Home");
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid orderId)
+    {
+        try
+        {
+            var order = new OrderDto();
+            var store = new StoreDto();
+            var viewModel = new OrderDetailsViewModel();
+            
+            Response? orderResponse = await _orderService.GetByIdAsync(orderId);
+            
+            if (orderResponse!.IsSuccessful && orderResponse.Body is not null)
+                order = JsonSerializer.Deserialize<OrderDto>(
+                    Convert.ToString(orderResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            
+            Response? storeResponse = await _storeService.GetStoreDetails(order.StoreId);
+
+            if (storeResponse!.IsSuccessful && storeResponse.Body is not null)
+                store = JsonSerializer.Deserialize<StoreDto>(
+                    Convert.ToString(storeResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            
+            viewModel.Order = order;
+            viewModel.Store = store;
+            
+            return View(viewModel);
         }
         catch (Exception ex)
         {

@@ -1,4 +1,4 @@
-﻿@model OrderDetailsViewModel
+﻿@model OrderInitViewModel
 @{
     var customerName = User.Identity!.Name;
     var cartHeader = Model.Cart!.CartHeader;
@@ -63,7 +63,7 @@
         <div class="products-list-section pt-4 ps-4 pb-4 pe-4 mb-4 shadow">
             <div class="store-name d-flex align-items-center justify-content-between mb-3">
                 <h4 class="d-flex justify-content-start align-items-center"><i class="bi bi-shop"></i> @storeName</h4>
-                <a class="d-flex justify-content-end align-items-center" asp-controller="Store" asp-action="Details" asp-route-storeId="@cartHeader!.StoreId">Xem Shop <i class="bi bi-chevron-right"></i></a>
+                <a class="d-flex justify-content-end align-items-center" asp-controller="Store" asp-action="Details" asp-route-storeId="@cartHeader!.StoreId">Xem Shop<i class="ms-1 bi bi-chevron-right"></i></a>
             </div>
             
             <div class="product-items">
