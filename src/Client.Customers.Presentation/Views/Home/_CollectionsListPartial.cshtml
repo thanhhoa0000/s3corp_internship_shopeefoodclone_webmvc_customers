@@ -1,0 +1,21 @@
+﻿@model CollectionsListPartialViewModel
+
+@if (Model.Collections is not null)
+{
+    @foreach (var collection in Model.Collections)
+    {
+        <div class="collection-item col-4">
+            <a class="collection-content" href="#">
+                <div class="collection-img">
+                    <img class="img-fluid" alt="" src="@Url.Content($"~/images{collection.CoverImagePath}")"/>
+                </div>
+                <div class="collection-info">
+                    <div class="collection-basic-info">
+                        <h4>@collection.Name</h4>
+                        <div>@collection.Stores.Count địa điểm</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+}

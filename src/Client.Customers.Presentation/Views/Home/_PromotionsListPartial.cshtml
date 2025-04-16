@@ -1,0 +1,33 @@
+﻿@model PromotionsListPartialViewModel
+@{
+    var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+}
+
+@if (Model.Stores is not null)
+{
+    @foreach (var store in Model.Stores)
+    {
+        <div class="store-item col-4">
+            <a class="store-content" asp-controller="Store" asp-action="Details" asp-route-storeId="@store.Id">
+                <div class="opentime-status">
+                    <span class="status @(currentTime >= store.OpeningHour && currentTime <= store.ClosingHour ? "online" : "offline")"></span>
+                </div>
+                <div class="store-img">
+                    <img
+                        class="img-fluid"
+                        alt=""
+                        src="@Url.Content($"~/images{store.CoverImagePath}")"
+                        onerror="
+                                                this.onerror = null; 
+                                                this.src = '/images/stores/default-store-cover-img.jpg'"/>
+                </div>
+                <div class="store-info">
+                    <div class="store-basic-info">
+                        <h4>@store.Name</h4>
+                        <div>Số @store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.FullName</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+}

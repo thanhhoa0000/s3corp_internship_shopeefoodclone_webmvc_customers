@@ -1,0 +1,66 @@
+﻿@model OrdersListViewModel
+@{
+    var customerName = User.Identity!.Name;
+    var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    ViewData["Title"] = $"{customerName}'s Orders | Food Delivery & Shipping Service | ShopeeFood.vn";
+}
+
+<div class="orders-list-section p-5 shadow" customer-id="@customerId">
+    @if (Model.Orders is not null)
+    {
+        var orders = Model.Orders;
+
+        @foreach (var order in orders)
+        {
+            <a class="order-item p-3 mb-2" asp-controller="Order" asp-action="Details"
+               asp-route-orderId="@order.Id">
+                <div class="order-header d-flex justify-content-between align-items-center">
+                    <div class="store-name">
+                        <h6>@order.StoreName</h6>
+                    </div>
+
+                    <div class="order-date">
+                        <div>Ngày tạo đơn:<span class="ms-1">@order.OrderDate.ToString("dd-MM-yyyy HH:mm")</span></div>
+                    </div>
+                </div>
+
+                <div class="order-body">
+                    @foreach (var item in order.OrderDetails)
+                    {
+                        <div class="detail row ps-3 mb-1">
+                            <div class="quantity col-auto">@item.Quantity</div>
+                            <div class="product border-start col-auto">@item.ProductName</div>
+                            <div class="price ms-auto border-start col-auto">
+                                @if (item.Product!.Discount > 0)
+                                {
+                                    <div class="actual-price">
+                                        @((item.Product!.Price - item.Product!.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                        <span>đ</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="actual-price">
+                                        @item.Product!.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                        <span>đ</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="total-price d-flex justify-content-end mt-5">
+                    <div>Thành tiền:<span
+                            class="ms-1">@order.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
+                    </div>
+                </div>
+            </a>
+        }
+    }
+</div>
+
+@section Scripts
+{
+    <script src="~/js/order.js" asp-append-version="true"></script>
+}

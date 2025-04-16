@@ -8,7 +8,5 @@ public sealed class HomeViewModel
     public List<StoreDto> PromotionStores { get; set; } = new List<StoreDto>();
     public List<CollectionDto> Collections { get; set; } = new List<CollectionDto>();
     public int StoresCount { get; set; }
-    public int StoresListPageSize { get; set; }
-    public int PromotionsPageSize { get; set; }
-    public int CollectionsPageSize { get; set; }
+    public int PageSize { get; set; } = 9;
 }

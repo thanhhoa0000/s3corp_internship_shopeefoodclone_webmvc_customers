@@ -7,6 +7,7 @@ public class OrderDto
     public Guid CustomerId { get; set; }
     [Required]
     public Guid StoreId { get; set; }
+    public string? StoreName { get; set; }
     [Required]
     [Range(1, double.MaxValue)]
     [Column(TypeName = "decimal(18,0)")]

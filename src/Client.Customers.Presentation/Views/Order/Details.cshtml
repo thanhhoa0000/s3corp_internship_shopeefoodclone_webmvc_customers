@@ -12,7 +12,7 @@
         <div class="order-info mb-3">
             <h4><i class="bi bi-clipboard-fill me-1"></i>Thông tin đơn hàng</h4>
             <div class="order-id ps-3">Mã vận đơn:<span class="ms-1">@Model.Order.Id</span></div>
-            <div class="order-date ps-3">Ngày tạo đơn:<span class="ms-1">@Model.Order.OrderDate.ToString("dd-MM-yyyy HH:mm");</span></div>
+            <div class="order-date ps-3">Ngày tạo đơn:<span class="ms-1">@Model.Order.OrderDate.ToString("dd-MM-yyyy HH:mm")</span></div>
             @{
                 string status = Model.Order.OrderStatus switch
                 {

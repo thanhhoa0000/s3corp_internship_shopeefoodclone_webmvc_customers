@@ -1808,14 +1808,12 @@ footer div div div p {
     color: #0288d1
 }
 
-.order-section .products-section .products .item .item-price .actual-price span
-{
+.order-section .products-section .products .item .item-price .actual-price span {
     font-weight: 400;
     font-size: 10px;
 }
 
-.order-section .products-section .products .item .item-price .old-price span
-{
+.order-section .products-section .products .item .item-price .old-price span {
     font-weight: 400;
     font-size: 9px;
 }
@@ -1830,6 +1828,63 @@ footer div div div p {
     font-weight: 700;
 }
 
+.orders-list-section {
+    background-color: white;
+    border-radius: 4px;
+    margin: 0 auto;
+    margin-top: 50px !important;
+    margin-bottom: 50px !important;
+    font-family: "Noto Sans", Arial, sans-serif;
+}
 
+.orders-list-section .order-item {
+    display: block;
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    color: #252525;
+    cursor: pointer;
+    text-decoration: none;
+}
 
+.orders-list-section .order-item .order-header .store-name h6 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
 
+.orders-list-section .order-item .order-header .order-date div {
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.orders-list-section .order-item .order-header .order-date div span {
+    font-weight: 700;
+    color: #CF2127;
+}
+
+.orders-list-section .order-item .order-body .detail {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.orders-list-section .order-item .order-body .detail .quantity {
+    width: 50px;
+}
+
+.orders-list-section .order-item .order-body .detail .price .actual-price {
+    color: #0288d1
+}
+
+.orders-list-section .order-item .order-body .detail .price .actual-price span {
+    font-size: 9px
+}
+
+.orders-list-section .order-item .total-price {
+    font-weight: 400;
+}
+
+.orders-list-section .order-item .total-price span {
+    color: var(--primary-color);
+    font-weight: 700;
+}
