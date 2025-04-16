@@ -18,6 +18,50 @@ public class OrderController : Controller
         _storeService = storeService;
         _logger = logger;
     }
+    
+    [HttpGet]
+    public IActionResult List()
+    {
+        if (!User.Identity!.IsAuthenticated)
+        {
+            TempData["error"] = "Vui lòng đăng nhập trước khi sử dụng dịch vụ!";
+
+            return RedirectToAction("Login", "Account");
+        }
+        
+        return View(new OrdersListViewModel());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> List(Guid customerId)
+    {
+        try
+        {
+            var viewModel = new OrdersListViewModel();
+            var orders = new List<OrderDto>();
+            
+            Response? ordersResponse = await _orderService.GetByCustomerIdAsync(new GetOrdersRequest
+            {
+                CustomerId = customerId
+            });
+            
+            if (ordersResponse!.IsSuccessful && ordersResponse.Body is not null)
+                orders = JsonSerializer.Deserialize<List<OrderDto>>(
+                    Convert.ToString(ordersResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            
+            viewModel.Orders = orders;
+            
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+
+            return RedirectToAction("Index", "Home");
+        }
+    }
 
     [HttpGet]
     public async Task<IActionResult> OrderInit(Guid customerId)

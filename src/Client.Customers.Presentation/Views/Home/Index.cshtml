@@ -83,7 +83,7 @@
                         }
 
                     </div>
-                    @if (!(Model.PromotionStores.Count < Model.PromotionsPageSize))
+                    @if (!(Model.PromotionStores.Count < Model.PageSize))
                     {
                         <div class="home-promotion-see-more">
                             <a class="" >Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
@@ -117,7 +117,7 @@
                             </div>
                         }
                     </div>
-                    @if (!(Model.Collections.Count < Model.CollectionsPageSize))
+                    @if (!(Model.Collections.Count < Model.PageSize))
                     {
                         <div class="home-collection-see-more">
                             <a class="" >Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
@@ -168,7 +168,7 @@
                                 </div>
                             }
                         </div>
-                        @if (!(Model.Stores.Count < Model.StoresListPageSize))
+                        @if (!(Model.Stores.Count < Model.PageSize))
                         {
                             <div class="home-stores-see-more">
                                 <a class="" >Xem thêm <i class="bi bi-arrow-clockwise"></i></a>

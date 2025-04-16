@@ -3,13 +3,15 @@
     var currentTime = TimeOnly.FromDateTime(DateTime.Now);
 }
 
-<div class="home-stores-list">
-    @foreach (var store in Model.Stores!)
+@if (Model.Stores is not null)
+{
+    @foreach (var store in Model.Stores)
     {
         <div class="home-store-item row">
             <a class="home-store-content" asp-controller="Store" asp-action="Details" asp-route-storeId="@store.Id">
                 <div class="opentime-status">
-                    <span class="status @(currentTime >= store.OpeningHour && currentTime <= store.ClosingHour ? "online" : "offline")"></span>
+                    <span
+                        class="status @(currentTime >= store.OpeningHour && currentTime <= store.ClosingHour ? "online" : "offline")"></span>
                 </div>
                 <div class="home-store-img">
                     <img
@@ -22,17 +24,15 @@
                 </div>
                 <div class="home-store-info">
                     <div class="home-store-basic-info">
-                        <h4><img class="" alt="" src="~/images/partner2x.png" title="Đây là 1 trong những Merchants được đánh giá cao trong ShopeeFood"/> @store.Name</h4>
-                        <div>Số @store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
+                        <h4>
+                            <img class="" alt="" src="~/images/partner2x.png"
+                                 title="Đây là 1 trong những Merchants được đánh giá cao trong ShopeeFood"/> @store.Name
+                        </h4>
+                        <div>
+                            Số @store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.Name</div>
                     </div>
                 </div>
             </a>
         </div>
     }
-</div>
-@if (!(Model.Stores.Count < Model.PageSize))
-{
-    <div class="home-stores-see-more">
-        <a class="" href="#">Xem thêm <i class="bi bi-arrow-clockwise"></i></a>
-    </div>
 }

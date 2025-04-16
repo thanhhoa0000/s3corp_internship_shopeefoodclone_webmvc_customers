@@ -30,9 +30,7 @@ public class HomeController : Controller
         string province, 
         string districtsString, 
         string categoryName, 
-        int collectionsPageSize = 9, 
-        int storesListPageSize = 9, 
-        int promotionsPageSize = 9, 
+        int pageSize = 9,
         int pageNumber = 1)
     {
         try
@@ -64,7 +62,7 @@ public class HomeController : Controller
                         Districts = districts
                     },
                     CategoryName = categoryName,
-                    PageSize = storesListPageSize,
+                    PageSize = pageSize,
                     PageNumber = pageNumber
                 });
 
@@ -76,13 +74,9 @@ public class HomeController : Controller
             Response? promotionStoresResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
                 request: new GetStoresRequest
                 {
-                    LocationRequest = new LocationRequest
-                    {
-                        Province = province,
-                        Districts = districts
-                    },
+                    LocationRequest = new LocationRequest { Province = province },
                     CategoryName = categoryName,
-                    PageSize = promotionsPageSize,
+                    PageSize = pageSize,
                     PageNumber = pageNumber
                 });
             
@@ -95,7 +89,12 @@ public class HomeController : Controller
             
             Response? storesCountResponse = await _storeService.GetStoresCount(new GetStoresCountRequest
             {
-                LocationRequest = new LocationRequest { Province = province },
+                LocationRequest = new LocationRequest
+                {
+                    Province = province,
+                    Districts = districts
+                },
+                CategoryName = categoryName,
                 IsPromoted = false
             });
 
@@ -109,7 +108,7 @@ public class HomeController : Controller
                 {
                     LocationRequest = new LocationRequest { Province = province },
                     CategoryName = categoryName,
-                    PageSize = collectionsPageSize,
+                    PageSize = pageSize,
                     PageNumber = pageNumber
                 });
 
@@ -126,9 +125,7 @@ public class HomeController : Controller
                 PromotionStores = promotions,
                 Collections = collections,
                 StoresCount = storesCount,
-                StoresListPageSize = storesListPageSize,
-                PromotionsPageSize = promotionsPageSize,
-                CollectionsPageSize = collectionsPageSize
+                PageSize = pageSize
             };
 
             return View(viewModel);
@@ -142,15 +139,140 @@ public class HomeController : Controller
         }
     }
 
-    // public async Task<IActionResult> UpdateStoresList(
-    //     string province, 
-    //     string districtsString, 
-    //     string category, int pageSize)
-    // {
-    //     var viewModel = new StoresListPartialViewModel();
-    //     var stores = new List<StoreDto>();
-    //     
-    // }
+    [HttpPost]
+    public async Task<IActionResult> UpdateStoresList(
+        string province,
+        string districtsString,
+        string categoryName,
+        int pageSize = 9,
+        int pageNumber = 1)
+    {
+        try
+        {
+            var viewModel = new StoresListPartialViewModel();
+            var stores = new List<StoreDto>();
+            var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+            
+            Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
+                request: new GetStoresRequest
+                {
+                    LocationRequest = new LocationRequest
+                    {
+                        Province = province,
+                        Districts = districts
+                    },
+                    CategoryName = categoryName,
+                    PageSize = pageSize,
+                    PageNumber = pageNumber
+                });
+
+            if (storesResponse!.IsSuccessful)
+                stores = JsonSerializer.Deserialize<List<StoreDto>>(
+                    Convert.ToString(storesResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            
+            viewModel.Stores = stores;
+            
+            return PartialView("_StoresListPartial", viewModel);
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return RedirectToAction("Index", "Home");
+        }
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> UpdatePromotionsList(
+        string province,
+        string districtsString,
+        string categoryName,
+        int pageSize = 9,
+        int pageNumber = 1)
+    {
+        try
+        {
+            var viewModel = new PromotionsListPartialViewModel();
+            var stores = new List<StoreDto>();
+            var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+            
+            Response? storesResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
+                request: new GetStoresRequest
+                {
+                    LocationRequest = new LocationRequest
+                    {
+                        Province = province,
+                        Districts = districts
+                    },
+                    CategoryName = categoryName,
+                    PageSize = pageSize,
+                    PageNumber = pageNumber,
+                    IsPromoted = true
+                });
+
+            if (storesResponse!.IsSuccessful)
+                stores = JsonSerializer.Deserialize<List<StoreDto>>(
+                    Convert.ToString(storesResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            
+            viewModel.Stores = stores;
+            
+            return PartialView("_PromotionsListPartial", viewModel);
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return RedirectToAction("Index", "Home");
+        }
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> UpdateCollectionsList(
+        string province,
+        string districtsString,
+        string categoryName,
+        int pageSize = 9,
+        int pageNumber = 1)
+    {
+        try
+        {
+            var viewModel = new CollectionsListPartialViewModel();
+            var collections = new List<CollectionDto>();
+            var districts = districtsString?.Split(",").ToList() ?? new List<string>();
+            
+            Response? collectionsResponse = await _collectionService.GetCollectionsByLocationAndCategoryAsync(
+                request: new GetCollectionsRequest
+                {
+                    LocationRequest = new LocationRequest { Province = province },
+                    CategoryName = categoryName,
+                    PageSize = pageSize,
+                    PageNumber = pageNumber
+                });
+
+            if (collectionsResponse!.IsSuccessful)
+                collections = JsonSerializer.Deserialize<List<CollectionDto>>(
+                    Convert.ToString(collectionsResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            
+            viewModel.Collections = collections;
+            
+            return PartialView("_CollectionsListPartial", viewModel);
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred: {ex}");
+            TempData["error"] = "Đã xảy ra lỗi!";
+            
+            return RedirectToAction("Index", "Home");
+        }
+    }
 
     public IActionResult Privacy()
     {
