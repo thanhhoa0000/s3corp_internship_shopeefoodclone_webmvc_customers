@@ -69,15 +69,15 @@
                             <div class="dropdown user-menu-dropdown">
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" style="text-overflow: ellipsis;"><b>@User.Identity!.Name</b></button>
                                 <ul class="dropdown-menu">
-                                    <li class="user-menu-item"><a class="dropdown-item" asp-controller="Cart" asp-action="Index" asp-route-customerId="@customerId"><i class="bi bi-cart-fill"></i>  Giỏ hàng</a></li>
-                                    <li class="user-menu-item"><a class="dropdown-item" href="#"><i class="bi bi-clipboard-fill"></i>  Lịch sử đơn hàng</a></li>
-                                    <li class="user-menu-item"><a class="dropdown-item" href="#"><i class="bi bi-person-fill-gear"></i>  Cập nhật tài khoản</a></li>
-                                    <li class="user-menu-item"><a class="dropdown-item text-danger" asp-area="" asp-controller="Account" asp-action="Logout"><i class="bi bi-box-arrow-right"></i>  Đăng xuất</a></li>
+                                    <li class="user-menu-item get-cart"><a class="dropdown-item" asp-controller="Cart" asp-action="Index" asp-route-customerId="@customerId"><i class="bi bi-cart-fill"></i>  Giỏ hàng</a></li>
+                                    <li class="user-menu-item get-orders"><a class="dropdown-item" href="#"><i class="bi bi-clipboard-fill"></i>  Lịch sử đơn hàng</a></li>
+                                    <li class="user-menu-item account-updated"><a class="dropdown-item" href="#"><i class="bi bi-person-fill-gear"></i>  Cập nhật tài khoản</a></li>
+                                    <li class="user-menu-item logout"><a class="dropdown-item text-danger" asp-area="" asp-controller="Account" asp-action="Logout"><i class="bi bi-box-arrow-right"></i>  Đăng xuất</a></li>
                                 </ul>
                             </div>
                         }
                         <!-- Language Dropdown -->
-                        <div class="dropdown main-location-dropdown">
+                        @*<div hidden class="dropdown main-location-dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-translate"></i>
                             </button>
@@ -85,7 +85,7 @@
                                 <li><a class="dropdown-item" href="#"><img alt="" src="~/images/vietnam_flag.png"/> Tiếng Việt</a></li>
                                 <li><a class="dropdown-item" href="#"><img alt="" src="~/images/america_flag.png"/> English</a></li>
                             </ul>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </nav>

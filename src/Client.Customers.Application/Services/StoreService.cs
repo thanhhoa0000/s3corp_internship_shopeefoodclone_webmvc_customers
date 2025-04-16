@@ -28,11 +28,12 @@ public class StoreService : IStoreService
         }, bearer: false);
     }
 
-    public async Task<Response?> GetStoresCount()
+    public async Task<Response?> GetStoresCount(GetStoresCountRequest request)
     {
         return await _service.SendAsync(new Request()
         {
-            ApiMethod = ApiMethod.Get,
+            ApiMethod = ApiMethod.Post,
+            Body = request,
             Url = $"{ApiUrlProperties.ApiGatewayUrl}/stores/get-count"
         }, bearer: false);
     }

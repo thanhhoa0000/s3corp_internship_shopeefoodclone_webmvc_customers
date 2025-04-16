@@ -24,24 +24,35 @@ public class TokenProcessor : ITokenProcessor
     
     public string? GetAccessToken()
     {
-        string? token = null;
-        bool? hasToken = _accessor
-            .HttpContext?.Request.Cookies.TryGetValue(CookieProperties.AccessTokenCookie, out token);
+        if (_accessor.HttpContext?.Request.Cookies.TryGetValue(CookieProperties.AccessTokenCookie, out var token) == true &&
+            !string.IsNullOrWhiteSpace(token))
+        {
+            return token;
+        }
 
-        return hasToken is true ? token : null;
+        return null;
     }
-    
+
     public string? GetRefreshToken()
     {
-        string? token = null;
-        bool? hasToken = _accessor
-            .HttpContext?.Request.Cookies.TryGetValue(CookieProperties.RefreshTokenCookie, out token);
+        if (_accessor.HttpContext?.Request.Cookies.TryGetValue(CookieProperties.RefreshTokenCookie, out var token) == true &&
+            !string.IsNullOrWhiteSpace(token))
+        {
+            return token;
+        }
 
-        return hasToken is true ? token : null;
+        return null;
     }
 
     public void SetTokens(string accessToken, string refreshToken)
     {
+        ClearTokens();
+        
+        if (_accessor.HttpContext is null)
+        {
+            _logger.Error("HttpContext is null");
+        }
+        
         _accessor.HttpContext?.Response.Cookies.Append(
             CookieProperties.AccessTokenCookie, accessToken);
         

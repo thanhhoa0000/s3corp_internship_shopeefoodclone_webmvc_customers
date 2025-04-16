@@ -64,6 +64,7 @@ try
     }
 
     app.UseHttpsRedirection();
+    
     app.UseStaticFiles();
 
     app.UseRouting();
@@ -75,6 +76,8 @@ try
     app.UseAuthentication();
 
     app.UseAuthorization();
+    
+    app.UseMiddleware<TokenRefreshMiddleware>();
 
     app.MapControllerRoute(
         name: "default",

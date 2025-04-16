@@ -29,25 +29,8 @@ public class BaseService : IBaseService
             if (bearer)
             {
                 var accessToken = _tokenProcessor.GetAccessToken();
-                var refreshToken = _tokenProcessor.GetRefreshToken();
-                
-                _logger.Debug(accessToken);
-                _logger.Debug(refreshToken);
-                
-                var checkedTokens = 
-                    await _tokenProcessor.GetValidAccessTokenAsync(accessToken!, refreshToken!);
-
-                if (!string.IsNullOrEmpty(checkedTokens!.AccessToken))
-                {
-                    _tokenProcessor.SetTokens(checkedTokens.AccessToken, checkedTokens.RefreshToken);
-                    _logger.Debug($"AccessToken: {checkedTokens.AccessToken}");
-                    _logger.Debug($"RefreshToken: {checkedTokens.RefreshToken}");
                     
-                    _logger.Debug($"AccessToken Get: {_tokenProcessor.GetAccessToken()}");
-                    _logger.Debug($"RefreshToken Get: {_tokenProcessor.GetRefreshToken()}");
-                    
-                    message.Headers.Add("Authorization", $"Bearer {checkedTokens.AccessToken}");
-                }
+                message.Headers.Add("Authorization", $"Bearer {accessToken}");
             }
 
             message.RequestUri = new Uri(request.Url);

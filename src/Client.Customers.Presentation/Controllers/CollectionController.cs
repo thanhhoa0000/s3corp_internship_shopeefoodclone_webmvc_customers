@@ -14,7 +14,7 @@ public class CollectionController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult> Index(string province, string categoryName, int pageSize = 30, int pageNumber = 1)
+    public async Task<ActionResult> Index(string province, string categoryName, int pageSize = 15, int pageNumber = 1)
     {
         try
         {
@@ -38,6 +38,7 @@ public class CollectionController : Controller
             {
                 Collections = collections,
                 PagesCount = (int)Math.Ceiling((double)(collections.Count) / pageSize),
+                CollectionsCount = collections.Count,
                 CurrentPage = pageNumber
             };
 

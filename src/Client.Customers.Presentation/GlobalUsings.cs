@@ -4,6 +4,8 @@ global using System.Diagnostics;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using System.Globalization;
+global using System.ComponentModel.DataAnnotations;
+global using System.Reflection;
 
 global using Microsoft.AspNetCore.DataProtection;
 global using Microsoft.AspNetCore.Authentication.Cookies;
@@ -24,3 +26,5 @@ global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Responses;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Models.ViewModels;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Enums;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Interfaces;
+
+global using ShopeeFoodClone.WebMvc.Customers.Presentation.Middlewares;

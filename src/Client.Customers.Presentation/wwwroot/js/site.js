@@ -4,7 +4,7 @@ function getProvinces() {
     $.ajax({
         url: `${gatewayUrl}/provinces/with-stores-count`,
         type: 'GET',
-        success: function (response) {            
+        success: function (response) {
             if (!response.isSuccessful || !response.body) {
                 console.error("Invalid API response");
                 return;
@@ -13,18 +13,20 @@ function getProvinces() {
             let dropdown = $('#location-dropdown');
 
             let locations = response.body;
-            
+
             let selectedLocation = localStorage.getItem("selectedLocation");
             let selectedLocationCode = localStorage.getItem("selectedLocationCode");
             
             if (!selectedLocation || selectedLocation === "undefined") {
                 selectedLocation = "Hồ Chí Minh";
+                localStorage.setItem("selectedLocation", selectedLocation);
             }
-            
-            if (!selectedLocationCode) {
+
+            if (!selectedLocationCode || selectedLocationCode === "undefined") {
                 selectedLocationCode = "79";
+                localStorage.setItem("selectedLocationCode", selectedLocationCode);
             }
-            
+
             let locationButton = $('#location-dropdown-btn');
 
             dropdown.empty();
@@ -59,9 +61,10 @@ function getProvinces() {
                 dropdownBtn.attr('province-code', provinceCode);
 
                 localStorage.setItem("selectedLocation", selectedLocation);
+                localStorage.setItem("selectedLocationCode", provinceCode);
             });
 
-            if (window.location.pathname === "/"){
+            if (window.location.pathname === "/") {
                 setTimeout(function () {
                     $('.dropdown-item').each(function () {
                         if ($(this).data('location') === selectedLocation) {
@@ -92,14 +95,17 @@ function getDistricts(province) {
             dropdown.empty();
 
             response.body.forEach(function (district) {
-                let districtItem = `<li class="district-item"><a class="dropdown-item" onclick="getStoresByDistrict('${province}', '${district.code}');" data-district="${district.name}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</a></li>`;
+                let districtItem = `<li class="district-item"><a class="dropdown-item" district-code="${district.code}" onclick="getStoresByDistrict('${province}', '${district.code}');" data-district="${district.name}">${district.name.trim().split(/\s+/).length === 1 ? "Quận " + district.name : district.name}</a></li>`;
                 dropdown.append(districtItem);
             });
 
             dropdown.on('click', '.dropdown-item', function () {
                 let selectedDistrict = String($(this).data('district') || "").trim();
-                $('#district-dropdown-btn').text(selectedDistrict.split(/\s+/).length === 1 ? "Quận " + selectedDistrict : selectedDistrict);
+                let button = $('#district-dropdown-btn');
+                button.text(selectedDistrict.split(/\s+/).length === 1 ? "Quận " + selectedDistrict : selectedDistrict);
+                button.attr('district-code', $(this).attr('district-code'));
                 localStorage.setItem("selectedDistrict", selectedDistrict);
+                localStorage.setItem("selectedDistrictCode", button.attr('district-code'));
             });
         },
         error: function () {
@@ -109,10 +115,10 @@ function getDistricts(province) {
 }
 
 function getStores(province, provinceName) {
-    if (window.location.pathname !== "/"){
-        window.location.href = "/";    
+    if (window.location.pathname !== "/") {
+        window.location.href = "/";
     }
-    
+
     const activeCate = document.querySelector('.main-nav-item.active')?.getAttribute('code-name');
 
     $.ajax({
@@ -187,41 +193,80 @@ function getStoresByDistrict(province, district) {
     })
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const cateSections = document.querySelectorAll(".home-footer-item");
+document.addEventListener("configLoaded", function () {
+    $.ajax({
+        url: `${gatewayUrl}/categories/with-sub-categories-name-list`,
+        type: 'GET',
+        success: function (response) {
+            if (!response.isSuccessful || !response.body) {
+                console.error("Invalid API response");
+                return;
+            }
 
-    cateSections.forEach(section => {
-        const title = section.querySelector(".home-footer-item-title");
-        const codeName = title.getAttribute("code-name");
-        document.addEventListener("configLoaded", () => {
-            $.ajax({
-                url: `${gatewayUrl}/categories/sub-categories/get-by-cateName`,
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({
-                    categoryName: codeName
-                }),
-                success: function (response) {
-                    const itemList = $(section).find(".home-footer-item-list");
-                    itemList.empty();
+            let categories = response.body;            
 
-                    let subCategories = response.body;
+            $('.footer-main-content').empty();
 
-                    subCategories.forEach(function (subCategory) {
-                        itemList.append(`<a href="/Store/Promotions" cate="${subCategory.category.codeName}" sub-cate="${subCategory.codeName}">${subCategory.name}</a>`)
-                    });
+            categories.forEach(function (category) {
+                let $cateItem = $(`
+                    <div class="home-footer-item">
+                        <a class="home-footer-item-title" code-name="${category.codeName}" href="Store/List">${category.name.toUpperCase()}</a>
+                        <ul class="home-footer-item-list"></ul>
+                    </div>
+                `);
 
-                    document.querySelectorAll('.home-footer-item-list a').forEach(item => {
-                        item.onclick = () => setCateLocalStorage(item.getAttribute("cate"), item.getAttribute("sub-cate"));
-                    })
-                },
-                error: function () {
-                    console.error("Failed to fetch sub-categories.");
-                }
+                let $itemList = $cateItem.find(".home-footer-item-list");
+
+                category.subCategories.forEach(function (subCategory) {
+                    let $item = $(`<a href="/Store/List" cate="${category.codeName}" sub-cate="${subCategory.codeName}">${subCategory.name}</a>`);
+                    $itemList.append($item);
+                });
+
+                $('.footer-main-content').append($cateItem);
             });
-        });
-    })
-})
+
+            document.querySelectorAll('.home-footer-item-list a').forEach(item => {
+                item.onclick = () => setCateLocalStorage(item.getAttribute("cate"), item.getAttribute("sub-cate"));
+            });
+
+            document.querySelectorAll('.home-footer-item-title').forEach(title => {
+                title.onclick = () => localStorage.setItem('cate', JSON.stringify(title.getAttribute("code-name")));
+            });
+
+
+            document.dispatchEvent(new Event("homeFooterLoaded"));
+        },
+        error: function () {
+            console.error("Failed to fetch sub-categories.");
+        }
+    });
+});
+
+// Divide categories and their sub-categories in columns evenly on footer
+document.addEventListener("homeFooterLoaded", function () {
+    const homeFooterItems = Array.from(document.querySelectorAll(".home-footer-item"));
+    const totalItems = homeFooterItems.length;
+    const columns = 4;
+    const perColumn = Math.floor(totalItems / columns);
+    const remainder = totalItems % columns;
+
+    const footerContainer = document.querySelector(".footer-main-content");
+    footerContainer.innerHTML = "";
+
+    let startIndex = 0;
+    for (let i = 0; i < columns; i++) {
+        let itemCount = perColumn + (i < remainder ? 1 : 0);
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-3");
+
+        for (let j = 0; j < itemCount; j++) {
+            colDiv.appendChild(homeFooterItems[startIndex]);
+            startIndex++;
+        }
+
+        footerContainer.appendChild(colDiv);
+    }
+});
 
 function setCateLocalStorage(cate, subCate) {
     localStorage.setItem('cate', JSON.stringify(cate));
@@ -232,7 +277,7 @@ function getSubCategories(cateName) {
     if (window.location.pathname !== "/") {
         window.location.href = "/";
     }
-    
+
     localStorage.setItem('cate', JSON.stringify(cateName));
 
     const currentLocation = document.getElementById("location-dropdown-btn").getAttribute("province-code");
@@ -266,7 +311,6 @@ function getSubCategories(cateName) {
 
 function saveSubCategoryToLocalStorage(subCategory) {
     localStorage.setItem('sub-category', JSON.stringify(subCategory));
-    console.log(localStorage.getItem('sub-category'));
 }
 
 document.addEventListener("DOMContentLoaded", function () {

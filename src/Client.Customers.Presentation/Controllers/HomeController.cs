@@ -23,39 +23,23 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        try
-        {
-            var categories = new List<CategoryDto>();
-
-            Response? categoriesResponse = await _categoryService.GetAllAsync();
-
-            if (categoriesResponse!.IsSuccessful)
-                categories = JsonSerializer.Deserialize<List<CategoryDto>>(
-                    JsonSerializer.Serialize(categoriesResponse.Body),
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-
-            var viewModel = new HomeViewModel() { Categories = categories };
-
-            return View(viewModel);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
-            TempData["error"] = "Đã xảy ra lỗi!";
-            
-            return View(new HomeViewModel());
-        }
-    }
+    public IActionResult Index() => View(new HomeViewModel());
     
     [HttpPost]
-    public async Task<IActionResult> Index(string province, string districtsString, string categoryName, int pageSize = 9, int pageNumber = 1)
+    public async Task<IActionResult> Index(
+        string province, 
+        string districtsString, 
+        string categoryName, 
+        int collectionsPageSize = 9, 
+        int storesListPageSize = 9, 
+        int promotionsPageSize = 9, 
+        int pageNumber = 1)
     {
         try
         {
             var subCategories = new List<SubCategoryDto>();
             var stores = new List<StoreDto>();
+            var promotions = new List<StoreDto>();
             var collections = new List<CollectionDto>();
             var districts = districtsString?.Split(",").ToList() ?? new List<string>();
             var storesCount = 0;
@@ -80,7 +64,7 @@ public class HomeController : Controller
                         Districts = districts
                     },
                     CategoryName = categoryName,
-                    PageSize = pageSize,
+                    PageSize = storesListPageSize,
                     PageNumber = pageNumber
                 });
 
@@ -88,8 +72,32 @@ public class HomeController : Controller
                 stores = JsonSerializer.Deserialize<List<StoreDto>>(
                     Convert.ToString(storesResponse.Body)!,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            
+            Response? promotionStoresResponse = await _storeService.GetStoresByLocationAndCategoryAsync(
+                request: new GetStoresRequest
+                {
+                    LocationRequest = new LocationRequest
+                    {
+                        Province = province,
+                        Districts = districts
+                    },
+                    CategoryName = categoryName,
+                    PageSize = promotionsPageSize,
+                    PageNumber = pageNumber
+                });
+            
+            if (promotionStoresResponse!.IsSuccessful)
+                promotions = JsonSerializer.Deserialize<List<StoreDto>>(
+                    Convert.ToString(promotionStoresResponse.Body)!,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 
-            Response? storesCountResponse = await _storeService.GetStoresCount();
+            promotions = promotions.Where(store => store.IsPromoted).ToList();
+            
+            Response? storesCountResponse = await _storeService.GetStoresCount(new GetStoresCountRequest
+            {
+                LocationRequest = new LocationRequest { Province = province },
+                IsPromoted = false
+            });
 
             if (storesCountResponse!.IsSuccessful)
                 storesCount = JsonSerializer.Deserialize<int>(
@@ -101,7 +109,7 @@ public class HomeController : Controller
                 {
                     LocationRequest = new LocationRequest { Province = province },
                     CategoryName = categoryName,
-                    PageSize = pageSize,
+                    PageSize = collectionsPageSize,
                     PageNumber = pageNumber
                 });
 
@@ -115,21 +123,34 @@ public class HomeController : Controller
                 SubCategories = subCategories,
                 CategoryName = subCategories.First().Category!.Name,
                 Stores = stores,
-                PromotionStores = stores.Where(store => store.IsPromoted).ToList(),
+                PromotionStores = promotions,
                 Collections = collections,
-                StoresCount = storesCount
+                StoresCount = storesCount,
+                StoresListPageSize = storesListPageSize,
+                PromotionsPageSize = promotionsPageSize,
+                CollectionsPageSize = collectionsPageSize
             };
 
             return View(viewModel);
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error occurred: {ex.ToString()}");
+            _logger.LogError($"Error occurred: {ex}");
             TempData["error"] = "Đã xảy ra lỗi!";
             
             return View(new HomeViewModel());
         }
     }
+
+    // public async Task<IActionResult> UpdateStoresList(
+    //     string province, 
+    //     string districtsString, 
+    //     string category, int pageSize)
+    // {
+    //     var viewModel = new StoresListPartialViewModel();
+    //     var stores = new List<StoreDto>();
+    //     
+    // }
 
     public IActionResult Privacy()
     {

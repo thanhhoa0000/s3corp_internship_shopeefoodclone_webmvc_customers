@@ -7,3 +7,11 @@ $(document).ready(function () {
 
     document.querySelector(`.nav-link[code-name='${cate}']`).classList.add("active");
 });
+
+$(function () {
+    $.validator.unobtrusive.parse('form');
+
+    $('form input').on('blur', function () {
+        $(this).valid();
+    });
+});

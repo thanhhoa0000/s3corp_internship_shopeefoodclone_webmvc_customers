@@ -1,0 +1,95 @@
+﻿@using ShopeeFoodClone.WebMvc.Customers.Presentation.Extensions
+@model OrderDetailsViewModel
+@{
+    var customerName = User.Identity!.Name;
+
+    ViewData["Title"] = $"{customerName}'s Order | Food Delivery & Shipping Service | ShopeeFood.vn";
+}
+
+@if (Model.Order is not null)
+{
+    <div class="order-section shadow p-5">
+        <div class="order-info mb-3">
+            <h4><i class="bi bi-clipboard-fill me-1"></i>Thông tin đơn hàng</h4>
+            <div class="order-id ps-3">Mã vận đơn:<span class="ms-1">@Model.Order.Id</span></div>
+            <div class="order-date ps-3">Ngày tạo đơn:<span class="ms-1">@Model.Order.OrderDate.ToString("dd-MM-yyyy HH:mm");</span></div>
+            @{
+                string status = Model.Order.OrderStatus switch
+                {
+                    OrderStatus.Pending => "pending",
+                    OrderStatus.Delivered => "delivered",
+                    OrderStatus.Canceled => "canceled",
+                    OrderStatus.DeletedByCustomer => "deleted",
+                    _ => "text-secondary"
+                };
+            }
+            <div class="order-status ps-3">Trạng thái:<span class="ms-1 @status">@Model.Order.OrderStatus.GetDisplayName()</span></div>
+        </div>
+        <div class="address-section mb-3">
+            <h4><i class="bi bi-geo-alt me-1"></i>Địa chỉ nhận hàng</h4>
+            <div class="ps-3">@Model.Order.Address</div>
+        </div>
+
+        <div class="customer-info mb-3">
+            <h4><i class="bi bi-person-fill me-1"></i>Thông tin khách hàng</h4>
+            <div class="customer-name ps-3">Tên khách hàng:<span class="ms-1">@Model.Order.CustomerName</span></div>
+            <div class="customer-phone ps-3">Số điện thoại:<span class="ms-1">@Model.Order.PhoneNumber</span></div>
+        </div>
+        
+        <div class="products-section mt-2">
+            <div class="store d-flex align-items-center justify-content-between mb-3">
+                <h4 class="d-flex justify-content-start align-items-center"><i class="bi bi-shop me-1"></i>@Model.Store!.Name</h4>
+                <a class="d-flex justify-content-end align-items-center" asp-controller="Store" asp-action="Details" asp-route-storeId="@Model.Order.StoreId">Xem Shop<i class="ms-1 bi bi-chevron-right"></i></a>
+            </div>
+            
+            <div class="products ps-3">
+                @foreach (var item in @Model.Order.OrderDetails)
+                {
+                    <div class="item row m-0 ms-2 mb-4">
+                        <div class="item-img col-auto p-0">
+                            <img class=""
+                                 alt="@item.Product!.Name"
+                                 src="@Url.Content($"~/images{@item.Product!.CoverImagePath}")"
+                                 onerror="
+                                        this.onerror = null;
+                                        this.src = '/images/stores/product-img.png'"/>
+                        </div>
+                        <div class="item-info col-auto p-0 ms-3">
+                            <div class="name">@item.Product!.Name</div>
+                            <div class="description">@item.Product!.Description</div>
+                            <div class="quantity mt-3">Số lượng: <span>@item.Quantity</span></div>
+                        </div>
+                        <div class="item-price col-auto p-0 ms-auto">
+                            @if (item.Product!.Discount > 0)
+                            {
+                                <div class="old-price">
+                                    @item.Product!.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                    <span>đ</span>
+                                </div>
+                                <div class="actual-price">
+                                    @((item.Product!.Price - item.Product!.Discount).ToString("N0", CultureInfo.InvariantCulture).Replace(",", "."))
+                                    <span>đ</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="actual-price">
+                                    @item.Product!.Price.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")
+                                    <span>đ</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="total-price d-flex justify-content-end">
+                    Thành tiền:<span class="ms-1">@Model.Order.TotalPrice.ToString("N0", CultureInfo.InvariantCulture).Replace(",", ".")đ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script src="~/js/order.js" asp-append-version="true"></script>
+}

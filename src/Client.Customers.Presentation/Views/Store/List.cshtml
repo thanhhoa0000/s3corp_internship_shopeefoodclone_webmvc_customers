@@ -1,0 +1,115 @@
+﻿@model StorePromotionsViewModel
+@{
+    ViewData["Title"] = "Order Đồ ăn in TP. HCM & Delivery Service | Food Delivery & Shipping Service | ShopeeFood.vn";
+
+    var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+}
+<div class="store-main-section mb-5">
+    <h1 class="text-center store-section-title">Danh sách cửa hàng</h1>
+
+    <div class="store-section-options d-flex justify-content-between">
+        <div class="row">
+            <div class="dropdown col">
+                <button id="store-district-dropdown-btn" class="btn btn-orange dropdown-toggle shadow" type="button"
+                        data-bs-toggle="dropdown">
+                    Khu vực
+                </button>
+                <div class="dropdown-menu" id="store-district-dropdown">
+                    <div class="row">
+
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown col">
+                <button id="store-category-dropdown-btn" class="btn btn-outline-orange dropdown-toggle shadow" type="button"
+                        data-bs-toggle="dropdown">
+                    Phân loại
+                </button>
+                <div class="dropdown-menu" id="store-category-dropdown">
+                    <div class="row">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>@(Model.Stores.Any() ? Model.Stores.Count.ToString() : "0") kết quả</p>
+    </div>
+
+
+    <div class="border-top">
+        <div class="filter-tags-section row">
+            <div class="store-section-location-filter-tag shadow col-auto">
+                <p>Khu vực: <b><span></span></b></p>
+                <button class="btn btn-outline-danger d-flex align-items-center justify-content-center">x</button>
+            </div>
+            <div class="store-section-category-filter-tag shadow col-auto">
+                <p>Phân loại: <b><span></span></b></p>
+                <button class="btn btn-outline-danger d-flex align-items-center justify-content-center">x</button>
+            </div>
+        </div>
+        <div class="store-main-content">
+            @if (Model.Stores.Any())
+            {
+                <div class="store-section-store-list row row-cols-5">
+                    @foreach (var store in Model.Stores)
+                    {
+                        <div class="store-section-store-item col">
+                            <a class="store-section-store-content" asp-controller="Store" asp-action="Details" asp-route-storeId="@store.Id">
+                                <div class="opentime-status">
+                                    <span class="status @(currentTime >= store.OpeningHour && currentTime <= store.ClosingHour ? "online" : "offline")"></span>
+                                </div>
+                                <div class="store-section-store-content-img">
+                                    <img
+                                        class=""
+                                        alt=""
+                                        src="@Url.Content($"~/images{store.CoverImagePath}")"
+                                        onerror="
+                                                this.onerror = null; 
+                                                this.src = '/images/stores/default-store-cover-img.jpg'"/>
+                                </div>
+                                <div class="store-section-store-content-info">
+                                    <div class="store-section-store-content-basic-info">
+                                        <h4>@store.Name</h4>
+                                        <div>@store.StreetName, @store.Ward!.FullName, @store.Ward.District!.FullName, @store.Ward.District.Province!.FullName</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                if (Model.TotalStoresCount > 15)
+                {
+                    <ul class="pagination justify-content-center align-items-center">
+                        <li class="@(Model.CurrentPage == 1 ? "disabled" : "")">
+                            <a page="@(Model.CurrentPage - 1)"><i class="bi bi-arrow-left-circle"></i></a>
+                        </li>
+                        @for (int i = 1; i <= Model.PagesCount; i++)
+                        {
+                            <li class="@(i == Model.CurrentPage ? "active" : "")">
+                                <a page="@i">@i</a>
+                            </li>
+                        }
+                        <li class="@(Model.CurrentPage == Model.PagesCount ? "disabled" : "")">
+                            <a page="@(Model.CurrentPage + 1)"><i class="bi bi-arrow-right-circle"></i></a>
+                        </li>
+                    </ul>
+                }
+            }
+            else
+            {
+                <div class="shipper-sorry-section justify-content-center align-items-center shadow">
+                    <img alt="" src="~/images/shippersorry.png"/>
+
+                    <h3>Không có dữ liệu</h3>
+                    <p>Tìm thực đơn và địa điểm cho đơn hàng. Chúng tôi sẵn sàng phục vụ bạn</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/stores.js" asp-append-version="true"></script>
+}
