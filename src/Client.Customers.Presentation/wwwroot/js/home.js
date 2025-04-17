@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     if (!cate) {
         cate = "food";
-        localStorage.setItem('cate', JSON.stringify("food"));
+        localStorage.setItem('cate', JSON.stringify(cate));
     }
 
     document.querySelectorAll(`.main-nav-item`).forEach((item) => {
