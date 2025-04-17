@@ -28,3 +28,4 @@ global using ShopeeFoodClone.WebMvc.Customers.Application.Models.Enums;
 global using ShopeeFoodClone.WebMvc.Customers.Application.Interfaces;
 
 global using ShopeeFoodClone.WebMvc.Customers.Presentation.Middlewares;
+global using ShopeeFoodClone.WebMvc.Customers.Presentation.Extensions;
