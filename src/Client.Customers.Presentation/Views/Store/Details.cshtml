@@ -75,17 +75,14 @@
         </div>
         <div class="products-list">
             <div class="product-search">
-                <form class="d-flex mb-5" role="search">
-                    <input class="form-control" type="search" placeholder="Tìm món" aria-label="Tìm món"/>
-                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
-                </form>
+                <input class="form-control" type="search" placeholder="Tìm món" aria-label="Tìm món"/>
             </div>
 
             @foreach (var item in menuItems)
             {
                 <div class="menu-title text-uppercase my-3" id="@item.Id"><span>@item.Title</span></div>
 
-                @foreach (var product in products.Where(p => p.Menus.Any(i => i.Id == item.Id)))
+                foreach (var product in products.Where(p => p.Menus.Any(i => i.Id == item.Id)))
                 {
                     <div class="product-item row ms-1">
                         <a class="row col-auto" asp-controller="Product" asp-action="Details"
@@ -129,7 +126,8 @@
                             </div>
                         </a>
                         <button type="button" class="btn btn-orange d-flex align-items-center col-auto ms-auto me-4"
-                                customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1" storeId="@store.Id"
+                                customerId="@(customerId ?? String.Empty)" productId="@product.Id" quantity="1"
+                                storeId="@store.Id"
                                 onclick="checkUserIsAuthenticated(this, '@(customerId ?? String.Empty)')">+
                         </button>
                     </div>

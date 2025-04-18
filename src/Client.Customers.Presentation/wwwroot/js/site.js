@@ -138,6 +138,8 @@ function getStores(province, provinceName) {
             document.querySelectorAll('.home-search-tags-section a').forEach(tag => {
                 tag.onclick = () => saveSubCategoryToLocalStorage(tag.getAttribute('sub-category'));
             });
+
+            document.dispatchEvent(new Event("storesLoaded"));
         },
         error: function () {
             console.error("Failed to fetch stores.");
@@ -193,7 +195,7 @@ function getStoresByDistrict(province, district) {
     })
 }
 
-document.addEventListener("configLoaded", function () {
+document.addEventListener("storesLoaded", function () {
     $.ajax({
         url: `${gatewayUrl}/categories/with-sub-categories-name-list`,
         type: 'GET',
@@ -242,7 +244,7 @@ document.addEventListener("configLoaded", function () {
     });
 });
 
-// Divide categories and their sub-categories in columns evenly on footer
+// Divide categories and their subcategories in columns evenly on footer
 document.addEventListener("homeFooterLoaded", function () {
     const homeFooterItems = Array.from(document.querySelectorAll(".home-footer-item"));
     const totalItems = homeFooterItems.length;

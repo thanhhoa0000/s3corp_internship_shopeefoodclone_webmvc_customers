@@ -6,4 +6,5 @@ public sealed class StorePromotionsViewModel
     public int PagesCount { get; set; } = 1;
     public int CurrentPage { get; set; } = 1;
     public int TotalStoresCount { get; set; } = 0;
+    public string? SearchText { get; set; }
 }
