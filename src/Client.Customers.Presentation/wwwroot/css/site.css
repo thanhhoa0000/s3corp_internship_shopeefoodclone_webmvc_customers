@@ -530,7 +530,7 @@ footer div div div p {
     border-radius: 6px 0 0 6px;
 }
 
-.home-search-input a {
+.home-search-input button {
     height: 50px;
     border-radius: 0 10px 10px 0;
 }
@@ -864,7 +864,7 @@ footer div div div p {
     margin-bottom: 10px;
 }
 
-.store-section-location-filter-tag, .store-section-category-filter-tag {
+.store-section-location-filter-tag, .store-section-category-filter-tag, .store-section-keyword-filter-tag {
     background-color: white;
     width: 130px;
     height: 35px;
@@ -875,7 +875,7 @@ footer div div div p {
     display: table;
 }
 
-.store-section-location-filter-tag p, .store-section-category-filter-tag p {
+.store-section-location-filter-tag p, .store-section-category-filter-tag p, .store-section-keyword-filter-tag p {
     font-family: "Noto Sans", Arial, sans-serif;
     font-size: 12px;
     font-weight: 400;
@@ -886,7 +886,7 @@ footer div div div p {
     padding-left: 5px;
 }
 
-.store-section-location-filter-tag button, .store-section-category-filter-tag button {
+.store-section-location-filter-tag button, .store-section-category-filter-tag button, .store-section-keyword-filter-tag button {
     margin-left: auto;
     height: inherit;
 }
@@ -1343,17 +1343,13 @@ footer div div div p {
     margin-top: 1.1rem
 }
 
-.product-search form input {
-    border-radius: 6px 0 0 6px;
+.product-search input {
+    border-radius: 6px;
 }
 
-.product-search form input::placeholder {
+.product-search input::placeholder {
     font-family: "Noto Sans", Arial, sans-serif;
     color: #959595
-}
-
-.product-search form button {
-    border-radius: 0 6px 6px 0;
 }
 
 .cart-main-section .store {

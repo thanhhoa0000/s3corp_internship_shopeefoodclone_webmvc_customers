@@ -13,10 +13,10 @@
                 <div class="home-search-local">có @Model.StoresCount địa điểm ở <span id="home-search-location-placeholder"></span> từ 00:00 - 23:59</div>
             </div>
             <div class="home-search-form">
-                <div class="home-search-input d-flex row">
+                <form class="home-search-input d-flex row">
                     <input class="col" type="text" id="home-search-box" placeholder="Tìm địa điểm, món ăn, địa chỉ..." value="">
-                    <a href="#" class="col-2 btn btn-primary d-flex justify-content-center align-items-center"><i class="bi bi-search"></i></a>
-                </div>
+                    <button type="submit" class="col-2 btn btn-primary d-flex justify-content-center align-items-center"><i class="bi bi-search"></i></button>
+                </form>
             </div>
             <div class="home-search-tags-section">
                 <a asp-controller="Store" asp-action="List" class="btn btn-outline-light">All</a>

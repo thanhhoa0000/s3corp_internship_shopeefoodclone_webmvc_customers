@@ -35,9 +35,14 @@
         <p>@(Model.Stores.Any() ? Model.Stores.Count.ToString() : "0") kết quả</p>
     </div>
 
+    <input type="hidden" id="keyword-input" value="@Model.SearchText"/>
 
     <div class="border-top">
         <div class="filter-tags-section row">
+            <div class="store-section-keyword-filter-tag shadow col-auto">
+                <p>Từ khoá: <b><span></span></b></p>
+                <button class="btn btn-outline-danger d-flex align-items-center justify-content-center">x</button>
+            </div>
             <div class="store-section-location-filter-tag shadow col-auto">
                 <p>Khu vực: <b><span></span></b></p>
                 <button class="btn btn-outline-danger d-flex align-items-center justify-content-center">x</button>

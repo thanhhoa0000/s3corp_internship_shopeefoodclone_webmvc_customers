@@ -14,4 +14,18 @@ $(document).ready(function () {
             this.classList.add("active");
         });
     });
+    
+    $('.product-search input').on('input', function (event) {
+        const keyword = $(this).val().trim().toLowerCase();
+
+        $('.product-item').each(function () {
+            const productName = $(this).find('.name').text().trim().toLowerCase();
+
+            if (keyword === "" || productName.includes(keyword)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    })
 });

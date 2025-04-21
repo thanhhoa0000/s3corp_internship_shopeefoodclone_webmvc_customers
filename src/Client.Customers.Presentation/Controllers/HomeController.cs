@@ -29,7 +29,8 @@ public class HomeController : Controller
     public async Task<IActionResult> Index(
         string province, 
         string districtsString, 
-        string categoryName, 
+        string categoryName,
+        string searchText = "",
         int pageSize = 9,
         int pageNumber = 1)
     {
@@ -63,7 +64,8 @@ public class HomeController : Controller
                     },
                     CategoryName = categoryName,
                     PageSize = pageSize,
-                    PageNumber = pageNumber
+                    PageNumber = pageNumber,
+                    SearchText = searchText
                 });
 
             if (storesResponse!.IsSuccessful)
@@ -77,7 +79,8 @@ public class HomeController : Controller
                     LocationRequest = new LocationRequest { Province = province },
                     CategoryName = categoryName,
                     PageSize = pageSize,
-                    PageNumber = pageNumber
+                    PageNumber = pageNumber,
+                    SearchText = searchText
                 });
             
             if (promotionStoresResponse!.IsSuccessful)

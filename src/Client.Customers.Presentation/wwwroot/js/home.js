@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     if (!cate) {
         cate = "food";
-        localStorage.setItem('cate', JSON.stringify("food"));
+        localStorage.setItem('cate', JSON.stringify(cate));
     }
 
     document.querySelectorAll(`.main-nav-item`).forEach((item) => {
@@ -51,7 +51,7 @@ function hasEnoughSpacing() {
     return spacing < 70;
 }
 
-// Divide categories and their sub-categories in columns evenly on footer
+// Divide categories and their subcategories in columns evenly on footer
 document.addEventListener("DOMContentLoaded", function () {
     const homeFooterItems = Array.from(document.querySelectorAll(".home-footer-item"));
     const totalItems = homeFooterItems.length;
@@ -77,18 +77,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-$(document).on('click', '.home-stores-see-more', function (e) {
-    e.preventDefault();
+$(document).on('click', '.home-search-input button', function (event) {
+    event.preventDefault();
+    
+    let province = localStorage.getItem('selectedLocationCode');
+    let cate = JSON.parse(localStorage.getItem('cate'));
+    
+    window.location.href = `/Store/List?province=${province}&categoryName=${cate}&searchText=${$('.home-search-input input').val()}`;
+    
+});
+
+$(document).on('click', '.home-stores-see-more', function (event) {
+    event.preventDefault();
     loadMoreContent('stores');
 });
 
-$(document).on('click', '.home-collection-see-more', function (e) {
-    e.preventDefault();
+$(document).on('click', '.home-collection-see-more', function (event) {
+    event.preventDefault();
     loadMoreContent('collections');
 });
 
-$(document).on('click', '.home-promotion-see-more', function (e) {
-    e.preventDefault();
+$(document).on('click', '.home-promotion-see-more', function (event) {
+    event.preventDefault();
     loadMoreContent('promotions');
 });
 

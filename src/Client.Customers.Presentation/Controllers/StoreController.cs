@@ -23,7 +23,7 @@ public class StoreController : Controller
     }
 
     [HttpGet]
-    public IActionResult List() => View(new StorePromotionsViewModel());
+    public IActionResult List(string searchText = "") => View(new StorePromotionsViewModel { SearchText = searchText });
 
     [HttpPost]
     public async Task<IActionResult> List(
@@ -31,6 +31,7 @@ public class StoreController : Controller
         string districtsString,
         string categoryName,
         string subcategoriesString,
+        string searchText = "",
         int pageSize = 15,
         int pageNumber = 1)
     {
@@ -50,6 +51,7 @@ public class StoreController : Controller
                 },
                 CategoryName = categoryName,
                 SubCategoryNames = subcategories,
+                SearchText = searchText,
                 IsPromoted = false
             });
 
@@ -69,7 +71,8 @@ public class StoreController : Controller
                     CategoryName = categoryName,
                     SubCategoryNames = subcategories,
                     PageSize = pageSize,
-                    PageNumber = pageNumber
+                    PageNumber = pageNumber,
+                    SearchText = searchText
                 });
 
             if (storesResponse!.IsSuccessful)
@@ -82,7 +85,8 @@ public class StoreController : Controller
                 Stores = stores.ToList(),
                 PagesCount = (int)Math.Ceiling((double)storesCount / pageSize),
                 CurrentPage = pageNumber,
-                TotalStoresCount = storesCount
+                TotalStoresCount = storesCount,
+                SearchText = searchText
             };
 
             return View(viewModel);
@@ -105,6 +109,7 @@ public class StoreController : Controller
         string districtsString,
         string categoryName,
         string subcategoriesString,
+        string searchText = "",
         int pageSize = 15,
         int pageNumber = 1)
     {
@@ -124,6 +129,7 @@ public class StoreController : Controller
                 },
                 CategoryName = categoryName,
                 SubCategoryNames = subcategories,
+                SearchText = searchText,
                 IsPromoted = true
             });
 
@@ -144,7 +150,8 @@ public class StoreController : Controller
                     CategoryName = categoryName,
                     SubCategoryNames = subcategories,
                     PageSize = pageSize,
-                    PageNumber = pageNumber
+                    PageNumber = pageNumber,
+                    SearchText = searchText
                 });
 
             if (storesResponse!.IsSuccessful)
@@ -158,6 +165,7 @@ public class StoreController : Controller
                 PagesCount = (int)Math.Ceiling((double)storesCount / pageSize),
                 CurrentPage = pageNumber,
                 TotalStoresCount = storesCount,
+                SearchText = searchText
             };
 
             return View(viewModel);

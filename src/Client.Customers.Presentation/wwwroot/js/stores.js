@@ -3,6 +3,7 @@ $(document).ready(function () {
     let districtDropdown = document.getElementById("store-district-dropdown");
     let categoryDropdown = document.getElementById("store-category-dropdown");
     let clickCount = 0;
+    let keywordInput = $('#keyword-input');
 
     let category = JSON.parse(localStorage.getItem('cate'));
     let subCategory = JSON.parse(localStorage.getItem('sub-category'));
@@ -14,10 +15,10 @@ $(document).ready(function () {
             getDistrictListForStorePage(province);
             getSubCategoriesListForStorePage(category);
             if (subCategory) {
-                getItemsForStorePage(province, [], category, [subCategory]);
+                getItemsForStorePage(province, [], category, [subCategory], 15, 1, keywordInput.val());
                 localStorage.setItem('sub-category', null);
             } else {
-                getItemsForStorePage(province, [], category, []);
+                getItemsForStorePage(province, [], category, [], 15, 1, keywordInput.val());
             }
             provinceButtonObserver.disconnect();
         }
@@ -77,6 +78,8 @@ $(document).ready(function () {
         attributes: true,
         attributeFilter: ['class']
     });
+    
+    initializeKeywordFilterTag(keywordInput, $('.store-section-keyword-filter-tag'));
 
     $(document).on('click', '.location-item', function () {
         clickCount++;
@@ -115,7 +118,7 @@ $(document).ready(function () {
             subcategoryCodes.push(checkbox.id);
         });
 
-        getItemsForStorePage(province, districtCodes, category, subcategoryCodes);
+        getItemsForStorePage(province, districtCodes, category, subcategoryCodes, 15, 1, keywordInput.val());
     });
 
     $(document).on('click', '.store-section-location-filter-tag button', function () {
@@ -137,7 +140,27 @@ $(document).ready(function () {
             subcategoryCodes.push(checkbox.id);
         });
 
-        getItemsForStorePage(province, districtCodes, category, subcategoryCodes);
+        getItemsForStorePage(province, districtCodes, category, subcategoryCodes, 15, 1, keywordInput.val());
+    });
+
+    $(document).on('click', '.store-section-keyword-filter-tag button', function () {
+        let districtCodes = []
+        let subcategoryCodes = []
+        let province = $("#location-dropdown-btn").attr("province-code");
+        
+        keywordInput.val("");
+
+        document.querySelector('.store-section-location-filter-tag').style.display = 'none';
+
+        document.querySelectorAll('.store-district-item .form-check-input:checked').forEach(checkbox => {
+            districtCodes.push(checkbox.id);
+        });
+
+        document.querySelectorAll('.store-category-item .form-check-input:checked').forEach(checkbox => {
+            subcategoryCodes.push(checkbox.id);
+        });
+
+        getItemsForStorePage(province, districtCodes, category, subcategoryCodes, 15, 1, keywordInput.val());
     });
     
     $(document).on('click', '.pagination a',function (){
@@ -154,7 +177,7 @@ $(document).ready(function () {
             subcategoryCodes.push(checkbox.id);
         });
 
-        getItemsForStorePage(province, districtCodes, category, subcategoryCodes, 15, pageNumber);
+        getItemsForStorePage(province, districtCodes, category, subcategoryCodes, 15, pageNumber, keywordInput.val());
     });
 });
 
@@ -222,10 +245,10 @@ function getSubCategoriesListForStorePage(categoryName) {
     });
 }
 
-function getItemsForStorePage(province, districts, category, subcategories, pageSize = 15, pageNumber = 1) {
+function getItemsForStorePage(province, districts, category, subcategories, pageSize = 15, pageNumber = 1, keyword = "") {
     const path = window.location.pathname;
     $.ajax({
-        url: `${path}?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}&pageSize=${pageSize}&pageNumber=${pageNumber}`,
+        url: `${path}?province=${province}&categoryName=${category}&districtsString=${districts}&subcategoriesString=${subcategories}&pageSize=${pageSize}&pageNumber=${pageNumber}&searchText=${keyword}`,
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
@@ -233,7 +256,6 @@ function getItemsForStorePage(province, districts, category, subcategories, page
             let newStoresSection = tempDom.find('.store-main-content').html();
             $('.store-main-content').html(newStoresSection);
             $('.store-section-options p').html(tempDom.find('.store-section-options p').html());
-
             if (subcategories.length > 0) {
                 setTimeout(function () {
                     $('.store-category-item input').each(function () {
@@ -252,6 +274,15 @@ function getItemsForStorePage(province, districts, category, subcategories, page
             }
         }
     });
+}
+
+function initializeKeywordFilterTag(input, filterTag) {
+    const inputText = $(input).val();
+    const inputHasText = inputText !== "";
+    const checkedCount = inputHasText ? 1 : 0;
+
+    $(filterTag).css('display', inputHasText ? 'flex' : 'none');
+    $(filterTag).find('span').text(`(${checkedCount})`);
 }
 
 function initializeFilterTag(checkboxes, filterTag) {
