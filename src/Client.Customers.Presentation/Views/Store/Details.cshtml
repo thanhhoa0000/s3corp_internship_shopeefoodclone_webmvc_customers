@@ -7,7 +7,7 @@
     var startHtml = Model.StarHtml;
     var menuItems = Model.MenuItems;
     var currentTime = TimeOnly.FromDateTime(DateTime.Now);
-    var address = $"Số {store!.StreetName}, {store.Ward!.FullName}, {store.Ward.District!.FullName}, {store.Ward.District.Province!.Name}";
+    var address = $"{store!.StreetName}, {store.Ward!.FullName}, {store.Ward.District!.FullName}, {store.Ward.District.Province!.Name}";
     var isStoreOpened = currentTime >= store.OpeningHour && currentTime <= store.ClosingHour;
     var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
