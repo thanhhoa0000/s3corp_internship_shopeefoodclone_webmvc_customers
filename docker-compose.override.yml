@@ -10,3 +10,4 @@ services:
       - ./certs/.aspnet/https/Client.Customers.pfx:/home/app/.aspnet/https/Client.Customers.pfx:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - D:/Internship/Code/Demo/ShopeeFood_Clone:/uploads/images

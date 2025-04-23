@@ -14,6 +14,7 @@ global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Diagnostics;
+global using Microsoft.Extensions.FileProviders;
 
 global using NLog;
 global using NLog.Web;

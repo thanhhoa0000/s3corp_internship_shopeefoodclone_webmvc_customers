@@ -55,6 +55,8 @@ try
 
     var app = builder.Build();
 
+    var imagesPath = builder.Configuration.GetValue<string>("ImagesPath");
+
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
@@ -65,7 +67,11 @@ try
 
     app.UseHttpsRedirection();
     
-    app.UseStaticFiles();
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(imagesPath!),
+        RequestPath = "/images"
+    });
 
     app.UseRouting();
     
