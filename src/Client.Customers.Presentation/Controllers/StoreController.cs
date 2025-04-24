@@ -235,7 +235,7 @@ public class StoreController : Controller
             var viewModel = new StoreDetailsViewModel
             {
                 Store = store,
-                Products = products,
+                Products = products.Where(p => p.State != ProductState.Deleted ).ToList(),
                 MenuItems = menuItems.Where(i => i.Products.Any()).ToList(),
                 StarHtml = GenerateStarsHtml(products.Average(p => p.Rating))
             };

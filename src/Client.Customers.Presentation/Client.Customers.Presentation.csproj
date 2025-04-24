@@ -37,10 +37,4 @@
       <ProjectReference Include="..\Client.Customers.Application\Client.Customers.Application.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="wwwroot\images\stores\3e7d2b56-371b-406c-9c76-faa4b7006a1a\" />
-      <Folder Include="wwwroot\images\stores\8e34c4b3-f236-4bd9-8cd7-cdc11d0854d2\" />
-      <Folder Include="wwwroot\images\stores\edff10fa-3371-4752-8a19-87e2396c761f\" />
-    </ItemGroup>
-
 </Project>
