@@ -2,6 +2,6 @@
 
 public static class CookieProperties
 {
-    public const string AccessTokenCookie = "AccessToken";
-    public const string RefreshTokenCookie = "RefreshToken";
+    public const string AccessTokenCookie = "AccessToken_Customers";
+    public const string RefreshTokenCookie = "RefreshToken_Customers";
 }
