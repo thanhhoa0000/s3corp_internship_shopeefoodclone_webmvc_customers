@@ -9,6 +9,20 @@ services:
       - "7001:7001"
     networks:
       shopeefood-clone-net:
+        
+  sync-images:
+    image: alpine
+    depends_on:
+      - client.customers
+    volumes:
+      - images-volume:/uploads/images
+      - D:/Internship/Code/Demo/ShopeeFood_Clone/images:/host-images
+      - ./sync-images.sh:/sync-images.sh
+    command: sh /sync-images.sh
+
+volumes:
+  images-volume:
+    external: true
       
 networks:
   shopeefood-clone-net:
