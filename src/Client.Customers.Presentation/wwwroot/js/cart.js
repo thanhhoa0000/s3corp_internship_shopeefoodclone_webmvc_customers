@@ -146,23 +146,6 @@ function updateCartItemQuantity(element) {
             url: `/Cart/AddToCartInStoreDetails?productId=${productId}&quantity=${quantity}&customerId=${customerId}`,
             type: "POST",
             success: function (response) {
-                if (response.isCartEmpty) {
-                    $('.cart').remove();
-                }
-                let itemId = $(element).attr("item-id");
-                let parsed = $('<div>').html(response);
-                
-                let item = $(`div[cart-item-id=${itemId}]`);
-                
-                if (item.length > 0) {
-                    item.replaceWith(parsed.find(`div[cart-item-id=${itemId}]`));
-                }
-                else{
-                    $('.items-list').append(parsed.find(`div[cart-item-id=${itemId}]`))
-                }
-                
-                $('.total-price span').text(parsed.find('span').text());
-
                 document.dispatchEvent(new CustomEvent("cartUpdated", {
                     detail: {
                         customerId: customerId,
