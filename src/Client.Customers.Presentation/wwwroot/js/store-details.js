@@ -16,7 +16,7 @@ $(document).ready(function () {
     });
     
     $('.product-search input').on('input', function (event) {
-        const keyword = $(this).val().trim().toLowerCase();
+        const keyword = $(this).val().trim().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
 
         $('.product-item').each(function () {
             const productName = $(this).find('.name').text().trim().toLowerCase();
