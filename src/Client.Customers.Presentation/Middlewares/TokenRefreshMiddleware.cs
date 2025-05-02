@@ -27,7 +27,14 @@ public class TokenRefreshMiddleware
 
         var checkedTokens = await processor.GetValidAccessTokenAsync(accessToken, refreshToken);
 
-        processor.SetTokens(checkedTokens!.AccessToken, checkedTokens.RefreshToken);
+        if (checkedTokens == null)
+        {
+            processor.ClearTokens();
+            context.Response.Redirect("/Account/Logout");
+            return;
+        }
+
+        processor.SetTokens(checkedTokens.AccessToken, checkedTokens.RefreshToken);
 
         await _next(context);
     }

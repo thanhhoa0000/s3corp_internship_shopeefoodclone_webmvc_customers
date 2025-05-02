@@ -78,8 +78,6 @@ try
     app.UseRouting();
     
     app.UseCors("AllowSelfFrontend");
-
-    app.UseAuthorization();
     
     app.UseAuthentication();
 

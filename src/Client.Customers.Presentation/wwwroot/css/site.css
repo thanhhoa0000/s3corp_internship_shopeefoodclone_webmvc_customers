@@ -1111,6 +1111,7 @@ footer div div div p {
 .store-details-products-section {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
+    align-items: start;
     justify-content: center;
     gap: 10px;
     margin: 50px 0 30px 0;

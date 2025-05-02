@@ -270,6 +270,7 @@ function getSubCategories(cateName) {
         url: `/Home/Index?province=${currentLocation}&categoryName=${encodeURIComponent(cateName)}`,
         type: 'POST',
         success: function (response) {
+            getDistricts(currentLocation);
             let tempDom = $('<div></div>').html(response);
             let newSearchSection = tempDom.find('.search-container').html();
             let newAddressSection = tempDom.find('.home-vertical-list-section').html();

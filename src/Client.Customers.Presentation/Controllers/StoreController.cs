@@ -236,7 +236,7 @@ public class StoreController : Controller
             {
                 Store = store,
                 Products = products.Where(p => p.State != ProductState.Deleted ).ToList(),
-                MenuItems = menuItems.Where(i => i.Products.Any()).ToList(),
+                MenuItems = menuItems.Where(i => i.Products.Any() && i.State != MenuState.Inactive).ToList(),
                 StarHtml = GenerateStarsHtml(products.Average(p => p.Rating))
             };
 
