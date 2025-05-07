@@ -178,6 +178,13 @@ public class OrderController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(Guid orderId)
     {
+        if (!User.Identity!.IsAuthenticated)
+        {
+            TempData["error"] = "Vui lòng đăng nhập trước khi sử dụng dịch vụ!";
+
+            return RedirectToAction("Login", "Account");
+        }
+
         try
         {
             var order = new OrderDto();

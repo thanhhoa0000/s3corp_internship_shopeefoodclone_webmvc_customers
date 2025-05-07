@@ -17,7 +17,7 @@ public sealed class RegisterViewModel
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "Mật khẩu không trùng khớp")]
     public string? ConfirmPassword { get; set; }
-    [RegularExpression("/(84|0[3|5|7|8|9])+([0-9]{8})\\b/g", ErrorMessage = "Số điện thoại không hợp lệ")]
+    [RegularExpression(@"^(84|0[3|5|7|8|9])[0-9]{8}$", ErrorMessage = "Số điện thoại không hợp lệ")]
     [Required(ErrorMessage = "Vui lòng nhập số điện thoại của bạn")]
     public string? PhoneNumber { get; set; }
     [Required(ErrorMessage = "Vui lòng nhập tên của bạn")]
