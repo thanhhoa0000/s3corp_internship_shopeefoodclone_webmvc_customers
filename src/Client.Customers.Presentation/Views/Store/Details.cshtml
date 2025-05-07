@@ -82,7 +82,7 @@
             {
                 <div class="menu-title text-uppercase my-3" id="@item.Id"><span>@item.Title</span></div>
 
-                foreach (var product in products.Where(p => p.Menus.Any(i => i.Id == item.Id)))
+                foreach (var product in products.Where(p => p.Menus.Any(i => i.Id == item.Id)).OrderBy(p => p.Price).ToList())
                 {
                     <div class="product-item row ms-1">
                         <a class="row col-auto" asp-controller="Product" asp-action="Details"

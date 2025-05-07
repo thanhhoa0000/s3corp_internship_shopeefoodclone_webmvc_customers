@@ -22,6 +22,20 @@ public class StoreController : Controller
         _logger = logger;
     }
 
+    [Route("Store/danhsach")]
+    [Route("cuahang/danhsach")]
+    public IActionResult RedirectToList()
+    {
+        return RedirectToRoutePermanent("Default", new { controller = "Store", action = "List" });
+    }
+
+    [Route("Store/khuyenmai")]
+    [Route("cuahang/khuyenmai")]
+    public IActionResult RedirectToPromotions()
+    {
+        return RedirectToRoutePermanent("Default", new { controller = "Store", action = "Promotions" });
+    }
+
     [HttpGet]
     public IActionResult List(string searchText = "") => View(new StorePromotionsViewModel { SearchText = searchText });
 
@@ -216,7 +230,7 @@ public class StoreController : Controller
 
             if (products.Count == 0)
             {
-                TempData["error"] = "Store has no products";
+                TempData["error"] = "Cửa hàng chưa có sản phẩm nào";
 
                 return RedirectToAction("Index", "Home");
             }
