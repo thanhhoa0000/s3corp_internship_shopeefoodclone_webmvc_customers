@@ -59,6 +59,8 @@ function proceedOrder() {
         
         $("#full-address").val(fullAddress);
         $("#customer-name-input").val(customerName);
+
+        document.dispatchEvent(new Event("orderInitialized"));
         
         return true;
     } else {
@@ -81,6 +83,7 @@ function proceedOrder() {
             input.valid();
             input.css('border', '1px solid #e74c3c');
         }
+
         return false;
     }
 }
